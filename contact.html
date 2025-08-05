@@ -71,6 +71,7 @@
             position: relative;
             transition: color 0.3s ease;
             color: #a0a0a0;
+            z-index: 10; /* Assure que le lien est au-dessus */
         }
         .nav-link:hover { color: #FFFFFF; }
         .nav-link::after {
@@ -157,7 +158,7 @@
     <header class="fixed top-0 left-0 w-full z-50 glass-effect">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="text-xl md:text-2xl font-bold text-white">BlackWood</a>
-            <div class="hidden md:flex items-center space-x-8">
+            <div class="hidden md:flex items-center space-x-8 z-10"> <!-- Ajout de z-index ici -->
                 <a href="index.html" class="nav-link">Accueil</a>
                 <a href="groupe.html" class="nav-link">Le Groupe</a>
                 <a href="filiales.html" class="nav-link">Nos Filiales</a>
@@ -228,7 +229,7 @@
                 <a href="groupe.html" class="text-sm hover:text-white transition">Le Groupe</a>
                 <a href="filiales.html" class="text-sm hover:text-white transition">Filiales</a>
                 <a href="monde.html" class="text-sm hover:text-white transition">Monde</a>
-                <a href="index.html" class="text-sm hover:text-white transition">Accueil</a> <!-- Changed from Contact to Accueil -->
+                <a href="index.html" class="text-sm hover:text-white transition">Accueil</a>
             </div>
             <p class="text-xs text-gray-500">
                 Site conçu par BlackWood Brand & Design – All rights reserved. © 2024 BlackWood.
