@@ -16,7 +16,22 @@
             background-color: #0d0a1b;
             scroll-behavior: smooth; /* Active le défilement fluide */
             overflow-x: hidden;
+            position: relative;
         }
+
+        /* Dégradé noir en haut de l'écran pour un effet de fondu */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 40; /* Sous la barre de navigation */
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+        }
+
         /* Style pour le fond d'écran de la section d'accueil */
         .hero-bg {
             background-image: url('https://images.unsplash.com/photo-1552845108-5f775a2ccb9b?q=80&w=3542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
@@ -131,19 +146,21 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* Optimisation des transitions pour de meilleures performances */
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .info-card-new:hover {
-            transform: translateY(-15px) scale(1.05);
-            box-shadow: 0 40px 60px rgba(0, 0, 0, 0.6);
+        /* Suppression des effets de survol pour les cartes d'information */
+        /* .info-card-new:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
-        }
-        .info-card-new h3 {
-            font-weight: 700;
-            transition: color 0.4s ease-in-out;
         }
         .info-card-new:hover h3 {
             color: #fff;
+        } */
+        .info-card-new h3 {
+            font-weight: 700;
+            transition: color 0.4s ease-in-out;
         }
         .info-card-value {
             font-weight: 800;
@@ -152,6 +169,22 @@
             color: transparent;
             background-image: linear-gradient(to right, #9f4d95, #f06292);
         }
+
+        /* Animation des cartes au défilement avec un décalage */
+        .info-card-animation {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .info-card-animation.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .info-card-animation:nth-child(2) { transition-delay: 100ms; }
+        .info-card-animation:nth-child(3) { transition-delay: 200ms; }
+        .info-card-animation:nth-child(4) { transition-delay: 300ms; }
     </style>
 </head>
 <body class="bg-[#0d0a1b]">
@@ -174,7 +207,7 @@
 
     <main>
         <!-- Section d'accueil (Hero) -->
-        <section id="hero" class="hero-bg flex flex-col items-center justify-center h-screen text-white text-center">
+        <section id="hero" class="hero-bg flex flex-col items-center justify-center h-screen text-white text-center relative">
             <!-- Carte principale "BlackWood" -->
             <div class="glass-card rounded-[30px] p-12 max-w-2xl fade-in">
                 <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter mb-2 text-hero-gradient">BlackWood</h1>
@@ -212,22 +245,22 @@
                     <!-- Grille des nouvelles cartes d'information -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                         <!-- Carte Filiales Stratégiques -->
-                        <div class="info-card-new p-8 text-center fade-in">
+                        <div class="info-card-new p-8 text-center info-card-animation">
                             <h3 class="text-2xl text-gray-300 mb-4">Filiales Stratégiques</h3>
                             <p class="text-6xl md:text-7xl info-card-value">9</p>
                         </div>
                         <!-- Carte Valorisation Boursière -->
-                        <div class="info-card-new p-8 text-center fade-in" style="transition-delay: 100ms;">
+                        <div class="info-card-new p-8 text-center info-card-animation">
                             <h3 class="text-2xl text-gray-300 mb-4">Valorisation Boursière</h3>
                             <p class="text-4xl md:text-5xl info-card-value">195 Milliards USD</p>
                         </div>
                         <!-- Carte Actifs sous Gestion -->
-                        <div class="info-card-new p-8 text-center fade-in" style="transition-delay: 200ms;">
+                        <div class="info-card-new p-8 text-center info-card-animation">
                             <h3 class="text-2xl text-gray-300 mb-4">Actifs sous Gestion</h3>
                             <p class="text-4xl md:text-5xl info-card-value">800 Milliards USD AUM</p>
                         </div>
                         <!-- Carte Présence Mondiale -->
-                        <div class="info-card-new p-8 text-center fade-in" style="transition-delay: 300ms;">
+                        <div class="info-card-new p-8 text-center info-card-animation">
                             <h3 class="text-2xl text-gray-300 mb-4">Présence Mondiale</h3>
                             <p class="text-6xl md:text-7xl info-card-value">32</p>
                             <p class="text-xl text-gray-400 mt-2">Pays</p>
@@ -262,6 +295,7 @@
         document.addEventListener('DOMContentLoaded', setActiveLink);
 
         // IntersectionObserver pour animer les éléments au défilement
+        // Utilise maintenant une classe générique pour les cartes d'information
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -274,6 +308,11 @@
 
         // Observer tous les éléments avec la classe 'fade-in'
         document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Observer les cartes de la section "Nos Chiffres Clés"
+        document.querySelectorAll('.info-card-animation').forEach(element => {
             observer.observe(element);
         });
 
