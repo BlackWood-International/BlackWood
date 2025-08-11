@@ -1,681 +1,259 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackWood - Designing the Future</title>
-    
-    <!-- Tailwind CSS -->
+    <title>BlackWood</title>
+    <!-- Chargement de Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Montserrat -->
+    <!-- Police d'écriture Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS & Configuration for Tailwind -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @tailwind base;
-        @tailwind components;
-        @tailwind utilities;
-
-        /* Applying custom font and DARK MODE colors */
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #121212;
-            color: #E0E0E0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-osx-font-smoothing: grayscale;
-            overflow-y: scroll; /* Force vertical scrollbar to always be visible */
+            background-color: #0d0a1b;
+            scroll-behavior: smooth; /* Active le défilement fluide */
+            overflow-x: hidden;
         }
-
-        .font-bold { font-weight: 700; }
-        .font-regular { font-weight: 400; }
-        
-        /* Animated Liquid Gradient for Accents */
-        .gradient-accent {
-            background: linear-gradient(-45deg, #a855f7, #4f46e5, #ec4899, #22d3ee, #f97316);
-            background-size: 300% 300%;
-            animation: gradient 15s ease infinite;
+        /* Style pour le fond d'écran de la section d'accueil */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1552845108-5f775a2ccb9b?q=80&w=3542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Style pour le dégradé des sections du bas */
+        .dark-gradient-bg {
+            background: radial-gradient(at top left, rgba(0, 78, 146, 0.1), transparent 70%),
+                        radial-gradient(at top right, rgba(159, 77, 149, 0.1), transparent 70%),
+                        radial-gradient(at bottom left, rgba(240, 98, 146, 0.1), transparent 70%);
+            background-color: #0d0a1b;
         }
-        
-        /* Hero Button Hover Effect - Removed box-shadow */
-        .hero-button:hover {
-            transform: scale(1.05);
-            background-position: 100% 50%; /* Shift background for subtle animation */
-            transition: all 0.4s ease-out, background-position 0.8s ease; 
-        }
-
-        /* Reverted BlackWood title to white */
-        .blackwood-title {
-            color: #FFFFFF; /* Set color to white */
-            /* Removed gradient properties */
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: unset;
-            background-clip: unset;
-        }
-
-        /* Glassmorphism effect for the navbar */
-        .glass-nav {
-            background: rgba(18, 18, 18, 0.6);
+        /* Style pour les cartes transparentes */
+        .glass-card {
+            background-color: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            transition: background-color 0.3s ease, backdrop-filter 0.3s ease; 
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
         }
-        
-        /* Nav link hover effect */
+        /* Effet de survol sur les cartes d'information uniquement */
+        .info-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        /* Style pour les liens de navigation */
         .nav-link {
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
-            transition: color 0.3s ease;
-            color: #a0a0a0;
         }
-        .nav-link:hover { color: #FFFFFF; }
-        .nav-link::after {
+        /* Style pour le lien actif */
+        .nav-link.active {
+            font-weight: 600; /* Police plus grasse pour le lien actif */
+            transform: translateY(-3px); /* Surélévation pour le lien actif */
+        }
+        /* Animation de la barre sous le lien actif ou survolé */
+        .nav-link.active::after, .nav-link:hover::after {
             content: '';
             position: absolute;
-            width: 0;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
             height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(90deg, #a855f7, #4f46e5);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
-        .nav-link.active { color: #FFFFFF; font-weight: 700; }
-        .nav-link.active::after { width: 50%; }
-
-        /* Hero Section Blurry Frame */
-        .hero-text-container {
-            background: rgba(18, 18, 18, 0.4);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
-            padding: 3rem 3.5rem;
-            max-width: 95%;
-            width: 700px;
-        }
-
-        /* Scroll-triggered animations */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        .fade-in-section.is-visible {
+            background: linear-gradient(to right, #004e92, #f06292);
             opacity: 1;
-            transform: translateY(0);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: scaleX(1);
         }
-        
-        /* Key Figures Cards */
-        .key-figure-card {
-            background: rgba(28, 28, 28, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        .key-figure-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* --- Subsidiaries Grid & Modal (now used for cloned element) --- */
-        #subsidiaries-overlay {
-            position: fixed;
-            inset: 0;
-            background: transparent; /* Changed to transparent */
-            backdrop-filter: none; /* Removed backdrop-filter */
-            z-index: 99;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth fade for overlay */
-        }
-        #subsidiaries-overlay.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        #subsidiaries-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            position: relative; /* Crucial for absolute positioning of cloned boxes */
-        }
-        .subsidiary-card-trigger {
-            cursor: pointer;
-            background: #1C1C1C;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-            height: 12rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform;
-            position: relative; /* Needed for original-text opacity transition */
-            overflow: hidden; /* Hide overflowing content during transition */
-        }
-        .subsidiary-card-trigger:hover {
-            transform: scale(1.03); /* Lighter hover effect */
-            /* Simplified glow color to a single, subtle white shadow */
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); 
-            z-index: 1; /* Ensure hover card is above others */
-        }
-        .subsidiary-card-trigger.is-hidden {
-            opacity: 0; /* Hide original card when clone is active */
-            pointer-events: none; /* Disable interaction */
-            transition: opacity 0.1s ease; /* Quick fade out */
-        }
-
-        /* Styles for the cloned, expanded box */
-        .expanded-subsidiary-modal {
-            position: absolute; /* Will be set dynamically by JS */
-            z-index: 100;
-            background: #1C1C1C;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1.5rem;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            pointer-events: auto; /* Enable interaction on the clone */
-            box-sizing: border-box; /* Include padding/border in width/height */
-
-            /* Advanced transitions for position, size, and transform */
-            transition: top 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        left 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        width 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        height 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Overshoot for opening */
-            will-change: top, left, width, height, transform;
-        }
-
-        /* Specific transition for closing animation (squash) */
-        .expanded-subsidiary-modal.is-closing {
-            transition: top 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        left 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        width 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        height 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                        transform 0.5s cubic-bezier(0.4, -0.5, 0.6, 1.5); /* Squash for closing */
-        }
-
-        .expanded-subsidiary-modal .modal-content-wrapper {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s; /* Slight delay for content fade-in */
-            width: 100%; /* Ensure content fills the modal */
-        }
-        .expanded-subsidiary-modal.is-open .modal-content-wrapper {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .expanded-subsidiary-modal .close-button {
+        .nav-link:not(.active)::after {
+            content: '';
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 2.5rem;
-            height: 2.5rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 50%;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            line-height: 1;
-            transition: background 0.3s ease, transform 0.3s ease;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            opacity: 0;
+            transform: scaleX(0);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
-        .expanded-subsidiary-modal .close-button:hover {
-            background: rgba(0,0,0,0.6);
+        .nav-link:hover::after {
+            opacity: 1;
+            transform: scaleX(1.1);
+        }
+        /* Animation subtile du logo au survol */
+        .nav-logo {
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .nav-logo:hover {
             transform: scale(1.1);
         }
-
-        /* Responsive grid adjustments for "Nos Filiales" section */
-        @media (min-width: 1024px) { /* On large screens (desktop) */
-            #subsidiaries-grid {
-                grid-template-columns: repeat(4, 1fr); /* Force 4 columns */
+        /* Animation de fondu pour les sections qui apparaissent */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .animate-bounce-subtle {
+            animation: bounce-subtle 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        @keyframes bounce-subtle {
+            0%, 100% {
+                transform: translateY(0);
             }
-            /* Centers the 9th item in a 4-column layout */
-            /* This rule targets the 9th child directly. If the number of subsidiaries changes,
-               this might need adjustment or a more dynamic JavaScript solution. */
-            #subsidiaries-grid > div:nth-child(9) {
-                grid-column: 2 / span 2; /* Starts at column line 2, spans 2 columns (effectively columns 2 and 3) */
+            50% {
+                transform: translateY(-8px);
             }
         }
-
-        /* Scroll Down Indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #E0E0E0;
-            font-size: 2rem;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-            z-index: 20; /* Ensure it's above the background */
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-5px);
-            }
+        .text-hero-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #d1d5db, #ffffff);
+            font-weight: 800;
+            letter-spacing: -0.05em;
         }
     </style>
 </head>
-<body class="scroll-smooth">
+<body class="bg-[#0d0a1b]">
 
-    <!-- The original #subsidiary-modal is no longer used for the animation itself,
-         but its structure is replicated dynamically in the cloned element. -->
-    <div id="subsidiaries-overlay"></div>
-    <!-- The actual modal content is now dynamically created inside the cloned card -->
-
-    <header class="fixed top-0 left-0 w-full z-50 glass-nav">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-xl md:text-2xl font-bold text-white">BlackWood</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="nav-link active">Accueil</a>
-                <a href="groupe.html" class="nav-link">Le Groupe</a>
-                <a href="filiales.html" class="nav-link">Nos Filiales</a>
-                <a href="monde.html" class="nav-link">Présence Mondiale</a>
-                <a href="land.html" class="nav-link">À propos d’Yves Land</a>
-                <a href="contact.html" class="nav-link">Contact</a>
-            </div>
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
+    <!-- En-tête de navigation flottant -->
+    <header class="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 md:px-8">
+        <nav class="mx-auto px-8 py-5 flex items-center justify-between bg-black/10 backdrop-blur-xl rounded-[40px] shadow-2xl border border-white/10">
+            <!-- Logo BlackWood -->
+            <div class="text-white text-2xl font-extrabold mr-10 nav-logo cursor-pointer">BlackWood</div>
+            <!-- Menu de navigation -->
+            <ul class="hidden md:flex space-x-12 text-gray-300 font-light text-lg">
+                <li><a href="index.html" class="nav-link">Accueil</a></li>
+                <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
+                <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
+                <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
+                <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
+            </ul>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-[#121212]/95 backdrop-blur-md py-4">
-            <a href="index.html" class="block text-center py-2 text-sm font-bold text-white">Accueil</a>
-            <a href="groupe.html" class="block text-center py-2 text-sm text-gray-300">Le Groupe</a>
-            <a href="filiales.html" class="block text-center py-2 text-sm text-gray-300">Nos Filiales</a>
-            <a href="monde.html" class="block text-center py-2 text-sm text-gray-300">Présence Mondiale</a>
-            <a href="land.html" class="block text-center py-2 text-sm text-gray-300">À propos d’Yves Land</a>
-            <a href="contact.html" class="block text-center py-2 text-sm text-gray-300">Contact</a>
-        </div>
     </header>
 
     <main>
-        <section class="h-screen w-full flex items-center justify-center relative">
-            <div style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center; background-attachment: fixed;" class="absolute inset-0 z-0"></div>
-            <div class="absolute inset-0 bg-black/50 z-10"></div>
-            
-            <div class="text-center z-20 px-4 relative hero-text-container">
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-4 blackwood-title">
-                    BlackWood
-                </h1>
-                <p class="text-lg md:text-xl font-regular max-w-3xl mx-auto mb-8 text-gray-200">
-                    Designing the Future. Managing the World.
-                </p>
-                <a href="groupe.html" class="hero-button gradient-accent inline-block text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition-all duration-300">
-                    Découvrir le Groupe →
-                </a>
+        <!-- Section d'accueil (Hero) -->
+        <section id="hero" class="hero-bg flex flex-col items-center justify-center h-screen text-white text-center">
+            <!-- Carte principale "BlackWood" -->
+            <div class="glass-card rounded-[30px] p-12 max-w-2xl fade-in">
+                <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter mb-2 text-hero-gradient">BlackWood</h1>
+                <p class="text-xl md:text-2xl font-light text-gray-200">Designing the Future. Managing the World.</p>
             </div>
-
-            <!-- Scroll Down Indicator -->
-            <div class="scroll-indicator" onclick="window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 mx-auto">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            <!-- Bouton "Glisser vers le bas" cliquable -->
+            <a href="#about" class="absolute bottom-12 text-center animate-bounce-subtle cursor-pointer">
+                <p class="text-xl font-light text-gray-300 mb-2">Glisser vers le bas</p>
+                <!-- Icône de flèche améliorée -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8" />
                 </svg>
-                <span class="text-sm">Défiler</span>
-            </div>
+            </a>
         </section>
 
-        <section class="py-20 md:py-32 fade-in-section">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white">À Propos de BlackWood</h2>
-                <p class="max-w-4xl mx-auto text-center text-base md:text-lg lg:text-xl font-regular text-gray-400 leading-relaxed mb-20">
-                    BlackWood est un conglomérat global fondé aux États-Unis en 2009 par Yves Land. Présent dans plus de 30 pays, le groupe structure ses activités autour de secteurs stratégiques : finance, technologies de pointe, mobilité, design, défense et événementiel. Son ambition : redéfinir les standards mondiaux de l’innovation, de l’élégance et du contrôle.
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="key-figure-card text-center p-8 rounded-2xl">
-                        <p class="text-4xl lg:text-5xl font-bold text-blue-400 mb-2"><span data-count="800">0</span> Mds $</p>
-                        <p class="text-sm font-regular text-gray-400">AUM via BlackWood Capital</p>
-                    </div>
-                    <div class="key-figure-card text-center p-8 rounded-2xl">
-                        <p class="text-4xl lg:text-5xl font-bold text-indigo-400 mb-2"><span data-count="9">0</span></p>
-                        <p class="text-sm font-regular text-gray-400">Filiales stratégiques</p>
-                    </div>
-                    <div class="key-figure-card text-center p-8 rounded-2xl">
-                        <p class="text-4xl lg:text-5xl font-bold text-purple-400 mb-2"><span data-count="32">0</span></p>
-                        <p class="text-sm font-regular text-gray-400">Pays d’opérations</p>
+        <!-- Conteneur unique pour les sections "À Propos" et "Informations Clées" avec un seul dégradé -->
+        <div id="about" class="dark-gradient-bg">
+            <!-- Section "À Propos de BlackWood" -->
+            <section class="py-20 text-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Carte "À Propos" -->
+                    <div class="glass-card rounded-[30px] p-10 text-center shadow-2xl fade-in">
+                        <h2 class="text-5xl font-bold mb-6 text-gray-100">À Propos de BlackWood</h2>
+                        <p class="text-xl leading-relaxed text-gray-300">
+                            BlackWood est un conglomérat global fondé aux États-Unis en 2009 par Yves Land. Présent dans plus de 30 pays, le groupe structure ses activités autour de secteurs stratégiques : finance, technologies de pointe, mobilité, design, défense et événementiel. Son ambition : redéfinir les standards mondiaux de l'innovation, de l'élégance et du contrôle.
+                        </p>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="py-20 md:py-32 bg-black/20 fade-in-section">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white">Nos Filiales</h2>
-                <div id="subsidiaries-grid">
-                    <!-- Cards will be populated by JavaScript -->
+            <!-- Section "Informations Clées" -->
+            <section class="py-20 text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-5xl font-bold text-center mb-16 text-gray-100 fade-in">Informations Clées</h2>
+                    <!-- Grille des cartes bento -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Filiales Stratégiques -->
+                        <div class="glass-card info-card rounded-[30px] p-8 text-center shadow-xl fade-in">
+                            <h3 class="text-2xl font-bold mb-2 text-gray-100">Filiales Stratégiques</h3>
+                            <p class="text-3xl font-extrabold text-hero-gradient">9</p>
+                        </div>
+                        <!-- Valorisation Boursière -->
+                        <div class="glass-card info-card rounded-[30px] p-8 text-center shadow-xl fade-in">
+                            <h3 class="text-2xl font-bold mb-2 text-gray-100">Valorisation Boursière</h3>
+                            <p class="text-3xl font-extrabold text-hero-gradient">195 Milliards USD</p>
+                        </div>
+                        <!-- Actifs sous Gestion -->
+                        <div class="glass-card info-card rounded-[30px] p-8 text-center shadow-xl fade-in col-span-1 lg:col-span-2">
+                            <h3 class="text-2xl font-bold mb-2 text-gray-100">Actifs sous Gestion</h3>
+                            <p class="text-4xl font-extrabold text-hero-gradient">800 Milliards USD AUM</p>
+                        </div>
+                        <!-- Siège Social -->
+                        <div class="glass-card info-card rounded-[30px] p-8 text-center shadow-xl fade-in">
+                            <h3 class="text-2xl font-bold mb-2 text-gray-100">Siège Social</h3>
+                            <p class="text-xl font-medium text-gray-300">NYC, USA</p>
+                        </div>
+                        <!-- Présence Mondiale -->
+                        <div class="glass-card info-card rounded-[30px] p-8 text-center shadow-xl fade-in">
+                            <h3 class="text-2xl font-bold mb-2 text-gray-100">Présence Mondiale</h3>
+                            <p class="text-3xl font-extrabold text-hero-gradient">32 Pays</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
-    <footer class="bg-[#1C1C1C] text-gray-400 py-12 fade-in-section">
-        <div class="container mx-auto px-6 text-center">
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="groupe.html" class="text-sm hover:text-white transition">Le Groupe</a>
-                <a href="filiales.html" class="text-sm hover:text-white transition">Filiales</a>
-                <a href="monde.html" class="text-sm hover:text-white transition">Monde</a>
-                <a href="contact.html" class="text-sm hover:text-white transition">Contact</a>
-            </div>
-            <p class="text-xs text-gray-500">
-                Site conçu par BlackWood Brand & Design – All rights reserved. © 2024 BlackWood.
-            </p>
-        </div>
-    </footer>
-
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Mobile Menu ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        // Fonction pour gérer la classe 'active' des liens de navigation
+        function setActiveLink() {
+            // Récupère le nom du fichier de la page actuelle (ex: "index.html")
+            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                // Récupère le nom du fichier du lien
+                const linkPath = link.href.split('/').pop() || 'index.html';
 
-        // --- Intersection Observer for Animations ---
-        const observer = new IntersectionObserver(entries => {
+                // Si les noms de fichier correspondent, ajoute la classe 'active'
+                if (linkPath === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+        
+        // Exécute la fonction au chargement complet du DOM
+        document.addEventListener('DOMContentLoaded', setActiveLink);
+
+        // IntersectionObserver pour animer les éléments au défilement
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    const counters = entry.target.querySelectorAll('[data-count]');
-                    counters.forEach(counter => {
-                        animateCountUp(counter);
-                    });
+                    // Retirer l'observateur après l'animation
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
-
-        // --- Number Counting Animation ---
-        function animateCountUp(el) {
-            const target = +el.getAttribute('data-count');
-            el.innerText = '0'; // Reset before counting
-            let current = 0;
-            const increment = target / 100;
-            const interval = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    el.innerText = target.toLocaleString('fr-FR');
-                    clearInterval(interval);
-                } else {
-                    el.innerText = Math.ceil(current).toLocaleString('fr-FR');
-                }
-            }, 20);
-        }
-
-        // --- Interactive Subsidiaries Grid & Modal (now using cloning approach) ---
-        const subsidiariesData = [
-            { id: "bw-capital", title: "BlackWood Capital Investments", desc: "Pilier financier du groupe, spécialisé dans la gestion d’actifs à grande échelle, les investissements stratégiques et les prises de participation internationales." },
-            { id: "bw-motors", title: "BlackWood Royal Motors", desc: "Motoriste de prestige issu du rachat de Royal Motors, actif dans les systèmes de propulsion, la R&D automobile et les concessions multi-segment." },
-            { id: "bw-tech", title: "BlackWood Technologies", desc: "Spécialiste des logiciels, de l’IA, de la cybersécurité et de la recherche quantique. Fournisseur de solutions technologiques confidentielles et haut de gamme." },
-            { id: "bw-logistics", title: "BlackWood Logistics", desc: "Entreprise logistique assurant la distribution mondiale des produits du groupe et de ses partenaires. Efficacité, contrôle et scalabilité." },
-            { id: "bw-defense", title: "BlackWood Defense Systems", desc: "Branche défense spécialisée dans la guerre électronique, les IA tactiques, les systèmes embarqués et les technologies de sécurité souveraines." },
-            { id: "bw-design", title: "BlackWood Brand & Design", desc: "Studio de design du groupe, à l’origine de l’identité visuelle de BlackWood et de projets de branding pour des marques internationales de luxe." },
-            { id: "bw-racing", title: "BlackWood Racing Team", desc: "Écurie de course d’élite utilisant ses propres moteurs BRM. Présente en F1, endurance et e-séries. Vitrine d’innovation technique et de performance extrême." },
-            { id: "bw-events", title: "BlackWood Events", desc: "Agence événementielle interne du groupe. Conçoit, orchestre et produit des expériences publiques et privées dans le monde entier." },
-            { id: "bw-photo", title: "BlackWood Photography", desc: "Studio audiovisuel haut de gamme spécialisé dans la photographie, la vidéo et la création de contenu visuel immersif pour le groupe et ses partenaires." }
-        ];
-
-        const gridContainer = document.getElementById('subsidiaries-grid');
-        const overlay = document.getElementById('subsidiaries-overlay');
-        
-        let originalClickedBox = null; // Stores the reference to the original card that was clicked
-        let clonedBoxElement = null; // Stores the reference to the cloned, expanded box element
-
-        // Map to store the initial positions and dimensions of each card relative to gridContainer.
-        const initialCardRects = new Map();
-
-        // Populate cards
-        subsidiariesData.forEach((data) => {
-            const card = document.createElement('div');
-            card.id = data.id; // Assign ID from data
-            card.className = 'subsidiary-card-trigger';
-            card.innerHTML = `<h3 class="text-xl font-bold">${data.title}</h3>`;
-            gridContainer.appendChild(card);
+        // Observer tous les éléments avec la classe 'fade-in'
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
         });
 
-        // Store initial rects AFTER all elements are in DOM and layout has settled
-        // Use window.onload to ensure all resources (images, fonts) are loaded, which can affect layout.
-        window.onload = () => {
-            const gridRect = gridContainer.getBoundingClientRect();
-            document.querySelectorAll('.subsidiary-card-trigger').forEach(card => {
-                const rect = card.getBoundingClientRect();
-                initialCardRects.set(card.id, {
-                    left: rect.left - gridRect.left,
-                    top: rect.top - gridRect.top,
-                    width: rect.width,
-                    height: rect.height
-                });
-            });
-
-            // Re-attach event listeners after initialCardRects are populated
-            document.querySelectorAll('.subsidiary-card-trigger').forEach(card => {
-                const data = subsidiariesData.find(d => d.id === card.id);
-                if (data) {
-                    card.addEventListener('click', () => expandBox(card, data));
-                }
-            });
-        };
-
-
-        /**
-         * Expands the clicked card with a "stretch and squash" animation.
-         * @param {HTMLElement} clickedCard - The HTML element of the card that was clicked.
-         * @param {Object} cardData - The data object associated with the clicked card.
-         */
-        function expandBox(clickedCard, cardData) {
-            // If another modal is already open, collapse it immediately
-            if (clonedBoxElement) {
-                collapseBox(); 
-            }
-
-            originalClickedBox = clickedCard;
-            
-            // Create a NEW div element instead of cloning to avoid inherited event listeners
-            clonedBoxElement = document.createElement('div');
-            clonedBoxElement.id = `cloned-${originalClickedBox.id}`;
-            clonedBoxElement.className = 'expanded-subsidiary-modal'; // Apply the modal class
-
-            // Copy initial dimensions and position from the original card
-            const currentRectRelative = initialCardRects.get(originalClickedBox.id);
-            clonedBoxElement.style.position = 'absolute';
-            clonedBoxElement.style.zIndex = '100';
-            clonedBoxElement.style.top = `${currentRectRelative.top}px`;
-            clonedBoxElement.style.left = `${currentRectRelative.left}px`;
-            clonedBoxElement.style.width = `${currentRectRelative.width}px`;
-            clonedBoxElement.style.height = `${currentRectRelative.height}px`;
-            clonedBoxElement.style.transform = 'scale(1)'; // Start at original scale
-            clonedBoxElement.style.opacity = '1'; // Ensure clone is visible
-            clonedBoxElement.style.transition = 'none'; // No transition initially
-
-            // Append the new clone to the grid container
-            gridContainer.appendChild(clonedBoxElement);
-
-            // Hide the original card
-            originalClickedBox.classList.add('is-hidden');
-            overlay.classList.add('visible'); // Show the overlay
-
-            // Force reflow to apply initial styles before transition
-            clonedBoxElement.offsetWidth;
-
-            // Determine target dimensions and position for the expanded modal
-            const gridRect = gridContainer.getBoundingClientRect();
-            const expandedWidth = Math.min(window.innerWidth * 0.9, 600); // 90vw or max 600px
-            const expandedHeight = Math.min(window.innerHeight * 0.7, 400); // 70vh or max 400px
-
-            // Calculate centered position relative to the grid container
-            const targetLeft = (gridRect.width - expandedWidth) / 2;
-            const targetTop = (gridRect.height - expandedHeight) / 2;
-
-            // Apply transition properties for the opening animation
-            clonedBoxElement.style.transition = `top 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                                                left 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                                                width 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                                                height 0.5s cubic-bezier(0.4, 0, 0.6, 1), 
-                                                transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)`; // Overshoot
-
-            // Apply target dimensions and position
-            clonedBoxElement.style.top = `${targetTop}px`;
-            clonedBoxElement.style.left = `${targetLeft}px`;
-            clonedBoxElement.style.width = `${expandedWidth}px`;
-            clonedBoxElement.style.height = `${expandedHeight}px`;
-            clonedBoxElement.style.transform = 'scale(1)'; // Final scale after overshoot
-
-            // Add content to the expanded clone (removed "En savoir plus" button, added text)
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'modal-content-wrapper flex flex-col items-center justify-center p-4 text-white';
-            contentDiv.innerHTML = `
-                <h3 class="text-2xl font-bold mb-4">${cardData.title}</h3>
-                <p class="text-base font-regular text-gray-300 mb-8 max-w-md mx-auto">${cardData.desc}</p>
-                <p class="text-sm text-gray-400">Pour en savoir plus, veuillez visiter notre page <a href="filiales.html" class="text-purple-400 hover:text-purple-300 underline">Nos Filiales</a>.</p>
-                <button class="close-button">&times;</button>
-            `;
-            clonedBoxElement.appendChild(contentDiv);
-
-            // Animate content opacity after a slight delay
-            setTimeout(() => {
-                // Ensure contentDiv exists before trying to add classList
-                if (contentDiv) {
-                    contentDiv.classList.add('is-open'); // Trigger content fade-in
-                }
-                clonedBoxElement.classList.add('is-open'); // Mark clone as open for content transition
-            }, 100);
-
-            // Attach close button listener to the dynamically created button
-            const closeButton = contentDiv.querySelector('.close-button');
-            if (closeButton) {
-                closeButton.addEventListener('click', collapseBox); // Only the close button closes
-            }
-            
-            // Ensure clicking on the modal content itself does NOT close it
-            clonedBoxElement.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent clicks inside the modal from bubbling to overlay
-            });
-
-            // Overlay click listener (only closes if clicked directly on overlay, not the modal)
-            overlay.addEventListener('click', collapseBox);
-        }
-
-        /**
-         * Collapses the expanded card and returns it to its original state.
-         */
-        function collapseBox() {
-            // If there's no cloned element to collapse, or if it's already being collapsed by another call
-            if (!clonedBoxElement) return; 
-
-            // Capture references for cleanup
-            const currentClonedElement = clonedBoxElement;
-            const currentOriginalCard = originalClickedBox;
-
-            // Fade out content
-            const contentDiv = currentClonedElement.querySelector('.modal-content-wrapper');
-            if (contentDiv) {
-                contentDiv.classList.remove('is-open'); // Trigger content fade-out
-            }
-            currentClonedElement.classList.remove('is-open'); // Mark clone as closing
-
-            // Apply transition properties for the closing animation (squash)
-            currentClonedElement.classList.add('is-closing'); // Apply specific closing transition
-
-            // Get original position relative to the grid container
-            const originalRectRelative = initialCardRects.get(currentOriginalCard.id);
-
-            // Set target dimensions and position for collapsing
-            currentClonedElement.style.top = `${originalRectRelative.top}px`;
-            currentClonedElement.style.left = `${originalRectRelative.left}px`;
-            currentClonedElement.style.width = `${originalRectRelative.width}px`;
-            currentClonedElement.style.height = `${originalRectRelative.height}px`;
-            currentClonedElement.style.transform = 'scale(1)'; // Returns to normal scale
-
-            overlay.classList.remove('visible'); // Hide overlay
-
-            let cleanupDone = false;
-
-            // Remove previous event listener if it exists to prevent multiple cleanups
-            const oldHandler = currentClonedElement.__transitionEndHandler;
-            if (oldHandler) {
-                currentClonedElement.removeEventListener('transitionend', oldHandler);
-            }
-
-            const transitionEndHandler = function handler(event) {
-                // Ensure it's the transform property and the modal is actually closing
-                if (event.propertyName === 'transform' || event.propertyName === 'width' || event.propertyName === 'height') {
-                    currentClonedElement.removeEventListener('transitionend', handler); // Remove listener
-                    if (!cleanupDone) {
-                        performCleanup();
-                        cleanupDone = true;
-                    }
-                }
-            };
-            currentClonedElement.addEventListener('transitionend', transitionEndHandler, { once: true });
-            currentClonedElement.__transitionEndHandler = transitionEndHandler; // Store reference
-
-            // Fallback timeout in case transitionend doesn't fire (e.g., animation interrupted or skipped)
-            setTimeout(() => {
-                if (!cleanupDone) {
-                    currentClonedElement.removeEventListener('transitionend', transitionEndHandler); // Ensure listener is removed
-                    performCleanup();
-                    cleanupDone = true;
-                }
-            }, 600); // Slightly longer than the longest transition (0.5s)
-
-            function performCleanup() {
-                if (currentOriginalCard) {
-                    currentOriginalCard.classList.remove('is-hidden'); // Show original card
-                }
-                if (currentClonedElement && currentClonedElement.parentNode) { // Check if still in DOM before removing
-                    currentClonedElement.remove(); // Remove clone from DOM
-                }
-                // Reset global variables for the *next* interaction
-                clonedBoxElement = null; 
-                originalClickedBox = null;
-            }
-        }
-
-        // Handle window resize: collapse modal and recalculate initial positions
-        window.addEventListener('resize', () => {
-            if (clonedBoxElement) {
-                collapseBox(); // Collapse any open modal to prevent layout issues
-            }
-            // Recalculate all initial card positions relative to the grid container
-            const newGridRect = gridContainer.getBoundingClientRect();
-            document.querySelectorAll('.subsidiary-card-trigger').forEach(card => {
-                const rect = card.getBoundingClientRect();
-                initialCardRects.set(card.id, {
-                    left: rect.left - newGridRect.left,
-                    top: rect.top - newGridRect.top,
-                    width: rect.width,
-                    height: rect.height
-                });
-            });
+        // Parallax effect for the hero section background
+        window.addEventListener('scroll', function() {
+            const heroSection = document.getElementById('hero');
+            const scrollPosition = window.pageYOffset;
+            heroSection.style.backgroundPositionY = -scrollPosition * 0.2 + 'px'; // Ajustez le 0.2 pour modifier l'intensité de l'effet
         });
-    });
     </script>
 </body>
 </html>
