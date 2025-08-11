@@ -192,6 +192,17 @@
         .info-card-animation:nth-child(3) { transition-delay: 200ms; }
         .info-card-animation:nth-child(4) { transition-delay: 300ms; }
 
+        /* Style pour le nouveau bouton */
+        .action-button {
+            background-image: linear-gradient(to right, #9f4d95, #f06292);
+            box-shadow: 0 10px 30px rgba(159, 77, 149, 0.3);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .action-button:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(159, 77, 149, 0.5);
+        }
+
     </style>
 </head>
 <body class="bg-[#0d0a1b]">
@@ -256,7 +267,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 class="text-5xl md:text-6xl font-extrabold text-center mb-16 text-white fade-in tracking-tight">Nos Chiffres Clés</h2>
                     <!-- Grille des nouvelles cartes d'information -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16">
                         <!-- Carte Filiales Stratégiques -->
                         <div class="info-card-new p-8 text-center info-card-animation">
                             <h3 class="text-2xl text-gray-300 mb-4">Filiales Stratégiques</h3>
@@ -278,6 +289,12 @@
                             <p class="text-6xl md:text-7xl info-card-value">32</p>
                             <p class="text-xl text-gray-400 mt-2">Pays</p>
                         </div>
+                    </div>
+                    <!-- Nouveau Bouton "En savoir plus" -->
+                    <div class="text-center fade-in">
+                        <a href="groupe.html" class="inline-block action-button text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg transform">
+                            En savoir plus sur le Groupe
+                        </a>
                     </div>
                 </div>
             </section>
