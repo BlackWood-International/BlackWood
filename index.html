@@ -16,7 +16,7 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #0d0a1b;
-            scroll-behavior: smooth; /* Active le défilement fluide */
+            scroll-behavior: smooth;
             overflow-x: hidden;
             position: relative;
         }
@@ -36,27 +36,24 @@
 
         /* Style pour le fond d'écran de la section d'accueil avec assombrissement */
         .hero-bg {
-            /* On ne met plus d'image de fond ici, on la met dans le pseudo-élément */
-            position: relative; /* Définit un contexte de positionnement pour le pseudo-élément */
-            overflow: hidden; /* Cache le débordement de l'image de fond qui se déplace */
-            min-height: 100vh; /* Pour que la section prenne bien toute la hauteur */
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
         }
         
-        /* Nouveau pseudo-élément pour l'effet de parallaxe */
+        /* Pseudo-élément pour l'effet de parallaxe */
         .hero-bg::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 120%; /* Plus grand que le conteneur pour permettre le mouvement */
+            height: 120%;
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1608469665871-a8b8dd3f483e?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
-            /* Utilisation d'une transformation 3D pour une animation fluide */
             transform: translate3d(0, var(--parallax-y, 0), 0);
-            z-index: -1; /* Place l'image derrière le contenu */
-            /* La transition a été supprimée pour éliminer la latence */
+            z-index: -1;
         }
         
         /* Style pour le dégradé des sections du bas */
@@ -81,21 +78,21 @@
         }
         /* Style pour le lien actif */
         .nav-link.active {
-            font-weight: 600; /* Police plus grasse pour le lien actif */
-            transform: translateY(-3px); /* Surélévation pour le lien actif */
+            font-weight: 600;
+            transform: translateY(-3px);
         }
         /* Animation de la barre sous le lien actif ou survolé */
         .nav-link.active::after, .nav-link:hover::after {
             content: '';
             position: absolute;
             bottom: -5px;
-            left: 50%; /* Centre la barre */
-            width: 40px; /* Largeur fixe de la barre */
+            left: 50%;
+            width: 40px;
             height: 2px;
             background: linear-gradient(to right, #004e92, #f06292);
             opacity: 1;
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-            transform: translateX(-50%) scaleX(1); /* Centre et applique l'échelle */
+            transform: translateX(-50%) scaleX(1);
         }
         .nav-link:not(.active)::after {
             content: '';
@@ -106,7 +103,7 @@
             height: 2px;
             background: linear-gradient(to right, #004e92, #f06292);
             opacity: 0;
-            transform: translateX(-50%) scaleX(0); /* Centre et applique l'échelle */
+            transform: translateX(-50%) scaleX(0);
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
         .nav-link:hover::after {
@@ -150,7 +147,7 @@
             letter-spacing: -0.05em;
         }
 
-        /* --- Nouveaux styles pour la section Informations Clés --- */
+        /* Styles pour la section Informations Clés */
         .info-section-bg {
             background: #111;
             box-shadow: inset 0 20px 50px rgba(0, 0, 0, 0.5);
@@ -162,8 +159,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
         }
-        /* Suppression de toutes les animations de survol */
-
         .info-card-new h3 {
             font-weight: 700;
             transition: color 0.4s ease-in-out;
@@ -203,43 +198,86 @@
             box-shadow: 0 15px 40px rgba(159, 77, 149, 0.5);
         }
 
+        /* Styles pour l'animation du menu mobile */
+        .mobile-menu-closed {
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+        .mobile-menu-open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Animation pour le bouton hamburger */
+        .hamburger-button {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform-origin: center;
+        }
+        .hamburger-button.hide {
+            opacity: 0;
+            transform: scale(0.8);
+        }
     </style>
 </head>
 <body class="bg-[#0d0a1b]">
 
     <!-- En-tête de navigation flottant -->
-    <header class="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 md:px-8">
-        <nav class="mx-auto px-8 py-5 flex items-center justify-between bg-black/10 backdrop-blur-xl rounded-[40px] shadow-2xl border border-white/10">
-            <!-- Logo BlackWood (maintenant un lien vers la page d'accueil) -->
-            <a href="#hero" class="text-white text-2xl font-extrabold mr-10 nav-logo">
+    <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
+        <nav class="mx-auto px-4 lg:px-8 py-4 flex items-center justify-between bg-black/10 backdrop-blur-xl rounded-[40px] shadow-2xl border border-white/10">
+            <!-- Logo BlackWood -->
+            <a href="#hero" class="text-white text-xl lg:text-2xl font-extrabold nav-logo">
                 BlackWood
             </a>
-            <!-- Menu de navigation -->
-            <ul class="hidden md:flex space-x-12 text-gray-300 font-light text-lg">
+            <!-- Menu de navigation pour PC -->
+            <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
                 <li><a href="#hero" class="nav-link">Accueil</a></li>
                 <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
                 <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
                 <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
                 <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
             </ul>
+            <!-- Bouton hamburger pour la navigation mobile -->
+            <button id="mobile-menu-button" class="lg:hidden text-white focus:outline-none hamburger-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
         </nav>
     </header>
+
+    <!-- Menu mobile (caché par défaut) -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/80 backdrop-blur-lg z-[55] flex-col items-center justify-center space-y-8 text-white text-2xl lg:hidden transition-all duration-500 ease-in-out mobile-menu-closed">
+        <button id="close-menu-button" class="absolute top-8 right-8 text-white focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <ul class="text-center space-y-6 pt-20">
+            <li><a href="#hero" class="nav-link text-3xl" onclick="closeMobileMenu()">Accueil</a></li>
+            <li><a href="groupe.html" class="nav-link text-3xl" onclick="closeMobileMenu()">Le Groupe</a></li>
+            <li><a href="filiales.html" class="nav-link text-3xl" onclick="closeMobileMenu()">Nos Filiales</a></li>
+            <li><a href="presence-mondiale.html" class="nav-link text-3xl" onclick="closeMobileMenu()">Présence Mondiale</a></li>
+            <li><a href="actualite-bourse.html" class="nav-link text-3xl" onclick="closeMobileMenu()">Actualité Boursière</a></li>
+        </ul>
+    </div>
 
     <main>
         <!-- Section d'accueil (Hero) -->
         <section id="hero" class="hero-bg flex flex-col items-center justify-center h-screen text-white text-center relative">
             <!-- Carte principale "BlackWood" -->
-            <div class="glass-card rounded-[30px] p-12 max-w-2xl fade-in">
-                <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter mb-2 text-hero-gradient">
+            <div class="glass-card rounded-[30px] p-6 sm:p-12 max-w-2xl mx-4 fade-in">
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-2 text-hero-gradient">
                     BlackWood
                 </h1>
-                <p class="text-xl md:text-2xl font-light text-gray-200">Designing the Future. Managing the World.</p>
+                <p class="text-lg lg:text-2xl font-light text-gray-200">Designing the Future. Managing the World.</p>
             </div>
             <!-- Bouton "Glisser vers le bas" cliquable -->
-            <a href="#about" class="absolute bottom-12 text-center animate-bounce-subtle cursor-pointer">
-                <p class="text-xl font-light text-gray-300 mb-2">Glisser vers le bas</p>
+            <a href="#about" class="absolute bottom-6 lg:bottom-12 text-center animate-bounce-subtle cursor-pointer">
+                <p class="text-lg lg:text-xl font-light text-gray-300 mb-2">Glisser vers le bas</p>
                 <!-- Icône de flèche améliorée -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 lg:h-10 lg:w-10 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8" />
                 </svg>
             </a>
@@ -248,14 +286,14 @@
         <!-- Conteneur unique pour les sections "À Propos" et "Informations Clées" avec un seul dégradé -->
         <div id="about" class="dark-gradient-bg">
             <!-- Section "À Propos de BlackWood" -->
-            <section class="py-20 text-white">
+            <section class="py-16 lg:py-20 text-white">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <!-- Carte "À Propos" -->
-                    <div class="glass-card rounded-[30px] p-10 text-center shadow-2xl fade-in">
-                        <h2 class="text-5xl font-bold mb-6 text-gray-100">
+                    <div class="glass-card rounded-[30px] p-8 lg:p-10 text-center shadow-2xl fade-in">
+                        <h2 class="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6 text-gray-100">
                             À Propos de BlackWood
                         </h2>
-                        <p class="text-xl leading-relaxed text-gray-300">
+                        <p class="text-lg lg:text-xl leading-relaxed text-gray-300">
                             BlackWood est un conglomérat global fondé aux États-Unis en 2009 par Yves Land. Présent dans plus de 30 pays, le groupe structure ses activités autour de secteurs stratégiques : finance, technologies de pointe, mobilité, design, défense et événementiel. Son ambition : redéfinir les standards mondiaux de l'innovation, de l'élégance et du contrôle.
                         </p>
                     </div>
@@ -263,36 +301,36 @@
             </section>
 
             <!-- Section "Informations Clées" - Nouvelle version -->
-            <section id="key-info" class="py-24 text-white info-section-bg">
+            <section id="key-info" class="py-16 lg:py-24 text-white info-section-bg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-5xl md:text-6xl font-extrabold text-center mb-16 text-white fade-in tracking-tight">Nos Chiffres Clés</h2>
+                    <h2 class="text-4xl lg:text-6xl font-extrabold text-center mb-12 lg:mb-16 text-white fade-in tracking-tight">Nos Chiffres Clés</h2>
                     <!-- Grille des nouvelles cartes d'information -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16">
                         <!-- Carte Filiales Stratégiques -->
-                        <div class="info-card-new p-8 text-center info-card-animation">
-                            <h3 class="text-2xl text-gray-300 mb-4">Filiales Stratégiques</h3>
-                            <p class="text-6xl md:text-7xl info-card-value">9</p>
+                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
+                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Filiales Stratégiques</h3>
+                            <p class="text-5xl lg:text-7xl info-card-value">9</p>
                         </div>
                         <!-- Carte Valorisation Boursière -->
-                        <div class="info-card-new p-8 text-center info-card-animation">
-                            <h3 class="text-2xl text-gray-300 mb-4">Valorisation Boursière</h3>
-                            <p class="text-4xl md:text-5xl info-card-value">195 Milliards USD</p>
+                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
+                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Valorisation Boursière</h3>
+                            <p class="text-3xl lg:text-5xl info-card-value">195 Milliards USD</p>
                         </div>
                         <!-- Carte Actifs sous Gestion -->
-                        <div class="info-card-new p-8 text-center info-card-animation">
-                            <h3 class="text-2xl text-gray-300 mb-4">Actifs sous Gestion</h3>
-                            <p class="text-4xl md:text-5xl info-card-value">800 Milliards USD AUM</p>
+                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
+                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Actifs sous Gestion</h3>
+                            <p class="text-3xl lg:text-5xl info-card-value">800 Milliards USD AUM</p>
                         </div>
                         <!-- Carte Présence Mondiale -->
-                        <div class="info-card-new p-8 text-center info-card-animation">
-                            <h3 class="text-2xl text-gray-300 mb-4">Présence Mondiale</h3>
-                            <p class="text-6xl md:text-7xl info-card-value">32</p>
-                            <p class="text-xl text-gray-400 mt-2">Pays</p>
+                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
+                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Présence Mondiale</h3>
+                            <p class="text-5xl lg:text-7xl info-card-value">32</p>
+                            <p class="text-lg lg:text-xl text-gray-400 mt-2">Pays</p>
                         </div>
                     </div>
                     <!-- Nouveau Bouton "En savoir plus" -->
                     <div class="text-center fade-in">
-                        <a href="groupe.html" class="inline-block action-button text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg transform">
+                        <a href="groupe.html" class="inline-block action-button text-white font-bold py-3 px-8 lg:py-4 lg:px-12 rounded-full text-lg lg:text-xl shadow-lg transform">
                             En savoir plus sur le Groupe
                         </a>
                     </div>
@@ -302,27 +340,24 @@
     </main>
 
     <!-- Pied de page simple et élégant -->
-    <footer class="dark-gradient-bg py-12">
+    <footer class="dark-gradient-bg py-8 lg:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <p class="text-sm">
                 Copyright &copy; 2024 BlackWood International Corp. Tous droits réservés.
             </p>
-            <p class="text-sm mt-2 font-medium text-gray-300">Made with Precision by BlackWood Brand & Design</p>
+            <p class="text-xs lg:text-sm mt-2 font-medium text-gray-300">Made with Precision by BlackWood Brand & Design</p>
         </div>
     </footer>
 
     <script>
         // Fonction pour gérer la classe 'active' des liens de navigation
         function setActiveLink() {
-            // Récupère le nom du fichier de la page actuelle (ex: "index.html")
             const currentPath = window.location.pathname.split('/').pop() || 'index.html';
             const navLinks = document.querySelectorAll('.nav-link');
             
             navLinks.forEach(link => {
-                // Récupère le nom du fichier du lien
                 const linkPath = link.href.split('/').pop() || 'index.html';
 
-                // Si les noms de fichier correspondent, ajoute la classe 'active'
                 if (linkPath === currentPath) {
                     link.classList.add('active');
                 } else {
@@ -335,37 +370,63 @@
         document.addEventListener('DOMContentLoaded', setActiveLink);
 
         // IntersectionObserver pour animer les éléments au défilement
-        // Utilise maintenant une classe générique pour les cartes d'information
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    // Retirer l'observateur après l'animation
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        // Observer tous les éléments avec la classe 'fade-in'
-        document.querySelectorAll('.fade-in').forEach(element => {
+        // Observer tous les éléments avec la classe 'fade-in' et 'info-card-animation'
+        document.querySelectorAll('.fade-in, .info-card-animation').forEach(element => {
             observer.observe(element);
         });
 
-        // Observer les cartes de la section "Nos Chiffres Clés"
-        document.querySelectorAll('.info-card-animation').forEach(element => {
-            observer.observe(element);
-        });
-
-        // Nouvel effet de parallaxe basé sur CSS transform pour une meilleure fluidité
-        // Gère le mouvement de l'image de fond dans le pseudo-élément ::before
+        // Effet de parallaxe pour l'image de fond
         window.addEventListener('scroll', function() {
             const heroSection = document.getElementById('hero');
             const scrollPosition = window.pageYOffset;
             const parallaxValue = scrollPosition * 0.2;
 
-            // Met à jour la variable CSS --parallax-y pour que le pseudo-élément l'utilise
-            // L'effet est instantané car il n'y a plus de transition CSS
             heroSection.style.setProperty('--parallax-y', parallaxValue + 'px');
+        });
+
+        // Logique pour le menu de navigation mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+
+        // Ouvre le menu mobile et fait disparaître le bouton hamburger
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('mobile-menu-open');
+            mobileMenu.classList.remove('mobile-menu-closed');
+            mobileMenuButton.classList.add('hide');
+        });
+
+        // Ferme le menu mobile et fait réapparaître le bouton hamburger
+        const closeMobileMenu = () => {
+            mobileMenu.classList.remove('mobile-menu-open');
+            mobileMenu.classList.add('mobile-menu-closed');
+            mobileMenuButton.classList.remove('hide');
+        };
+
+        closeMenuButton.addEventListener('click', closeMobileMenu);
+        
+        // Ferme le menu quand on clique sur un lien
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu(); // Appelle directement la nouvelle fonction pour fermer le menu
+            });
+        });
+        
+        // Ferme le menu si l'utilisateur clique en dehors
+        mobileMenu.addEventListener('click', (event) => {
+            if (event.target === mobileMenu) {
+                closeMobileMenu();
+            }
         });
     </script>
 </body>
