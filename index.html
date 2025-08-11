@@ -36,11 +36,29 @@
 
         /* Style pour le fond d'écran de la section d'accueil avec assombrissement */
         .hero-bg {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1608470442565-a834f9773abe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            /* On ne met plus d'image de fond ici, on la met dans le pseudo-élément */
+            position: relative; /* Définit un contexte de positionnement pour le pseudo-élément */
+            overflow: hidden; /* Cache le débordement de l'image de fond qui se déplace */
+            min-height: 100vh; /* Pour que la section prenne bien toute la hauteur */
+        }
+        
+        /* Nouveau pseudo-élément pour l'effet de parallaxe */
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%; /* Plus grand que le conteneur pour permettre le mouvement */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1608469665871-a8b8dd3f483e?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            /* Utilisation d'une transformation 3D pour une animation fluide */
+            transform: translate3d(0, var(--parallax-y, 0), 0);
+            z-index: -1; /* Place l'image derrière le contenu */
+            /* La transition a été supprimée pour éliminer la latence */
         }
+        
         /* Style pour le dégradé des sections du bas */
         .dark-gradient-bg {
             background: radial-gradient(at top left, rgba(0, 78, 146, 0.1), transparent 70%),
@@ -321,11 +339,16 @@
             observer.observe(element);
         });
 
-        // Parallax effect for the hero section background
+        // Nouvel effet de parallaxe basé sur CSS transform pour une meilleure fluidité
+        // Gère le mouvement de l'image de fond dans le pseudo-élément ::before
         window.addEventListener('scroll', function() {
             const heroSection = document.getElementById('hero');
             const scrollPosition = window.pageYOffset;
-            heroSection.style.backgroundPositionY = -scrollPosition * 0.2 + 'px'; // Ajustez le 0.2 pour modifier l'intensité de l'effet
+            const parallaxValue = scrollPosition * 0.2;
+
+            // Met à jour la variable CSS --parallax-y pour que le pseudo-élément l'utilise
+            // L'effet est instantané car il n'y a plus de transition CSS
+            heroSection.style.setProperty('--parallax-y', parallaxValue + 'px');
         });
     </script>
 </body>
