@@ -86,7 +86,9 @@
         .nav-link:not(.active):hover {
             color: #ffffff;
         }
-        .nav-link.active::after, .nav-link:hover::after {
+        
+        /* Retrait de la barre de dégradé sous les liens */
+        .nav-link.active::after {
             content: '';
             position: absolute;
             bottom: -5px;
@@ -506,24 +508,9 @@
             position: relative;
         }
         
+        /* Retrait de la barre verticale du milieu */
         .modal-content-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 2px;
-            height: 80%;
-            background: linear-gradient(to bottom, #004e92, #f06292);
-            border-radius: 9999px;
-            opacity: 0.5;
             display: none;
-        }
-        
-        @media (min-width: 768px) {
-            .modal-content-wrapper::after {
-                display: block;
-            }
         }
         
         .modal-image-col {
@@ -947,16 +934,8 @@
             }
         });
 
-        // NOUVELLE LOGIQUE POUR L'ANIMATION DE L'IMAGE LORS DU SCROLL SUR MOBILE
-        modalTextCol.addEventListener('scroll', () => {
-            if (window.innerWidth < 768) {
-                const scrollPosition = modalTextCol.scrollTop;
-                const scrollHeight = modalTextCol.scrollHeight - modalTextCol.clientHeight;
-                const scrollRatio = scrollPosition / scrollHeight;
-                const shrinkFactor = 1 - Math.min(scrollRatio * 0.5, 0.5); // Réduit la taille jusqu'à 50%
-                modalImage.style.transform = `scale(${shrinkFactor})`;
-            }
-        });
+        // RETRAIT de la logique pour l'animation de l'image lors du scroll sur mobile
+        // La fonctionnalité est maintenant désactivée.
     </script>
 </body>
 </html>
