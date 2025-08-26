@@ -252,8 +252,8 @@
             content: '';
             position: absolute;
             bottom: -10px;
-            left: 50%; /* Centré */
-            transform: translateX(-50%); /* Centré */
+            left: 50%;
+            transform: translateX(-50%);
             width: 60%;
             height: 2px;
             background: linear-gradient(to right, #004e92, #f06292);
@@ -267,17 +267,32 @@
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
+        
+        /* Style pour les cartes des chiffres clés */
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px; /* Nouvelle valeur */
+            padding: 2.5rem 2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
 
-        /* Styles pour les compteurs animés */
+        /* Styles pour les nombres animés */
         .counter-number {
             font-weight: 800;
             transition: color 0.3s;
         }
-
+        
+        /* Style pour les cartes d'histoire */
         .key-date-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 32px; /* Nouvelle valeur */
             padding: 1.5rem;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
@@ -422,12 +437,43 @@
             </div>
         </section>
 
-        <!-- Section Vision & valeurs -->
+        <!-- Section Chiffres clés -->
+        <section id="chiffres" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Chiffres Clés</h2>
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Chiffre 1 -->
+                <div class="metric-card fade-in-on-scroll">
+                    <span id="counter-countries" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Pays</p>
+                    <p class="text-sm mt-1 text-gray-500">Notre présence mondiale sur quatre continents.</p>
+                </div>
+                <!-- Chiffre 2 -->
+                <div class="metric-card fade-in-on-scroll fade-in-delay-1">
+                    <span id="counter-aum" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Milliards USD AUM</p>
+                    <p class="text-sm mt-1 text-gray-500">Actifs sous gestion : la confiance de nos partenaires.</p>
+                </div>
+                <!-- Chiffre 3 -->
+                <div class="metric-card fade-in-on-scroll fade-in-delay-2">
+                    <span id="counter-poles" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Pôles Stratégiques</p>
+                    <p class="text-sm mt-1 text-gray-500">Le nombre de nos filiales et secteurs d'activité.</p>
+                </div>
+                <!-- Chiffre 4 -->
+                <div class="metric-card fade-in-on-scroll fade-in-delay-3">
+                    <span id="counter-valuation" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Milliards de Dollars</p>
+                    <p class="text-sm mt-1 text-gray-500">Notre valorisation boursière, preuve de notre solidité.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Notre Vision & Nos Valeurs -->
         <section id="valeurs" class="py-20 text-center">
             <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Notre Vision & Nos Valeurs</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
                 <!-- Bloc Excellence -->
-                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll">
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-[32px] text-center fade-in-on-scroll">
                     <div class="text-5xl text-blue-400 mb-4">
                         <i class="fas fa-gem"></i>
                     </div>
@@ -435,7 +481,7 @@
                     <p class="mt-2 text-gray-400">Nous repoussons les limites pour atteindre la perfection dans tout ce que nous entreprenons.</p>
                 </div>
                 <!-- Bloc Innovation -->
-                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll fade-in-delay-1">
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-[32px] text-center fade-in-on-scroll fade-in-delay-1">
                     <div class="text-5xl text-purple-400 mb-4">
                         <i class="fas fa-lightbulb"></i>
                     </div>
@@ -443,7 +489,7 @@
                     <p class="mt-2 text-gray-400">Nous créons l'avenir en investissant dans des idées audacieuses et des technologies de rupture.</p>
                 </div>
                 <!-- Bloc Prestige -->
-                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll fade-in-delay-2">
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-[32px] text-center fade-in-on-scroll fade-in-delay-2">
                     <div class="text-5xl text-rose-400 mb-4">
                         <i class="fas fa-star"></i>
                     </div>
@@ -451,7 +497,7 @@
                     <p class="mt-2 text-gray-400">Notre nom est synonyme de qualité et d'élégance, une marque de confiance mondiale.</p>
                 </div>
                 <!-- Bloc Influence -->
-                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll fade-in-delay-3">
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-[32px] text-center fade-in-on-scroll fade-in-delay-3">
                     <div class="text-5xl text-cyan-400 mb-4">
                         <i class="fas fa-handshake"></i>
                     </div>
@@ -461,39 +507,12 @@
             </div>
         </section>
 
-        <!-- Section Chiffres clés -->
-        <section id="chiffres" class="py-20 text-center">
-            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Chiffres Clés</h2>
-            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-                <!-- Année de création -->
-                <div class="fade-in-on-scroll">
-                    <span id="counter-year" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
-                    <p class="text-lg mt-2 text-gray-300">Année de Création</p>
-                </div>
-                <!-- IPO -->
-                <div class="fade-in-on-scroll fade-in-delay-1">
-                    <span id="counter-ipo" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
-                    <p class="text-lg mt-2 text-gray-300">IPO</p>
-                </div>
-                <!-- Valorisation boursière -->
-                <div class="fade-in-on-scroll fade-in-delay-2">
-                    <span id="counter-valuation" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
-                    <p class="text-lg mt-2 text-gray-300">Milliards $</p>
-                </div>
-                <!-- Pôles stratégiques -->
-                <div class="fade-in-on-scroll fade-in-delay-3">
-                    <span id="counter-poles" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
-                    <p class="text-lg mt-2 text-gray-300">Pôles Stratégiques</p>
-                </div>
-            </div>
-        </section>
-
         <!-- Section Leadership -->
         <section id="leadership" class="py-20">
             <div class="max-w-5xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
                 <div class="fade-in-on-scroll">
                     <!-- Portrait stylisé -->
-                    <img src="https://placehold.co/800x800/2d2c3b/ffffff?text=Portrait+d'Yves+Land" alt="Portrait stylisé de Yves Land, fondateur de BlackWood" class="w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                    <img src="https://placehold.co/800x800/2d2c3b/ffffff?text=Portrait+d'Yves+Land" alt="Portrait stylisé de Yves Land, fondateur de BlackWood" class="w-full h-auto rounded-[32px] shadow-2xl transform hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="fade-in-on-scroll fade-in-delay-1">
                     <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto md:mx-0">Notre Fondateur</h2>
@@ -587,10 +606,10 @@
                     }
                     
                     if (entry.target.id === 'chiffres' && !hasCounterAnimated) {
-                        animateCounter(document.getElementById('counter-year'), 2009);
-                        animateCounter(document.getElementById('counter-ipo'), 2011);
-                        animateCounter(document.getElementById('counter-valuation'), 45); // Valeur fictive
-                        animateCounter(document.getElementById('counter-poles'), 12); // Valeur fictive
+                        animateCounter(document.getElementById('counter-countries'), 32);
+                        animateCounter(document.getElementById('counter-aum'), 800);
+                        animateCounter(document.getElementById('counter-poles'), 9);
+                        animateCounter(document.getElementById('counter-valuation'), 195);
                         hasCounterAnimated = true;
                     }
                 }
