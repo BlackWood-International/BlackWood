@@ -87,38 +87,24 @@
             color: #ffffff;
         }
         
-        /* Retrait de la barre de dégradé sous les liens */
-        .nav-link.active::after {
+        /* Barres de dégradé sous les liens */
+        .nav-link::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 50%;
-            width: 100%;
+            transform: translateX(-50%);
+            width: 0;
             height: 2px;
             background: linear-gradient(to right, #004e92, #f06292);
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateX(-50%) scaleX(1);
-            border-radius: 9999px;
-        }
-        .nav-link:not(.active)::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, #004e92, #f06292);
-            opacity: 0;
-            transform: translateX(-50%) scaleX(0);
-            transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-radius: 9999px;
-        }
-        .nav-link:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) scaleX(1);
+            transition: width 0.3s ease-out;
         }
 
+        /* La barre est visible au survol et pour le lien actif */
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+       
         /* --- STYLES POUR LE MENU MOBILE --- */
         #main-nav {
             /* Garde la hauteur fixe pour le débordement sur les petits écrans */
@@ -407,29 +393,13 @@
         .modal-text-col {
             flex: 1 1 50%;
             padding: 2rem;
-            overflow-y: auto;
+            overflow-y: auto; /* Permet le défilement */
             position: relative;
         }
         
-        /* Bordure élégante entre les deux colonnes (visible sur les grands écrans) */
+        /* Retrait de la bordure élégante entre les deux colonnes (visible sur les grands écrans) */
         .modal-text-col::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            width: 2px;
-            height: 80%;
-            background: linear-gradient(to bottom, #004e92, #f06292);
-            border-radius: 9999px;
-            opacity: 0.5;
             display: none;
-        }
-        
-        @media (min-width: 768px) {
-            .modal-text-col::before {
-                display: block;
-            }
         }
         
         /* Titre de la modale */
@@ -513,24 +483,11 @@
             display: none;
         }
         
-        .modal-image-col {
-            overflow: hidden; /* Cache la partie de l'image qui sort */
-        }
-        
-        .modal-image-col img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            transition: transform 0.3s ease-out;
-        }
-        
-        /* Arrondis plus cohérents */
-        .modal-container {
-            border-radius: 2rem; /* 32px */
-        }
-        
-        .modal-image-col img {
-            border-radius: 1.5rem; /* 24px */
+        /* Cache l'image sur mobile */
+        @media (max-width: 767px) {
+            .modal-image-col {
+                display: none;
+            }
         }
         
     </style>
@@ -934,8 +891,6 @@
             }
         });
 
-        // RETRAIT de la logique pour l'animation de l'image lors du scroll sur mobile
-        // La fonctionnalité est maintenant désactivée.
     </script>
 </body>
 </html>
