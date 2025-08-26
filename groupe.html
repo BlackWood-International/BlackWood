@@ -500,6 +500,51 @@
             overflow-y: hidden;
             padding-right: var(--scrollbar-width, 0);
         }
+
+        /* NOUVEAUX STYLES POUR LA MODALE */
+        .modal-content-wrapper {
+            position: relative;
+        }
+        
+        .modal-content-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: 80%;
+            background: linear-gradient(to bottom, #004e92, #f06292);
+            border-radius: 9999px;
+            opacity: 0.5;
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .modal-content-wrapper::after {
+                display: block;
+            }
+        }
+        
+        .modal-image-col {
+            overflow: hidden; /* Cache la partie de l'image qui sort */
+        }
+        
+        .modal-image-col img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.3s ease-out;
+        }
+        
+        /* Arrondis plus cohérents */
+        .modal-container {
+            border-radius: 2rem; /* 32px */
+        }
+        
+        .modal-image-col img {
+            border-radius: 1.5rem; /* 24px */
+        }
         
     </style>
 </head>
@@ -752,7 +797,7 @@
             <div class="modal-content-wrapper">
                 <!-- Colonne de l'image -->
                 <div class="modal-image-col">
-                    <img src="https://i.imgur.com/JGb59yD.jpeg" alt="Vue détaillée du siège social de BlackWood International à Manhattan" class="w-full h-auto max-w-[400px]">
+                    <img id="modal-hq-image" src="https://i.imgur.com/JGb59yD.jpeg" alt="Vue détaillée du siège social de BlackWood International à Manhattan">
                 </div>
 
                 <!-- Colonne du texte -->
@@ -784,6 +829,8 @@
         const readMoreBtn = document.getElementById('read-more-btn');
         const modalCloseBtn = document.getElementById('modal-close-btn');
         const counterSection = document.getElementById('chiffres');
+        const modalImage = document.getElementById('modal-hq-image');
+        const modalTextCol = document.querySelector('.modal-text-col');
         let hasCounterAnimated = false;
 
         menuToggleButton.addEventListener('click', () => {
@@ -897,6 +944,17 @@
             if (e.target === modalOverlay) {
                 modalOverlay.classList.remove('is-visible');
                 document.body.classList.remove('modal-open');
+            }
+        });
+
+        // NOUVELLE LOGIQUE POUR L'ANIMATION DE L'IMAGE LORS DU SCROLL SUR MOBILE
+        modalTextCol.addEventListener('scroll', () => {
+            if (window.innerWidth < 768) {
+                const scrollPosition = modalTextCol.scrollTop;
+                const scrollHeight = modalTextCol.scrollHeight - modalTextCol.clientHeight;
+                const scrollRatio = scrollPosition / scrollHeight;
+                const shrinkFactor = 1 - Math.min(scrollRatio * 0.5, 0.5); // Réduit la taille jusqu'à 50%
+                modalImage.style.transform = `scale(${shrinkFactor})`;
             }
         });
     </script>
