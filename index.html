@@ -442,13 +442,20 @@
     <script>
         // Fonction pour gérer la classe 'active' des liens de navigation
         function setActiveLink() {
+            // Obtient le chemin de la page actuelle. Si le chemin est vide (racine), il est traité comme 'index.html'.
             const currentPath = window.location.pathname.split('/').pop() || 'index.html';
             const navLinks = document.querySelectorAll('.nav-link');
             
             navLinks.forEach(link => {
+                // Obtient le chemin du lien de navigation.
                 const linkPath = link.getAttribute('href').split('/').pop() || 'index.html';
 
-                if (linkPath === currentPath) {
+                // Condition pour déterminer si un lien doit être actif.
+                // Le lien d'accueil est actif si le chemin actuel est 'index.html' ou 'hero' (s'il s'agit d'un lien d'ancre)
+                // Les autres liens sont actifs si leur chemin correspond au chemin actuel de la page.
+                if (linkPath === 'hero' && (currentPath === 'index.html' || currentPath === '')) {
+                    link.classList.add('active');
+                } else if (linkPath !== 'hero' && linkPath === currentPath) {
                     link.classList.add('active');
                 } else {
                     link.classList.remove('active');
