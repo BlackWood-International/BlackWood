@@ -1,1 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Groupe BlackWood</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
+    
+    <!-- Balises Meta pour un meilleur affichage sur les réseaux sociaux (Open Graph) -->
+    <meta property="og:title" content="Le Groupe BlackWood International" />
+    <meta property="og:description" content="Découvrez notre histoire, nos valeurs et notre leadership. Excellence, Innovation, Influence." />
+    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://www.blackwood.com/groupe.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BlackWood" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="theme-color" content="#0d0a1b">
 
+    <!-- Chargement de Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Police d'écriture Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles personnalisés pour le design BlackWood */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0d0a1b;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Effet Liquid Glass pour l'arrière-plan */
+        .liquid-glass-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 78, 146, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%);
+            animation: liquid-flow 25s ease-in-out infinite;
+            background-size: 200% 200%;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Animation des dégradés pour l'effet Liquid Glass */
+        @keyframes liquid-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Effet de fondu en haut de l'écran */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 40; /* Sous la barre de navigation */
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+        }
+
+        /* Style pour les liens de navigation */
+        .nav-link {
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            display: inline-block;
+        }
+        .nav-link.active {
+            font-weight: 600;
+            transform: translateY(-3px);
+            color: #ffffff;
+        }
+        .nav-link:not(.active):hover {
+            color: #ffffff;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(-50%) scaleX(1);
+            border-radius: 9999px;
+        }
+        .nav-link:not(.active)::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            opacity: 0;
+            transform: translateX(-50%) scaleX(0);
+            transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 9999px;
+        }
+        .nav-link:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        /* --- STYLES POUR LE MENU MOBILE --- */
+        #main-nav {
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 56px; 
+            overflow: hidden;
+            border-radius: 32px;
+        }
+
+        #main-nav.is-expanded {
+            max-height: 450px; 
+        }
+        
+        .nav-content-top {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
+        }
+        
+        .logo-link,
+        .hamburger-button {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #main-nav.is-expanded .logo-link {
+            transform: translate(10px, 10px);
+        }
+
+        #main-nav.is-expanded .hamburger-button {
+            transform: translate(-10px, 10px);
+        }
+
+        .mobile-links {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out 0.2s;
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main-nav.is-expanded .mobile-links {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .hamburger-line {
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .hamburger.is-active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.is-active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.is-active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        
+        @media (min-width: 1024px) {
+            #main-nav.is-expanded {
+                max-height: 56px;
+            }
+            .hamburger.is-active .hamburger-line:nth-child(1) {
+                transform: none;
+            }
+            .hamburger.is-active .hamburger-line:nth-child(2) {
+                opacity: 1;
+                transform: none;
+            }
+            .hamburger.is-active .hamburger-line:nth-child(3) {
+                transform: none;
+            }
+        }
+
+        /* --- Effets d'animations au scroll (fade-in) --- */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Effet de fondu avec décalage */
+        .fade-in-delay-1 { transition-delay: 0.1s; }
+        .fade-in-delay-2 { transition-delay: 0.2s; }
+        .fade-in-delay-3 { transition-delay: 0.3s; }
+        .fade-in-delay-4 { transition-delay: 0.4s; }
+
+        /* Style pour les sections */
+        section {
+            padding: 80px 0;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Barres de séparation pour les titres */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%; /* Centré */
+            transform: translateX(-50%); /* Centré */
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+        }
+        
+        /* Conteneur de la frise chronologique */
+        .timeline {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Ligne horizontale pour la frise sur desktop */
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            display: none; /* Cache par défaut, affiché sur grand écran */
+        }
+        @media (min-width: 768px) {
+            .timeline-line {
+                display: block;
+            }
+            .timeline {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 20px;
+            width: 100%;
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            text-align: center;
+        }
+
+        .timeline-item.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Cercle de point de la frise */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            border-radius: 50%;
+            border: 2px solid #0d0a1b;
+            box-shadow: 0 0 10px rgba(0, 78, 146, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-item:hover::before {
+            transform: translateX(-50%) translateY(-50%) scale(1.4);
+        }
+
+        /* Ajustements pour mobile */
+        @media (max-width: 767px) {
+            .timeline {
+                padding-left: 30px;
+                border-left: 2px solid rgba(255, 255, 255, 0.1);
+            }
+            .timeline-item {
+                text-align: left;
+                padding-left: 20px;
+                padding-bottom: 60px;
+            }
+            .timeline-item::before {
+                top: 5px;
+                left: -18px;
+                transform: translateX(0);
+            }
+            .timeline-item:hover::before {
+                transform: scale(1.4);
+            }
+        }
+
+        /* Effet de survol sur les blocs de valeurs */
+        .values-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .values-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styles pour les compteurs animés */
+        .counter-number {
+            font-weight: 800;
+            transition: color 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-[#0d0a1b] text-white">
+
+    <!-- Effet de fond Liquid Glass -->
+    <div class="liquid-glass-bg"></div>
+
+    <!-- En-tête de navigation flottant -->
+    <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
+        <!-- La barre de navigation principale (la pilule) -->
+        <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
+            <!-- Contenu du haut de la barre de navigation (toujours visible) -->
+            <div class="nav-content-top px-4 lg:px-8 py-4">
+                <!-- Logo BlackWood -->
+                <a href="index.html" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">
+                    BlackWood
+                </a>
+                <!-- Menu de navigation pour PC -->
+                <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
+                    <li><a href="index.html" class="nav-link" data-path="index.html">Accueil</a></li>
+                    <li><a href="groupe.html" class="nav-link active" data-path="groupe.html">Le Groupe</a></li>
+                    <li><a href="filiales.html" class="nav-link" data-path="filiales.html">Nos Filiales</a></li>
+                    <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
+                    <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
+                </ul>
+                
+                <!-- Bouton hamburger pour mobile -->
+                <div class="lg:hidden flex items-center justify-end flex-grow">
+                    <button id="menu-toggle-button" class="hamburger-button text-white focus:outline-none z-[60]">
+                        <div class="hamburger">
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <!-- Conteneur pour les liens du menu mobile -->
+            <ul class="mobile-links lg:hidden text-white font-medium text-xl text-center space-y-3">
+                <li><a href="index.html" class="nav-link" data-path="index.html">Accueil</a></li>
+                <li><a href="groupe.html" class="nav-link active" data-path="groupe.html">Le Groupe</a></li>
+                <li><a href="filiales.html" class="nav-link" data-path="filiales.html">Nos Filiales</a></li>
+                <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
+                <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="min-h-screen pt-40 pb-20 flex flex-col items-center justify-center text-center relative overflow-hidden">
+            <div class="relative z-10 fade-in-on-scroll">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-xl">Le Groupe BlackWood</h1>
+                <p class="mt-4 md:mt-6 text-xl md:text-2xl lg:text-3xl font-light text-gray-200 fade-in-on-scroll fade-in-delay-1">Excellence, Innovation, Influence.</p>
+            </div>
+            <!-- Effet visuel abstrait en fond (lignes lumineuses) -->
+            <div class="absolute inset-0 z-0 opacity-20">
+                <svg viewBox="0 0 1440 810" class="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                    <path fill="none" stroke="url(#gradient-lines)" stroke-width="1.5" d="M0 0 C200 150, 400 -50, 720 100 S1240 350, 1440 200" transform="translate(0, 100) scale(1.2)" />
+                    <path fill="none" stroke="url(#gradient-lines)" stroke-width="1.5" d="M0 810 C200 660, 400 910, 720 760 S1240 510, 1440 660" transform="translate(0, -100) scale(1.2)" />
+                    <defs>
+                        <linearGradient id="gradient-lines" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color: #004e92; stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color: #f06292; stop-opacity:0.8" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Section Notre histoire (Frise Chronologique) -->
+        <section id="histoire" class="text-center py-20">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Notre Histoire</h2>
+            <div class="mt-16 timeline flex flex-col md:flex-row md:justify-around items-center relative">
+                <div class="timeline-line hidden md:block"></div>
+                <!-- Événement 2009 -->
+                <div class="timeline-item fade-in-on-scroll">
+                    <h3 class="text-2xl font-bold text-gray-200">2009</h3>
+                    <p class="mt-2 text-gray-400 max-w-xs md:max-w-none">Fondation de BlackWood Capital Investments, posant la première pierre de notre empire financier.</p>
+                </div>
+                <!-- Événement 2011 -->
+                <div class="timeline-item fade-in-on-scroll fade-in-delay-1">
+                    <h3 class="text-2xl font-bold text-gray-200">2011</h3>
+                    <p class="mt-2 text-gray-400 max-w-xs md:max-w-none">Réforme structurelle et introduction en bourse (IPO) qui marquent la naissance de BlackWood International.</p>
+                </div>
+                <!-- Événement 2013 -->
+                <div class="timeline-item fade-in-on-scroll fade-in-delay-2">
+                    <h3 class="text-2xl font-bold text-gray-200">2013</h3>
+                    <p class="mt-2 text-gray-400 max-w-xs md:max-w-none">Début de notre expansion agressive à travers des rachats stratégiques de technologies et de marques leaders.</p>
+                </div>
+                <!-- Événement 2015-2022 -->
+                <div class="timeline-item fade-in-on-scroll fade-in-delay-3">
+                    <h3 class="text-2xl font-bold text-gray-200">2015–2022</h3>
+                    <p class="mt-2 text-gray-400 max-w-xs md:max-w-none">Période de diversification et de consolidation intensive, transformant BlackWood en un empire global.</p>
+                </div>
+                <!-- Événement Aujourd'hui -->
+                <div class="timeline-item fade-in-on-scroll fade-in-delay-4">
+                    <h3 class="text-2xl font-bold text-gray-200">Aujourd'hui</h3>
+                    <p class="mt-2 text-gray-400 max-w-xs md:max-w-none">BlackWood est un groupe international d'influence mondiale, leader dans de multiples secteurs clés.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Vision & valeurs -->
+        <section id="valeurs" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Notre Vision & Nos Valeurs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+                <!-- Bloc Excellence -->
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll">
+                    <div class="text-5xl text-blue-400 mb-4">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Excellence</h3>
+                    <p class="mt-2 text-gray-400">Nous repoussons les limites pour atteindre la perfection dans tout ce que nous entreprenons.</p>
+                </div>
+                <!-- Bloc Innovation -->
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll fade-in-delay-1">
+                    <div class="text-5xl text-purple-400 mb-4">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Innovation</h3>
+                    <p class="mt-2 text-gray-400">Nous créons l'avenir en investissant dans des idées audacieuses et des technologies de rupture.</p>
+                </div>
+                <!-- Bloc Prestige -->
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll fade-in-delay-2">
+                    <div class="text-5xl text-rose-400 mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Prestige</h3>
+                    <p class="mt-2 text-gray-400">Notre nom est synonyme de qualité et d'élégance, une marque de confiance mondiale.</p>
+                </div>
+                <!-- Bloc Influence -->
+                <div class="values-card p-8 bg-white/5 border border-white/10 rounded-2xl text-center fade-in-on-scroll fade-in-delay-3">
+                    <div class="text-5xl text-cyan-400 mb-4">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Influence</h3>
+                    <p class="mt-2 text-gray-400">Nous façonnons les marchés et inspirons le changement à l'échelle internationale.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Chiffres clés -->
+        <section id="chiffres" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Chiffres Clés</h2>
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Année de création -->
+                <div class="fade-in-on-scroll">
+                    <span id="counter-year" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 text-gray-300">Année de Création</p>
+                </div>
+                <!-- IPO -->
+                <div class="fade-in-on-scroll fade-in-delay-1">
+                    <span id="counter-ipo" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 text-gray-300">IPO</p>
+                </div>
+                <!-- Valorisation boursière -->
+                <div class="fade-in-on-scroll fade-in-delay-2">
+                    <span id="counter-valuation" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 text-gray-300">Milliards $</p>
+                </div>
+                <!-- Pôles stratégiques -->
+                <div class="fade-in-on-scroll fade-in-delay-3">
+                    <span id="counter-poles" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 text-gray-300">Pôles Stratégiques</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Leadership -->
+        <section id="leadership" class="py-20">
+            <div class="max-w-5xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
+                <div class="fade-in-on-scroll">
+                    <!-- Portrait stylisé -->
+                    <img src="https://placehold.co/800x800/2d2c3b/ffffff?text=Portrait+d'Yves+Land" alt="Portrait stylisé de Yves Land, fondateur de BlackWood" class="w-full h-auto rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="fade-in-on-scroll fade-in-delay-1">
+                    <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto md:mx-0">Notre Fondateur</h2>
+                    <blockquote class="mt-8 text-xl lg:text-2xl font-light text-gray-300 italic border-l-4 border-white/20 pl-4">
+                        <p>“Créer un empire, c’est bâtir l’avenir.”</p>
+                        <cite class="block mt-4 text-gray-400 font-normal">- Yves Land</cite>
+                    </blockquote>
+                    <p class="mt-6 text-lg text-gray-400 leading-relaxed">
+                        Yves Land a fondé BlackWood Capital Investments en 2009 avec une vision audacieuse : construire un conglomérat sans précédent, alliant technologie de pointe et élégance intemporelle. Son leadership a transformé une simple société d'investissement en une force motrice de l'économie mondiale.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pied de page simple et élégant -->
+    <footer class="py-8 lg:py-12 bg-black/10 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p class="text-sm">
+                Copyright &copy; 2024 BlackWood International Corp. Tous droits réservés.
+            </p>
+            <p class="text-xs lg:text-sm mt-2 font-medium text-gray-300">Made with Precision by BlackWood Brand & Design</p>
+        </div>
+    </footer>
+
+    <script>
+        // Logique pour le menu de navigation mobile
+        const mainNav = document.getElementById('main-nav');
+        const menuToggleButton = document.getElementById('menu-toggle-button');
+        
+        menuToggleButton.addEventListener('click', () => {
+            mainNav.classList.toggle('is-expanded');
+            menuToggleButton.classList.toggle('is-active');
+        });
+
+        // Ferme le menu quand on clique sur un lien (sur les petits écrans)
+        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('is-expanded');
+                menuToggleButton.classList.remove('is-active');
+            });
+        });
+
+        // Logique pour marquer le lien actif en fonction de la page actuelle
+        const currentPath = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const linkPath = link.getAttribute('data-path');
+            if (linkPath === currentPath) {
+                link.classList.add('active'); 
+            }
+        });
+        
+        // Fonction pour animer les nombres
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const stepTime = 10;
+            const increment = Math.ceil(target / (duration / stepTime));
+
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = start;
+                    setTimeout(updateCounter, stepTime);
+                } else {
+                    element.textContent = target;
+                }
+            }
+            updateCounter();
+        }
+
+        // Utilisation de l'IntersectionObserver pour les animations au scroll
+        const faders = document.querySelectorAll('.fade-in-on-scroll');
+        const counterSection = document.getElementById('chiffres');
+        let hasCounterAnimated = false;
+
+        const observerOptions = {
+            root: null,
+            threshold: 0.2, // Déclenche quand 20% de l'élément est visible
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('fade-in-on-scroll')) {
+                        entry.target.classList.add('is-visible');
+                    }
+                    
+                    if (entry.target.id === 'chiffres' && !hasCounterAnimated) {
+                        animateCounter(document.getElementById('counter-year'), 2009);
+                        animateCounter(document.getElementById('counter-ipo'), 2011);
+                        animateCounter(document.getElementById('counter-valuation'), 45); // Valeur fictive
+                        animateCounter(document.getElementById('counter-poles'), 12); // Valeur fictive
+                        hasCounterAnimated = true;
+                    }
+                }
+            });
+        }, observerOptions);
+
+        faders.forEach(fader => {
+            observer.observe(fader);
+        });
+        
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        observer.observe(counterSection);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname.split('/').pop();
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-path') === path) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
