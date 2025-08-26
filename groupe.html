@@ -321,7 +321,7 @@
             background-position: right center;
         }
 
-        /* Styles pour la fenêtre modale */
+        /* Styles pour la fenêtre modale de l'histoire */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -365,6 +365,64 @@
             opacity: 1;
         }
 
+        /* NOUVEAU STYLE pour la modale de l'image */
+        .image-modal-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+        .image-modal-overlay.is-visible .image-modal-container {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .image-modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 32px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .image-modal-details {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .image-modal-details p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .image-modal-details .font-semibold {
+            color: #fff;
+            font-weight: 600;
+        }
+        .copy-btn {
+            background: linear-gradient(to right, #004e92, #f06292);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-size 0.5s ease;
+            background-size: 200% auto;
+        }
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 78, 146, 0.3), 0 4px 10px rgba(240, 98, 146, 0.3);
+            background-position: right center;
+        }
+        
+
         /* Bouton de fermeture de la modale */
         .modal-close-btn {
             position: absolute;
@@ -380,6 +438,12 @@
         .modal-close-btn:hover {
             color: #fff;
             transform: rotate(90deg);
+        }
+
+        /* Classe pour la correction du défilement */
+        .modal-open {
+            overflow-y: hidden;
+            padding-right: var(--scrollbar-width, 0);
         }
         
     </style>
@@ -550,12 +614,51 @@
             </div>
         </section>
 
+        <!-- Section Notre Vision & Nos Valeurs -->
+        <section id="valeurs" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Notre Vision & Nos Valeurs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+                <!-- Bloc Excellence -->
+                <div class="values-card p-8 text-center fade-in-on-scroll">
+                    <div class="text-5xl text-blue-400 mb-4">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Excellence</h3>
+                    <p class="mt-2 text-gray-400">Nous repoussons les limites pour atteindre la perfection dans tout ce que nous entreprenons.</p>
+                </div>
+                <!-- Bloc Innovation -->
+                <div class="values-card p-8 text-center fade-in-on-scroll fade-in-delay-1">
+                    <div class="text-5xl text-purple-400 mb-4">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Innovation</h3>
+                    <p class="mt-2 text-gray-400">Nous créons l'avenir en investissant dans des idées audacieuses et des technologies de rupture.</p>
+                </div>
+                <!-- Bloc Prestige -->
+                <div class="values-card p-8 text-center fade-in-on-scroll fade-in-delay-2">
+                    <div class="text-5xl text-rose-400 mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Prestige</h3>
+                    <p class="mt-2 text-gray-400">Notre nom est synonyme de qualité et d'élégance, une marque de confiance mondiale.</p>
+                </div>
+                <!-- Bloc Influence -->
+                <div class="values-card p-8 text-center fade-in-on-scroll fade-in-delay-3">
+                    <div class="text-5xl text-cyan-400 mb-4">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Influence</h3>
+                    <p class="mt-2 text-gray-400">Nous façonnons les marchés et inspirons le changement à l'échelle internationale.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Section Siège Social -->
         <section id="leadership" class="py-20">
             <div class="max-w-5xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
                 <div class="fade-in-on-scroll">
-                    <!-- Image du siège social -->
-                    <img src="https://i.imgur.com/JGb59yD.jpeg" alt="Vue détaillée du siège social de BlackWood International à Manhattan" class="w-full h-auto rounded-[32px] shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                    <!-- Image du siège social - Ajout d'une classe pour le curseur et un ID pour le JS -->
+                    <img id="hq-image" src="https://i.imgur.com/JGb59yD.jpeg" alt="Vue détaillée du siège social de BlackWood International à Manhattan" class="w-full h-auto rounded-[32px] shadow-2xl transform hover:scale-105 transition-transform duration-500 cursor-pointer">
                 </div>
                 <div class="fade-in-on-scroll fade-in-delay-1">
                     <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto md:mx-0">Notre Siège Social</h2>
@@ -582,7 +685,7 @@
         </div>
     </footer>
 
-    <!-- Fenêtre modale (cachée par défaut) -->
+    <!-- Fenêtre modale pour l'histoire (cachée par défaut) -->
     <div id="modal-overlay" class="modal-overlay">
         <div class="modal-container">
             <!-- Bouton de fermeture -->
@@ -602,6 +705,30 @@
         </div>
     </div>
 
+    <!-- NOUVELLE Fenêtre modale pour l'image (cachée par défaut) -->
+    <div id="image-modal-overlay" class="modal-overlay image-modal-overlay">
+        <div class="image-modal-container">
+            <!-- Bouton de fermeture -->
+            <button id="image-modal-close-btn" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="https://i.imgur.com/JGb59yD.jpeg" alt="Vue détaillée du siège social de BlackWood International à Manhattan" class="image-modal-image">
+            <div class="image-modal-details">
+                <h4 class="text-xl font-bold text-white mb-2">BlackWood Headquarters</h4>
+                <p><span class="font-semibold">Adresse:</span> <span id="hq-address">345 Madison Avenue, Manhattan, New York, NY 10017, United States</span></p>
+                <p><span class="font-semibold">Photographe:</span> Alex Harrison</p>
+                <p><span class="font-semibold">Date de la photo:</span> 12 juin 2024</p>
+                <button id="copy-address-btn" class="copy-btn mt-4 py-2 px-6 rounded-full text-white font-semibold">
+                    <i class="fas fa-copy mr-2"></i>Copier l'adresse
+                </button>
+                <!-- Message de confirmation de copie -->
+                <div id="copy-message" class="text-sm text-green-400 mt-2 opacity-0 transition-opacity duration-300">
+                    Adresse copiée !
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         // Logique pour le menu de navigation mobile
@@ -614,6 +741,12 @@
         const counterSection = document.getElementById('chiffres');
         let hasCounterAnimated = false;
 
+        // NOUVEAUX éléments pour la modale d'image
+        const hqImage = document.getElementById('hq-image');
+        const imageModalOverlay = document.getElementById('image-modal-overlay');
+        const imageModalCloseBtn = document.getElementById('image-modal-close-btn');
+        const copyAddressBtn = document.getElementById('copy-address-btn');
+        const copyMessage = document.getElementById('copy-message');
 
         menuToggleButton.addEventListener('click', () => {
             mainNav.classList.toggle('is-expanded');
@@ -691,7 +824,14 @@
         // On observe la section des chiffres pour déclencher l'animation
         observer.observe(counterSection);
 
+        // Cette fonction calcule et définit la largeur de la barre de défilement pour la compensation
+        function setScrollbarWidth() {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            setScrollbarWidth(); // Calcule une première fois au chargement de la page
             const path = window.location.pathname.split('/').pop();
             navLinks.forEach(link => {
                 if (link.getAttribute('data-path') === path) {
@@ -699,25 +839,67 @@
                 }
             });
         });
+        
+        // Gère le recalcul de la largeur en cas de redimensionnement de la fenêtre
+        window.addEventListener('resize', setScrollbarWidth);
 
-        // Logique pour ouvrir et fermer la fenêtre modale
+        // Logique pour ouvrir et fermer la fenêtre modale de l'histoire
         readMoreBtn.addEventListener('click', () => {
             modalOverlay.classList.add('is-visible');
-            document.body.style.overflow = 'hidden'; // Empêche le scroll du body
+            document.body.classList.add('modal-open');
         });
         
         modalCloseBtn.addEventListener('click', () => {
             modalOverlay.classList.remove('is-visible');
-            document.body.style.overflow = 'auto'; // Réactive le scroll du body
+            document.body.classList.remove('modal-open');
         });
         
         // Fermer la modale en cliquant en dehors
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
                 modalOverlay.classList.remove('is-visible');
-                document.body.style.overflow = 'auto';
+                document.body.classList.remove('modal-open');
             }
         });
+
+        // Logique pour ouvrir et fermer la NOUVELLE modale de l'image
+        hqImage.addEventListener('click', () => {
+            imageModalOverlay.classList.add('is-visible');
+            document.body.classList.add('modal-open');
+        });
+
+        imageModalCloseBtn.addEventListener('click', () => {
+            imageModalOverlay.classList.remove('is-visible');
+            document.body.classList.remove('modal-open');
+        });
+
+        // Fermer la modale de l'image en cliquant en dehors
+        imageModalOverlay.addEventListener('click', (e) => {
+            if (e.target === imageModalOverlay) {
+                imageModalOverlay.classList.remove('is-visible');
+                document.body.classList.remove('modal-open');
+            }
+        });
+
+        // Logique pour copier l'adresse au presse-papiers
+        copyAddressBtn.addEventListener('click', () => {
+            const address = document.getElementById('hq-address').textContent;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = address;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            // Afficher le message de confirmation
+            copyMessage.classList.remove('opacity-0');
+            copyMessage.classList.add('opacity-100');
+            setTimeout(() => {
+                copyMessage.classList.remove('opacity-100');
+                copyMessage.classList.add('opacity-0');
+            }, 2000);
+        });
+
     </script>
 </body>
 </html>
