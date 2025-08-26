@@ -258,28 +258,48 @@
             height: 2px;
             background: linear-gradient(to right, #004e92, #f06292);
         }
-
-        /* Effet de survol sur les blocs de valeurs */
-        .values-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
+        /* Style pour les cartes d'histoire */
+        .key-date-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
-        .values-card:hover {
-            transform: translateY(-10px);
+        .key-date-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.08);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
-        
+
         /* Style pour les cartes des chiffres clés */
         .metric-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 32px; /* Nouvelle valeur */
+            border-radius: 32px;
             padding: 2.5rem 2rem;
-            transition: transform 0.3s ease, background-color 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
         .metric-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px);
             background-color: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style pour les cartes des valeurs */
+        .values-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .values-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         /* Styles pour les nombres animés */
@@ -288,18 +308,6 @@
             transition: color 0.3s;
         }
         
-        /* Style pour les cartes d'histoire */
-        .key-date-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 32px; /* Nouvelle valeur */
-            padding: 1.5rem;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .key-date-card:hover {
-            transform: scale(1.02);
-            background-color: rgba(255, 255, 255, 0.08);
-        }
     </style>
 </head>
 <body class="bg-[#0d0a1b] text-white">
