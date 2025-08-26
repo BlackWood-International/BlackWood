@@ -95,6 +95,11 @@
         .nav-link.active {
             font-weight: 600;
             transform: translateY(-3px);
+            color: #ffffff;
+        }
+        /* Style pour le survol d'un lien inactif */
+        .nav-link:not(.active):hover {
+            color: #ffffff;
         }
         /* Animation de la barre sous le lien actif ou survolé */
         .nav-link.active::after, .nav-link:hover::after {
@@ -108,6 +113,7 @@
             opacity: 1;
             transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             transform: translateX(-50%) scaleX(1);
+            border-radius: 9999px; /* Bords arrondis */
         }
         .nav-link:not(.active)::after {
             content: '';
@@ -120,6 +126,7 @@
             opacity: 0;
             transform: translateX(-50%) scaleX(0);
             transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 9999px; /* Bords arrondis */
         }
         .nav-link:hover::after {
             opacity: 1;
@@ -329,7 +336,7 @@
                 <!-- Menu de navigation pour PC -->
                 <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
                     <!-- Le lien "Accueil" est forcé d'être actif et a une couleur plus claire -->
-                    <li><a href="index.html" class="nav-link active text-white">Accueil</a></li>
+                    <li><a href="index.html" class="nav-link active">Accueil</a></li>
                     <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
                     <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
                     <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
@@ -350,7 +357,7 @@
             <!-- Conteneur pour les liens du menu mobile -->
             <ul class="mobile-links lg:hidden text-white font-medium text-xl text-center space-y-3">
                 <!-- Le lien "Accueil" est forcé d'être actif et a une couleur plus claire -->
-                <li><a href="index.html" class="nav-link active text-white" data-path="index.html">Accueil</a></li>
+                <li><a href="index.html" class="nav-link active" data-path="index.html">Accueil</a></li>
                 <li><a href="groupe.html" class="nav-link" data-path="groupe.html">Le Groupe</a></li>
                 <li><a href="filiales.html" class="nav-link" data-path="filiales.html">Nos Filiales</a></li>
                 <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
