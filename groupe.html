@@ -472,23 +472,6 @@
             overflow-y: hidden;
             padding-right: var(--scrollbar-width, 0);
         }
-
-        /* NOUVEAUX STYLES POUR LA MODALE */
-        .modal-content-wrapper {
-            position: relative;
-        }
-        
-        /* Retrait de la barre verticale du milieu */
-        .modal-content-wrapper::after {
-            display: none;
-        }
-        
-        /* Cache l'image sur mobile */
-        @media (max-width: 767px) {
-            .modal-image-col {
-                display: none;
-            }
-        }
         
     </style>
 </head>
@@ -737,15 +720,10 @@
                 <i class="fas fa-times"></i>
             </button>
             
-            <!-- Conteneur à deux colonnes pour le contenu de la modale -->
-            <div class="modal-content-wrapper">
-                <!-- Colonne de l'image -->
-                <div class="modal-image-col">
-                    <img id="modal-hq-image" src="https://i.imgur.com/JGb59yD.jpeg" alt="Vue détaillée du siège social de BlackWood International à Manhattan">
-                </div>
-
+            <!-- Conteneur pour le contenu de la modale -->
+            <div class="modal-content-wrapper p-8">
                 <!-- Colonne du texte -->
-                <div class="modal-text-col">
+                <div class="modal-text-col w-full">
                     <h3 class="text-white">Histoire Complète du Siège Social</h3>
                     <p class="text-gray-400">
                         L’immeuble, construit dans les années 1920, abritait à l’origine l’un des plus grands sièges bancaires de Wall Street. Son architecture néo-classique, ses colonnes imposantes et son marbre d’origine en faisaient déjà un symbole de pouvoir financier.
@@ -773,8 +751,6 @@
         const readMoreBtn = document.getElementById('read-more-btn');
         const modalCloseBtn = document.getElementById('modal-close-btn');
         const counterSection = document.getElementById('chiffres');
-        const modalImage = document.getElementById('modal-hq-image');
-        const modalTextCol = document.querySelector('.modal-text-col');
         let hasCounterAnimated = false;
 
         menuToggleButton.addEventListener('click', () => {
