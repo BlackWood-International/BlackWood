@@ -473,6 +473,120 @@
             padding-right: var(--scrollbar-width, 0);
         }
         
+        /* --- Styles pour le carrousel --- */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .carousel-slide {
+            width: 100%;
+            flex-shrink: 0;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+        }
+        
+        /* Flèches de navigation (initialement cachées) */
+        .arrow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* NOUVEAU STYLE pour le cercle arrière-plan des flèches */
+        .arrow-btn-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.4);
+            transition: background-color 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* NOUVEAU STYLE pour l'icône SVG de la flèche */
+        .arrow-btn svg {
+            position: relative;
+            z-index: 2; /* S'assure que l'icône est au-dessus du cercle */
+            color: white;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Les flèches et leur cercle apparaissent au survol du conteneur du carrousel */
+        .carousel-container:hover .arrow-btn {
+            opacity: 1;
+        }
+        
+        .arrow-btn:hover .arrow-btn-circle {
+             background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .arrow-btn.prev-btn { left: 1rem; }
+        .arrow-btn.next-btn { right: 1rem; }
+        
+        /* Styles pour les indicateurs de navigation (points) */
+        .carousel-nav-dots {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 15;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .dot.active {
+            background-color: white;
+        }
+
+        /* Styles de l'image de fond */
+        .hero-background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center 30%; /* Ajuste la position verticale pour un meilleur cadrage */
+            filter: grayscale(80%) brightness(50%);
+            z-index: 0;
+        }
     </style>
 </head>
 <body class="bg-[#0d0a1b] text-white">
@@ -524,22 +638,12 @@
     <main>
         <!-- Section d'accueil (Hero) -->
         <section class="min-h-[50vh] flex flex-col items-center justify-center text-center relative overflow-hidden pt-32 pb-16">
+            <!-- Image de fond -->
+            <div class="hero-background-image"></div>
+            
             <div class="relative z-10 fade-in-on-scroll">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-xl">BlackWood International</h1>
                 <p class="mt-2 md:mt-4 text-lg md:text-xl font-light text-gray-200 fade-in-on-scroll fade-in-delay-1">Excellence, Innovation, Influence.</p>
-            </div>
-            <!-- Effet visuel abstrait en fond (lignes lumineuses) -->
-            <div class="absolute inset-0 z-0 opacity-20">
-                <svg viewBox="0 0 1440 810" class="w-full h-full" preserveAspectRatio="xMidYMid slice">
-                    <path fill="none" stroke="url(#gradient-lines)" stroke-width="1.5" d="M0 0 C200 150, 400 -50, 720 100 S1240 350, 1440 200" transform="translate(0, 100) scale(1.2)" />
-                    <path fill="none" stroke="url(#gradient-lines)" stroke-width="1.5" d="M0 810 C200 660, 400 910, 720 760 S1240 510, 1440 660" transform="translate(0, -100) scale(1.2)" />
-                    <defs>
-                        <linearGradient id="gradient-lines" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color: #004e92; stop-opacity:0.8" />
-                            <stop offset="100%" style="stop-color: #f06292; stop-opacity:0.8" />
-                        </linearGradient>
-                    </defs>
-                </svg>
             </div>
         </section>
 
@@ -547,8 +651,37 @@
         <section id="leadership" class="py-20">
             <div class="max-w-5xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
                 <div class="fade-in-on-scroll">
-                    <!-- Image du siège social -->
-                    <img id="hq-image" src="https://i.imgur.com/raegV41.png" alt="Vue détaillée du siège social de BlackWood International à Manhattan" class="w-full h-auto rounded-[32px] shadow-2xl transform transition-transform duration-500">
+                    <!-- Carrousel d'images du siège social -->
+                    <div id="image-carousel" class="carousel-container">
+                        <div class="carousel-track">
+                            <div class="carousel-slide">
+                                <img src="https://i.imgur.com/raegV41.png" alt="Vue détaillée du siège social de BlackWood International à Manhattan (Jour)">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://i.imgur.com/hLI1M19.png" alt="Vue détaillée du siège social de BlackWood International à Manhattan (Nuit)">
+                            </div>
+                        </div>
+                        
+                        <!-- Flèches de navigation -->
+                        <button class="arrow-btn prev-btn" id="prev-btn">
+                            <span class="arrow-btn-circle"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button class="arrow-btn next-btn" id="next-btn">
+                            <span class="arrow-btn-circle"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Indicateurs de navigation (points) -->
+                        <div id="carousel-dots" class="carousel-nav-dots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="fade-in-on-scroll fade-in-delay-1">
                     <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto md:mx-0">Notre Siège Social</h2>
@@ -867,6 +1000,55 @@
             }
         });
 
+        // Logique du carrousel
+        const carousel = document.getElementById('image-carousel');
+        const track = carousel.querySelector('.carousel-track');
+        const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const dotsContainer = document.getElementById('carousel-dots');
+        const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+
+        let currentIndex = 0;
+
+        function updateCarousel(direction) {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            
+            // La transition s'applique au glissement
+            track.style.transition = `transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            
+            const newTransform = `translateX(-${currentIndex * slideWidth}px)`;
+            track.style.transform = newTransform;
+            
+            // Mettre à jour les points de navigation
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+        
+        // Gérer le clic sur la flèche précédente
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateCarousel('prev');
+        });
+
+        // Gérer le clic sur la flèche suivante
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel('next');
+        });
+        
+        // Gérer le clic sur les points de navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+        
+        // Initialisation du carrousel
+        window.addEventListener('resize', () => updateCarousel());
+        updateCarousel(); // Initialisation au chargement de la page
     </script>
 </body>
 </html>
