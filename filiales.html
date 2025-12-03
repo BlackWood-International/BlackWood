@@ -1,228 +1,497 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackWood - Nos Filiales</title>
-    
+    <title>Nos Filiales - BlackWood International</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
+
+    <!-- Balises Meta Open Graph -->
+    <meta property="og:title" content="Nos Filiales - BlackWood International" />
+    <meta property="og:description" content="Découvrez l'écosystème BlackWood : Finance, Technologie, Automobile, Défense et plus encore." />
+    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood+Filiales" />
+    <meta property="og:url" content="https://www.blackwood.com/filiales.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BlackWood" />
+    <meta name="theme-color" content="#0d0a1b">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Montserrat -->
+    <!-- Police Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS & Configuration for Tailwind -->
-    <style>
-        @tailwind base;
-        @tailwind components;
-        @tailwind utilities;
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* Applying custom font and DARK MODE colors */
+    <style>
+        /* --- Base & Reset --- */
         body {
             font-family: 'Montserrat', sans-serif;
-            color: #E0E0E0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-osx-font-smoothing: grayscale;
-            overflow-y: scroll; /* Force vertical scrollbar to always be visible */
-        }
-
-        .font-bold { font-weight: 700; }
-        .font-regular { font-weight: 400; }
-        
-        /* Animated Liquid Gradient for Accents and now for body background */
-        .gradient-accent {
-            /* Couleurs beaucoup plus sombres et discrètes */
-            background: linear-gradient(-45deg, #1A1220, #121020, #20121A, #102020, #201A12); /* Encore plus sombre */
-            background-size: 300% 300%;
-            animation: gradient 45s ease infinite; /* Animation encore plus lente */
-        }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* Hero Button Hover Effect */
-        .hero-button:hover {
-            transform: scale(1.05);
-            background-position: 100% 50%; /* Shift background for subtle animation */
-            transition: all 0.4s ease-out, background-position 0.8s ease; 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Remis l'ombre */
-        }
-
-        /* BlackWood title color */
-        .blackwood-title {
-            color: #FFFFFF;
-        }
-
-        /* Glassmorphism effect for the navbar and form */
-        .glass-effect {
-            background: rgba(18, 18, 18, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            transition: background-color 0.3s ease, backdrop-filter 0.3s ease; 
-        }
-        
-        /* Nav link hover effect */
-        .nav-link {
+            background-color: #0d0a1b;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
             position: relative;
-            transition: color 0.3s ease;
-            color: #a0a0a0;
+            color: white;
         }
-        .nav-link:hover { color: #FFFFFF; }
+
+        /* --- Arrière-plan animé (Liquid Glass) --- */
+        .liquid-glass-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 78, 146, 0.08) 0%, rgba(240, 98, 146, 0.08) 100%);
+            background-size: 200% 200%;
+            animation: liquid-pulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes liquid-pulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Dégradé supérieur pour l'en-tête */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 40;
+            pointer-events: none;
+            background: linear-gradient(to bottom, #0d0a1b 10%, rgba(13, 10, 27, 0));
+        }
+
+        /* --- Navigation (Style identique) --- */
+        .nav-link {
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            display: inline-block;
+        }
+        .nav-link.active {
+            font-weight: 600;
+            transform: translateY(-3px);
+            color: #ffffff;
+        }
+        .nav-link:not(.active):hover {
+            color: #ffffff;
+        }
         .nav-link::after {
             content: '';
             position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
+            bottom: -5px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(90deg, #a855f7, #4f46e5);
-            transition: width 0.3s ease;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            transition: width 0.3s ease-out;
         }
-        .nav-link:hover::after { width: 100%; }
-        .nav-link.active { color: #FFFFFF; font-weight: 700; }
-        .nav-link.active::after { width: 50%; }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
 
-        /* Scroll-triggered animations */
-        .fade-in-section {
+        /* Menu Mobile */
+        #main-nav {
+            max-height: 56px;
+            overflow: hidden;
+            border-radius: 32px;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #main-nav.is-expanded {
+            max-height: 450px;
+        }
+        .nav-content-top {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
+        }
+        .logo-link, .hamburger-button {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #main-nav.is-expanded .logo-link { transform: translate(10px, 10px); }
+        #main-nav.is-expanded .hamburger-button { transform: translate(-10px, 10px); }
+        
+        .mobile-links {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out 0.2s;
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #main-nav.is-expanded .mobile-links {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Hamburger Icon */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .hamburger-line {
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+        .hamburger.is-active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        @media (min-width: 1024px) {
+            #main-nav.is-expanded { max-height: 56px; }
+            .hamburger.is-active .hamburger-line:nth-child(1) { transform: none; }
+            .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 1; transform: none; }
+            .hamburger.is-active .hamburger-line:nth-child(3) { transform: none; }
+        }
+
+        /* --- Animations Scroll --- */
+        .fade-in-on-scroll {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        .fade-in-section.is-visible {
+        .fade-in-on-scroll.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
 
-        /* Form input base and focus effect */
-        .form-input, .form-textarea {
-            /* Ajout d'une transition explicite pour la bordure et l'ombre */
-            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
-        }
-        .form-input:focus, .form-textarea:focus {
-            outline: none;
-            /* Changement subtil de la couleur de la bordure vers un violet foncé */
-            border-color: #a855f7; 
-            /* Ombre plus grande et diffusée avec une lueur violette et une ombre interne sombre pour la profondeur */
-            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.4), inset 0 0 8px rgba(0, 0, 0, 0.4); 
-        }
-
-        /* Loading spinner */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #fff;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* --- Styles Spécifiques Filiales --- */
+        
+        /* Titre de section */
+        .section-header-line {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            margin: 1.5rem auto;
+            border-radius: 2px;
         }
 
-        /* Message box styles (not directly used on this page, but kept for consistency if copied) */
-        .message-box {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            color: white;
-            font-weight: bold;
-            z-index: 1000;
+        /* Carte Filiale */
+        .subsidiary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Effet de brillance au survol */
+        .subsidiary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 40%);
             opacity: 0;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: opacity 0.4s ease;
         }
-        .message-box.show {
+
+        .subsidiary-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .subsidiary-card:hover::before {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
         }
-        .message-box.success { background-color: #28a745; } /* Green */
-        .message-box.error { background-color: #dc3545; }   /* Red */
+
+        /* Icône de la filiale */
+        .card-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+        }
+
+        /* Couleurs dynamiques des icônes au survol */
+        .subsidiary-card:hover .card-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            background: white;
+        }
+
+        /* Gradients spécifiques pour les icônes au survol */
+        .group-finance:hover .card-icon-wrapper i { background: linear-gradient(135deg, #FFD700, #DAA520); -webkit-background-clip: text; color: transparent; }
+        .group-tech:hover .card-icon-wrapper i { background: linear-gradient(135deg, #00d2ff, #3a7bd5); -webkit-background-clip: text; color: transparent; }
+        .group-auto:hover .card-icon-wrapper i { background: linear-gradient(135deg, #ff416c, #ff4b2b); -webkit-background-clip: text; color: transparent; }
+        .group-design:hover .card-icon-wrapper i { background: linear-gradient(135deg, #833ab4, #fd1d1d); -webkit-background-clip: text; color: transparent; }
+        .group-events:hover .card-icon-wrapper i { background: linear-gradient(135deg, #FDC830, #F37335); -webkit-background-clip: text; color: transparent; }
+        .group-logistics:hover .card-icon-wrapper i { background: linear-gradient(135deg, #11998e, #38ef7d); -webkit-background-clip: text; color: transparent; }
+        .group-racing:hover .card-icon-wrapper i { background: linear-gradient(135deg, #000000, #434343); -webkit-background-clip: text; color: transparent; } /* Exception pour noir sur fond blanc */
+        .group-defense:hover .card-icon-wrapper i { background: linear-gradient(135deg, #2C3E50, #4CA1AF); -webkit-background-clip: text; color: transparent; }
+        .group-photo:hover .card-icon-wrapper i { background: linear-gradient(135deg, #cc2b5e, #753a88); -webkit-background-clip: text; color: transparent; }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: white;
+            transition: color 0.3s ease;
+        }
+        
+        .card-description {
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: #9ca3af;
+        }
+
+        .subsidiary-card:hover .card-title {
+            color: #f06292; /* Teinte rose du logo */
+        }
     </style>
 </head>
-<body class="scroll-smooth gradient-accent">
+<body class="bg-[#0d0a1b]">
 
-    <!-- Message Box Element (not used on this page, but kept for consistency) -->
-    <div id="messageBox" class="message-box"></div>
+    <!-- Fond animé -->
+    <div class="liquid-glass-bg"></div>
 
-    <header class="fixed top-0 left-0 w-full z-50 glass-effect">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-xl md:text-2xl font-bold text-white">BlackWood</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="nav-link">Accueil</a>
-                <a href="groupe.html" class="nav-link">Le Groupe</a>
-                <a href="filiales.html" class="nav-link active">Nos Filiales</a> <!-- 'active' class for this page -->
-                <a href="monde.html" class="nav-link">Présence Mondiale</a>
-                <a href="land.html" class="nav-link">À propos d’Yves Land</a>
-                <a href="contact.html" class="nav-link">Contact</a>
+    <!-- En-tête de navigation flottant -->
+    <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
+        <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
+            <div class="nav-content-top px-4 lg:px-8 py-4">
+                <a href="index.html" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">
+                    BlackWood
+                </a>
+                <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
+                    <li><a href="index.html" class="nav-link" data-path="index.html">Accueil</a></li>
+                    <li><a href="groupe.html" class="nav-link" data-path="groupe.html">Le Groupe</a></li>
+                    <li><a href="filiales.html" class="nav-link active" data-path="filiales.html">Nos Filiales</a></li>
+                    <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
+                    <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
+                </ul>
+                <div class="lg:hidden flex items-center justify-end flex-grow">
+                    <button id="menu-toggle-button" class="hamburger-button text-white focus:outline-none z-[60]">
+                        <div class="hamburger">
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                        </div>
+                    </button>
+                </div>
             </div>
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
+            <ul class="mobile-links lg:hidden text-white font-medium text-xl text-center space-y-3">
+                <li><a href="index.html" class="nav-link" data-path="index.html">Accueil</a></li>
+                <li><a href="groupe.html" class="nav-link" data-path="groupe.html">Le Groupe</a></li>
+                <li><a href="filiales.html" class="nav-link active" data-path="filiales.html">Nos Filiales</a></li>
+                <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
+                <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
+            </ul>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-[#121212]/95 backdrop-blur-md py-4">
-            <a href="index.html" class="block text-center py-2 text-sm font-bold text-white">Accueil</a>
-            <a href="groupe.html" class="block text-center py-2 text-sm text-gray-300">Le Groupe</a>
-            <a href="filiales.html" class="block text-center py-2 text-sm text-gray-300 font-bold">Nos Filiales</a>
-            <a href="monde.html" class="block text-center py-2 text-sm text-gray-300">Présence Mondiale</a>
-            <a href="land.html" class="block text-center py-2 text-sm text-gray-300">À propos d’Yves Land</a>
-            <a href="contact.html" class="block text-center py-2 text-sm text-gray-300">Contact</a>
-        </div>
     </header>
 
-    <main class="min-h-screen flex items-center justify-center py-20 md:py-32">
-        <section class="container mx-auto px-6 fade-in-section">
-            <h1 class="text-4xl md:text-5xl font-bold text-center mb-12 text-white">Nos Filiales</h1>
-            <p class="max-w-3xl mx-auto text-center text-base md:text-lg font-regular text-gray-400 leading-relaxed mb-12">
-                Découvrez les entités qui composent le groupe BlackWood et leur rôle stratégique dans nos secteurs d'activité.
+    <main class="pt-32 pb-20">
+        <!-- Section Hero Simplifiée -->
+        <section class="text-center px-4 max-w-4xl mx-auto mb-16 fade-in-on-scroll">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                Nos Filiales
+            </h1>
+            <div class="section-header-line"></div>
+            <p class="text-lg md:text-xl text-gray-300 font-light">
+                Un écosystème diversifié, uni par la même exigence d'innovation et de contrôle. Découvrez les piliers qui soutiennent l'empire BlackWood.
             </p>
-            <!-- Le contenu spécifique aux filiales sera ajouté ici -->
+        </section>
+
+        <!-- Grille des Filiales -->
+        <section class="max-w-7xl mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                
+                <!-- 1. BlackWood Capital Investments Inc. -->
+                <div class="subsidiary-card group-finance fade-in-on-scroll">
+                    <div class="card-icon-wrapper text-yellow-400">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Capital Investments</h3>
+                    <p class="card-description">
+                        Filiale financière et pilier historique. Gestion d’actifs institutionnels, fonds d’investissement et stratégies globales de capital allocation. Centre de profit majeur du groupe.
+                    </p>
+                </div>
+
+                <!-- 2. BlackWood Technologies Inc. -->
+                <div class="subsidiary-card group-tech fade-in-on-scroll delay-100">
+                    <div class="card-icon-wrapper text-blue-400">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Technologies</h3>
+                    <p class="card-description">
+                        Acteur global de la tech : développement logiciel, IA, cybersécurité et hardware avancé. Pionnier en R&D quantique et fabricant de ses propres appareils.
+                    </p>
+                </div>
+
+                <!-- 3. BlackWood Royal Motors Corp. -->
+                <div class="subsidiary-card group-auto fade-in-on-scroll delay-200">
+                    <div class="card-icon-wrapper text-red-400">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Royal Motors</h3>
+                    <p class="card-description">
+                        Division automobile de prestige. Conception et ingénierie de véhicules premium, héritière d’une marque britannique historique. Gestion intégrée des concessions.
+                    </p>
+                </div>
+
+                <!-- 4. BlackWood Defense Systems Corp. -->
+                <div class="subsidiary-card group-defense fade-in-on-scroll">
+                    <div class="card-icon-wrapper text-gray-400">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Defense Systems</h3>
+                    <p class="card-description">
+                        Branche défense stratégique. Développement de technologies militaires, systèmes de sécurité avancés et ingénierie pour les gouvernements alliés.
+                    </p>
+                </div>
+
+                <!-- 5. BlackWood Brand & Design Ltd. -->
+                <div class="subsidiary-card group-design fade-in-on-scroll delay-100">
+                    <div class="card-icon-wrapper text-purple-400">
+                        <i class="fas fa-pen-nib"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Brand & Design</h3>
+                    <p class="card-description">
+                        Agence interne de design et d’identité visuelle. Création graphique, branding et conceptions créatives pour le groupe et une clientèle externe exclusive.
+                    </p>
+                </div>
+
+                <!-- 6. BlackWood Events Ltd. -->
+                <div class="subsidiary-card group-events fade-in-on-scroll delay-200">
+                    <div class="card-icon-wrapper text-orange-400">
+                        <i class="fas fa-champagne-glasses"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Events</h3>
+                    <p class="card-description">
+                        Organisation d’événements premium : salons internationaux, conférences, lancements produits et expériences immersives inoubliables.
+                    </p>
+                </div>
+
+                <!-- 7. BlackWood Logistics Corp. -->
+                <div class="subsidiary-card group-logistics fade-in-on-scroll">
+                    <div class="card-icon-wrapper text-emerald-400">
+                        <i class="fas fa-truck-fast"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Logistics</h3>
+                    <p class="card-description">
+                        Expertise en chaînes d’approvisionnement, fret et distribution mondiale. Un opérateur de services commerciaux né de nos exigences internes.
+                    </p>
+                </div>
+
+                <!-- 8. BlackWood Racing Team Inc. -->
+                <div class="subsidiary-card group-racing fade-in-on-scroll delay-100">
+                    <div class="card-icon-wrapper text-white">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Racing Team</h3>
+                    <p class="card-description">
+                        Écurie de sport automobile de haut niveau (ex-F1). Gestion des programmes de compétition et laboratoire de R&D pour la performance mécanique.
+                    </p>
+                </div>
+
+                <!-- 9. BlackWood Photography Ltd. -->
+                <div class="subsidiary-card group-photo fade-in-on-scroll delay-200">
+                    <div class="card-icon-wrapper text-pink-400">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="card-title">BlackWood Photography</h3>
+                    <p class="card-description">
+                        Studio photo et audiovisuel de pointe. Production d’images, shoots professionnels et création de contenus visuels haute définition.
+                    </p>
+                </div>
+
+            </div>
         </section>
     </main>
 
-    <footer class="bg-[#1C1C1C] text-gray-400 py-12">
-        <div class="container mx-auto px-6 text-center">
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="groupe.html" class="text-sm hover:text-white transition">Le Groupe</a>
-                <a href="filiales.html" class="text-sm hover:text-white transition">Filiales</a>
-                <a href="monde.html" class="text-sm hover:text-white transition">Monde</a>
-                <a href="index.html" class="text-sm hover:text-white transition">Accueil</a>
-            </div>
-            <p class="text-xs text-gray-500">
-                Site conçu par BlackWood Brand & Design – All rights reserved. © 2024 BlackWood.
+    <!-- Pied de page -->
+    <footer class="py-8 lg:py-12 bg-black/10 backdrop-blur-xl border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p class="text-sm">
+                Copyright &copy; 2025 BlackWood International Corp. Tous droits réservés.
             </p>
+            <p class="text-xs lg:text-sm mt-2 font-medium text-gray-300">Made with Precision by BlackWood Brand & Design</p>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Mobile Menu Toggle ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        // --- Navigation Mobile ---
+        const mainNav = document.getElementById('main-nav');
+        const menuToggleButton = document.getElementById('menu-toggle-button');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-            // --- Intersection Observer for Animations ---
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
+        menuToggleButton.addEventListener('click', () => {
+            mainNav.classList.toggle('is-expanded');
+            menuToggleButton.classList.toggle('is-active');
+        });
 
-            document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
+        // Fermer le menu au clic sur un lien
+        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('is-expanded');
+                menuToggleButton.classList.remove('is-active');
+            });
+        });
+
+        // --- Active Link Logic ---
+        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('data-path') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+
+        // --- Animations au défilement (Intersection Observer) ---
+        const faders = document.querySelectorAll('.fade-in-on-scroll');
+        const observerOptions = {
+            root: null,
+            threshold: 0.1, // Déclenche un peu plus tôt pour une meilleure fluidité
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // On arrête d'observer une fois animé
+                }
+            });
+        }, observerOptions);
+
+        faders.forEach(fader => {
+            observer.observe(fader);
         });
     </script>
 </body>
