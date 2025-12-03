@@ -3,347 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackWood</title>
+    <title>BlackWood - Global Command</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
     
-    <!-- Balises Meta pour un meilleur affichage sur les réseaux sociaux (Open Graph) -->
-    <!-- Optimisé pour Discord et autres plateformes -->
+    <!-- Meta Open Graph -->
     <meta property="og:title" content="BlackWood International Corp." />
-    <meta property="og:description" content="Redéfinir les standards mondiaux de l'innovation, de l'élégance et du contrôle." />
-    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Architecture de puissance. Innovation, Finance, Contrôle." />
+    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood+Markets" />
     <meta property="og:url" content="https://www.blackwood.com" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="BlackWood" />
-    <meta property="og:locale" content="fr_FR" />
-    <meta name="theme-color" content="#0d0a1b">
+    <meta name="theme-color" content="#05040a">
 
-    <!-- Chargement de Tailwind CSS via CDN -->
+    <!-- Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Police d'écriture Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        /* --- Base --- */
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(10, 8, 20, 0.6);
+            --neon-accent: #f06292;
+            --neon-blue: #004e92;
+            --success: #34d399;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0d0a1b;
-            scroll-behavior: smooth;
+            background-color: #05040a;
+            color: white;
             overflow-x: hidden;
-            position: relative;
+            background-image: 
+                radial-gradient(circle at 50% 0%, #1a162e 0%, #05040a 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
-        /* Dégradé noir en haut de l'écran pour un effet de fondu */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            z-index: 40; /* Sous la barre de navigation */
-            pointer-events: none;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
-        }
-
-        /* Style pour le fond d'écran de la section d'accueil avec assombrissement */
-        .hero-bg {
-            position: relative;
-            overflow: hidden;
-            min-height: 100vh;
-        }
-        
-        /* Pseudo-élément pour l'effet de parallaxe sans assombrissement */
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background-image: url('https://images.unsplash.com/photo-1608469665871-a8b8dd3f483e?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
-            background-position: center;
-            transform: translate3d(0, var(--parallax-y, 0), 0);
-            z-index: -1;
-        }
-        
-        /* Style pour le dégradé des sections du bas */
-        .dark-gradient-bg {
-            background: radial-gradient(at top left, rgba(0, 78, 146, 0.1), transparent 70%),
-                        radial-gradient(at top right, rgba(159, 77, 149, 0.1), transparent 70%),
-                        radial-gradient(at bottom left, rgba(240, 98, 146, 0.1), transparent 70%);
-            background-color: #0d0a1b;
-        }
-        /* Style pour les cartes transparentes */
-        .glass-card {
-            background-color: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(12px);
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-in-out;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-        }
-        /* Style pour les liens de navigation */
-        .nav-link {
-            transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            display: inline-block; /* Nécessaire pour que le ::after s'adapte à la taille du texte */
-        }
-        /* Style pour le lien actif */
-        .nav-link.active {
-            font-weight: 600;
-            transform: translateY(-3px);
-            color: #ffffff;
-        }
-        /* Style pour le survol d'un lien inactif */
-        .nav-link:not(.active):hover {
-            color: #ffffff;
-        }
-        /* Animation de la barre sous le lien actif ou survolé */
-        .nav-link.active::after, .nav-link:hover::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            width: 100%; /* La largeur s'adapte au lien */
-            height: 2px;
-            background: linear-gradient(to right, #004e92, #f06292);
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateX(-50%) scaleX(1);
-            border-radius: 9999px; /* Bords arrondis */
-        }
-        .nav-link:not(.active)::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, #004e92, #f06292);
-            opacity: 0;
-            transform: translateX(-50%) scaleX(0);
-            transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-radius: 9999px; /* Bords arrondis */
-        }
-        .nav-link:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) scaleX(1);
-        }
-        /* Animation subtile du logo au survol */
-        .nav-logo {
-            transition: none; /* Désactivation de la transition */
-        }
-        .nav-logo:hover {
-            transform: none; /* Désactivation du scale au survol */
-        }
-        /* Animation de fondu pour les sections qui apparaissent */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .fade-in.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .animate-bounce-subtle {
-            animation: bounce-subtle 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        @keyframes bounce-subtle {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-        .text-hero-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            background-image: linear-gradient(to right, #d1d5db, #ffffff);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-        }
-
-        /* Styles pour la section Informations Clés */
-        .info-section-bg {
-            background: #111;
-            box-shadow: inset 0 20px 50px rgba(0, 0, 0, 0.5);
-            padding-bottom: 80px;
-        }
-        .info-card-new {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 32px;
-            /* Animation pour le défilement */
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        .info-card-new h3 {
-            font-weight: 700;
-            transition: color 0.4s ease-in-out;
-        }
-        .info-card-value {
-            font-weight: 800;
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            background-image: linear-gradient(to right, #9f4d95, #f06292);
-        }
-
-        .info-card-new.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .info-card-animation:nth-child(2) { transition-delay: 100ms; }
-        .info-card-animation:nth-child(3) { transition-delay: 200ms; }
-        .info-card-animation:nth-child(4) { transition-delay: 300ms; }
-
-        /* Style pour le nouveau bouton */
-        .action-button {
-            background-image: linear-gradient(to right, #9f4d95, #f06292);
-            box-shadow: 0 10px 30px rgba(159, 77, 149, 0.3);
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .action-button:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 15px 40px rgba(159, 77, 149, 0.5);
-        }
-
-        /* --- STYLES POUR LE MENU MOBILE --- */
-        #main-nav {
-            /* Courbe d'animation fluide: lente, rapide, lente */
-            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 56px; 
-            overflow: hidden;
-            border-radius: 32px; /* Arrondi fixe pour tous les états */
-        }
-
-        #main-nav.is-expanded {
-            /* Augmentation de la hauteur pour inclure l'espacement supplémentaire */
-            max-height: 450px; 
-        }
-        
-        .nav-content-top {
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.25rem;
-        }
-        
-        /* Styles pour les éléments du haut du menu avec transition */
-        .logo-link,
-        .hamburger-button {
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Déplacement du logo vers le bas-droite à l'ouverture du menu */
-        #main-nav.is-expanded .logo-link {
-            transform: translate(10px, 10px);
-        }
-
-        /* Déplacement du bouton hamburger vers le bas-gauche à l'ouverture du menu */
-        #main-nav.is-expanded .hamburger-button {
-            transform: translate(-10px, 10px);
-        }
-
-        .mobile-links {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out 0.2s;
-            /* Ajout d'une marge et d'un padding pour un meilleur espacement */
-            padding-top: 1.5rem;
-            padding-bottom: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #main-nav.is-expanded .mobile-links {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Animation du bouton hamburger en X */
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 24px;
-            height: 18px;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .hamburger-line {
-            width: 100%;
-            height: 2px;
-            background-color: white;
-            transition: all 0.3s ease-in-out;
-            transform-origin: center;
-        }
-
-        /* Masquage de la ligne du milieu et rotation des deux autres pour former une croix */
-        .hamburger.is-active .hamburger-line:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.is-active .hamburger-line:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-        .hamburger.is-active .hamburger-line:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-        
+        /* --- Navigation --- */
+        .nav-link { transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; display: inline-block; cursor: pointer;}
+        .nav-link.active { font-weight: 600; transform: translateY(-3px); color: #ffffff; }
+        .nav-link:not(.active):hover { color: #ffffff; }
+        .nav-link.active::after, .nav-link:hover::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 100%; height: 2px; background: linear-gradient(to right, #004e92, #f06292); opacity: 1; transition: all 0.3s; transform: translateX(-50%) scaleX(1); border-radius: 9999px; }
+        .nav-link:not(.active)::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 100%; height: 2px; background: linear-gradient(to right, #004e92, #f06292); opacity: 0; transform: translateX(-50%) scaleX(0); transition: all 0.3s; }
+        #main-nav { transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); max-height: 56px; overflow: hidden; border-radius: 32px; }
+        #main-nav.is-expanded { max-height: 450px; }
+        .nav-content-top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; }
+        .logo-link, .hamburger-button { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        #main-nav.is-expanded .logo-link { transform: translate(10px, 10px); }
+        #main-nav.is-expanded .hamburger-button { transform: translate(-10px, 10px); }
+        .mobile-links { opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out 0.2s; padding-top: 1.5rem; padding-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
+        #main-nav.is-expanded .mobile-links { opacity: 1; pointer-events: auto; }
+        .hamburger { display: flex; flex-direction: column; justify-content: space-between; width: 24px; height: 18px; cursor: pointer; }
+        .hamburger-line { width: 100%; height: 2px; background-color: white; transition: all 0.3s ease-in-out; }
+        .hamburger.is-active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
         @media (min-width: 1024px) {
-            #main-nav.is-expanded {
-                max-height: 56px;
-            }
-            .hamburger.is-active .hamburger-line:nth-child(1) {
-                transform: none;
-            }
-            .hamburger.is-active .hamburger-line:nth-child(2) {
-                opacity: 1;
-                transform: none;
-            }
-            .hamburger.is-active .hamburger-line:nth-child(3) {
-                transform: none;
-            }
+            #main-nav.is-expanded { max-height: 56px; }
+            .hamburger.is-active .hamburger-line:nth-child(1) { transform: none; }
+            .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 1; transform: none; }
+            .hamburger.is-active .hamburger-line:nth-child(3) { transform: none; }
         }
+
+        /* --- Live Ticker Bar --- */
+        .live-bar {
+            background: rgba(10, 8, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            color: #9ca3af;
+            padding: 0.6rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .ticker-move { display: inline-block; animation: tickerScroll 40s linear infinite; }
+        @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- Layout Bento Grid --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-bottom: 4rem;
+        }
+        @media (min-width: 768px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
+        }
+        @media (min-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 290px); gap: 1.5rem; min-height: 850px; }
+        }
+
+        /* --- Carte Bento --- */
+        .bento-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 2.25rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            cursor: pointer; /* Indique que tout est cliquable */
+        }
+        .bento-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.05) inset;
+            z-index: 10;
+        }
+
+        .card-market-hero {
+            grid-column: span 1; grid-row: span 1;
+            background: linear-gradient(150deg, rgba(20, 16, 40, 0.9), rgba(5, 4, 12, 0.95));
+        }
+        .card-market-hero:hover { background: linear-gradient(150deg, rgba(25, 20, 50, 0.9), rgba(8, 6, 15, 0.95)); }
+        @media (min-width: 768px) { .card-market-hero { grid-column: span 2; grid-row: span 2; } }
+        @media (min-width: 1024px) { .card-market-hero { grid-column: span 2; grid-row: span 2; } }
+
+        .card-visual { grid-column: span 1; grid-row: span 1; padding: 0; }
+        @media (min-width: 768px) { .card-visual { grid-column: span 1; grid-row: span 2; } }
+
+        .card-ticker { background: linear-gradient(to bottom right, #0d0a1b, #1a1125); }
+        .card-stat { display: flex; align-items: center; justify-content: center; text-align: center; }
+        .card-wide { grid-column: span 1; }
+        @media (min-width: 768px) { .card-wide { grid-column: span 2; } }
+        @media (min-width: 1024px) { .card-wide { grid-column: span 2; } }
+
+        /* --- Typographie --- */
+        .hero-title {
+            font-size: 2.5rem; line-height: 0.9; font-weight: 900; letter-spacing: -0.04em; color: white;
+            text-shadow: 0 0 40px rgba(255,255,255,0.1);
+        }
+        @media (min-width: 1024px) { .hero-title { font-size: 4.5rem; } }
+
+        .label-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #6b7280; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px; }
+        .label-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--success); box-shadow: 0 0 8px var(--success); }
+        .stat-value { font-size: 3rem; font-weight: 800; color: white; line-height: 1; font-family: var(--font-mono); letter-spacing: -0.05em; }
+        .stat-change { font-size: 0.9rem; font-weight: 600; color: var(--success); display: flex; align-items: center; gap: 0.25rem; font-family: var(--font-mono); }
+
+        /* --- Animations --- */
+        .stagger-in { opacity: 0; transform: translateY(20px); animation: fadeInGrid 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes fadeInGrid { to { opacity: 1; transform: translateY(0); } }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; } .delay-5 { animation-delay: 0.5s; } .delay-6 { animation-delay: 0.6s; }
+
+        .btn-arrow { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: white; background: rgba(255,255,255,0.05); }
+        .bento-card:hover .btn-arrow { background: white; color: black; transform: rotate(-45deg); border-color: white; }
+
+        /* --- Footer & Toast --- */
+        .footer-link { color: #9ca3af; transition: color 0.3s; font-size: 0.9rem; cursor: pointer; }
+        .footer-link:hover { color: white; }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%) translateY(20px);
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        #toast i { color: var(--neon-blue); font-size: 1.2rem; }
+
     </style>
 </head>
-<body class="bg-[#0d0a1b]">
+<body class="bg-[#05040a]">
 
-    <!-- En-tête de navigation flottant -->
+    <!-- En-tête -->
     <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
-        <!-- La barre de navigation principale (la pilule) -->
         <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
-            <!-- Contenu du haut de la barre de navigation (toujours visible) -->
             <div class="nav-content-top px-4 lg:px-8 py-4">
-                <!-- Logo BlackWood -->
-                <a href="#hero" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">
-                    BlackWood
-                </a>
-                <!-- Menu de navigation pour PC -->
+                <a href="#hero" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">BlackWood</a>
                 <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
-                    <!-- Le lien "Accueil" est forcé d'être actif et a une couleur plus claire -->
                     <li><a href="index.html" class="nav-link active">Accueil</a></li>
                     <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
                     <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
                     <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
                     <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
                 </ul>
-                
-                <!-- Bouton hamburger pour mobile -->
                 <div class="lg:hidden flex items-center justify-end flex-grow">
                     <button id="menu-toggle-button" class="hamburger-button text-white focus:outline-none z-[60]">
                         <div class="hamburger">
@@ -354,141 +225,207 @@
                     </button>
                 </div>
             </div>
-            <!-- Conteneur pour les liens du menu mobile -->
             <ul class="mobile-links lg:hidden text-white font-medium text-xl text-center space-y-3">
-                <!-- Le lien "Accueil" est forcé d'être actif et a une couleur plus claire -->
-                <li><a href="index.html" class="nav-link active" data-path="index.html">Accueil</a></li>
-                <li><a href="groupe.html" class="nav-link" data-path="groupe.html">Le Groupe</a></li>
-                <li><a href="filiales.html" class="nav-link" data-path="filiales.html">Nos Filiales</a></li>
-                <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
-                <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
+                <li><a href="index.html" class="nav-link active">Accueil</a></li>
+                <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
+                <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
+                <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
+                <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
-        <!-- Section d'accueil (Hero) -->
-        <section id="hero" class="hero-bg flex flex-col items-center justify-center h-screen text-white text-center relative">
-            <!-- Carte principale "BlackWood" -->
-            <div class="glass-card rounded-[32px] p-6 sm:p-12 max-w-2xl mx-4 fade-in">
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-2 text-hero-gradient">
-                    BlackWood
-                </h1>
-                <p class="text-lg lg:text-2xl font-light text-gray-200">Designing the Future. Managing the World.</p>
-            </div>
-            <!-- Bouton "Glisser vers le bas" cliquable -->
-            <a id="scroll-down-button" href="#about" class="absolute bottom-6 lg:bottom-12 text-center animate-bounce-subtle cursor-pointer">
-                <p class="text-lg lg:text-xl font-light text-gray-300 mb-2">Glisser vers le bas</p>
-                <!-- Icône Font Awesome 'chevron-down' en SVG inline -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 lg:h-10 lg:w-10 mx-auto text-white" viewBox="0 0 512 512" fill="currentColor">
-                    <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                    <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                </svg>
-            </a>
+    <!-- Notification Toast -->
+    <div id="toast"><i class="fas fa-lock"></i> <span>Accès restreint. Investisseurs accrédités uniquement.</span></div>
+
+    <!-- Main Content -->
+    <main class="pt-28 lg:pt-32 px-4 lg:px-8 max-w-[1600px] mx-auto min-h-screen">
+
+        <!-- GRAND TITRE "BLACKWOOD" -->
+        <section class="text-center py-12 lg:py-20 stagger-in">
+            <h1 class="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-700 leading-none select-none drop-shadow-2xl">
+                BLACKWOOD
+            </h1>
+            <p class="text-gray-500 text-xs md:text-sm tracking-[0.6em] uppercase mt-6 font-bold">International Corp. Holdings</p>
         </section>
-
-        <!-- Conteneur unique pour les sections "À Propos" et "Informations Clées" avec un seul dégradé -->
-        <div id="about" class="dark-gradient-bg">
-            <!-- Section "À Propos de BlackWood" -->
-            <section class="py-16 lg:py-20 text-white">
-                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- Carte "À Propos" -->
-                    <div class="glass-card rounded-[32px] p-8 lg:p-10 text-center shadow-2xl fade-in">
-                        <h2 class="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6 text-gray-100">
-                            À Propos de BlackWood
-                        </h2>
-                        <p class="text-lg lg:text-xl leading-relaxed text-gray-300">
-                            BlackWood est un conglomérat global fondé aux États-Unis en 2009 par Yves Land. Présent dans plus de 30 pays, le groupe structure ses activités autour de secteurs stratégiques : finance, technologies de pointe, mobilité, design, défense et événementiel. Son ambition : redéfinir les standards mondiaux de l'innovation, de l'élégance et du contrôle.
-                        </p>
-                    </div>
+        
+        <!-- Live Ticker Bar -->
+        <div class="mb-12 w-full overflow-hidden border border-white/5 rounded-full bg-white/5 backdrop-blur-md">
+            <div class="live-bar bg-transparent border-none">
+                <div class="ticker-move">
+                    <span class="mr-12 text-blue-400 font-mono text-xs"><i class="fas fa-circle text-[8px] mr-2 align-middle"></i>MARKETS OPEN</span>
+                    <span class="mr-12 font-mono">BW.HOLDINGS <span class="text-white font-bold">$1,242.40</span> <span class="text-green-400">▲ 1.4%</span></span>
+                    <span class="mr-12 font-mono">BW.TECH <span class="text-white font-bold">$890.15</span> <span class="text-green-400">▲ 0.9%</span></span>
+                    <span class="mr-12 font-mono">BW.AUTO <span class="text-white font-bold">$455.20</span> <span class="text-green-400">▲ 2.1%</span></span>
+                    <span class="mr-12 font-mono text-gray-500">S&P 500 <span class="text-gray-300">4,150.00</span></span>
+                    <span class="mr-12 font-mono text-gray-500">NASDAQ <span class="text-gray-300">12,600.50</span></span>
+                    
+                    <span class="mr-12 text-blue-400 font-mono text-xs"><i class="fas fa-circle text-[8px] mr-2 align-middle"></i>MARKETS OPEN</span>
+                    <span class="mr-12 font-mono">BW.HOLDINGS <span class="text-white font-bold">$1,242.40</span> <span class="text-green-400">▲ 1.4%</span></span>
+                    <span class="mr-12 font-mono">BW.TECH <span class="text-white font-bold">$890.15</span> <span class="text-green-400">▲ 0.9%</span></span>
                 </div>
-            </section>
-
-            <!-- Section "Informations Clées" - Nouvelle version -->
-            <section id="key-info" class="py-16 lg:py-24 text-white info-section-bg">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-4xl lg:text-6xl font-extrabold text-center mb-12 lg:mb-16 text-white fade-in tracking-tight">Nos Chiffres Clés</h2>
-                    <!-- Grille des nouvelles cartes d'information -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16">
-                        <!-- Carte Filiales Stratégiques -->
-                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
-                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Filiales Stratégiques</h3>
-                            <p class="text-5xl lg:text-7xl info-card-value">9</p>
-                        </div>
-                        <!-- Carte Valorisation Boursière -->
-                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
-                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Valorisation Boursière</h3>
-                            <p class="text-3xl lg:text-5xl info-card-value">195 Milliards USD</p>
-                        </div>
-                        <!-- Carte Actifs sous Gestion -->
-                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
-                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Actifs sous Gestion</h3>
-                            <p class="text-3xl lg:text-5xl info-card-value">800 Milliards USD AUM</p>
-                        </div>
-                        <!-- Carte Présence Mondiale -->
-                        <div class="info-card-new p-6 lg:p-8 text-center info-card-animation">
-                            <h3 class="text-xl lg:text-2xl text-gray-300 mb-4">Présence Mondiale</h3>
-                            <p class="text-5xl lg:text-7xl info-card-value">32</p>
-                            <p class="text-lg lg:text-xl text-gray-400 mt-2">Pays</p>
-                        </div>
-                    </div>
-                    <!-- Nouveau Bouton "En savoir plus" -->
-                    <div class="text-center fade-in">
-                        <a href="groupe.html" class="inline-block action-button text-white font-bold py-3 px-8 lg:py-4 lg:px-12 rounded-full text-lg lg:text-xl shadow-lg transform">
-                            En savoir plus sur le Groupe
-                        </a>
-                    </div>
-                </div>
-            </section>
+            </div>
         </div>
+
+        <!-- Section Intro / Manifesto -->
+        <section class="mb-12 lg:mb-16 text-center lg:text-left stagger-in delay-1">
+            <div class="flex flex-col lg:flex-row justify-between items-end gap-6">
+                <div class="max-w-3xl">
+                    <p class="label-text text-pink-500 mb-3"><span class="label-dot bg-pink-500"></span>Statement 2025</p>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                        La convergence de la<br>
+                        <span class="text-gray-600">finance et du contrôle.</span>
+                    </h2>
+                </div>
+                <div class="text-sm text-gray-500 max-w-md text-right hidden lg:block font-mono">
+                    <p>DATA STREAM: ENCRYPTED</p>
+                    <p>LATENCY: 12ms</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Le Bento Grid -->
+        <div class="bento-grid">
+            
+            <!-- 1. HERO BLOCK (Bourse) -->
+            <div class="bento-card card-market-hero stagger-in delay-1 group" onclick="window.location.href='actualite-bourse.html'">
+                <div class="absolute w-[400px] h-[400px] bg-blue-600/10 blur-[120px] -top-20 -right-20 group-hover:bg-blue-600/20 transition-all duration-700"></div>
+                <div class="absolute top-0 right-10 w-[1px] h-full bg-white/5"></div>
+                
+                <div>
+                    <p class="label-text text-blue-400"><span class="label-dot bg-blue-400"></span>Market Intelligence</p>
+                    <h1 class="hero-title mt-2">
+                        MARKET<br>
+                        WATCH.
+                    </h1>
+                </div>
+                
+                <div class="absolute right-8 top-1/2 -translate-y-1/2 opacity-30 group-hover:opacity-50 transition-opacity hidden sm:block">
+                     <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 50L20 40L35 45L55 20L75 30L95 10L119 5" stroke="white" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                     </svg>
+                </div>
+
+                <div class="mt-8 flex justify-between items-end relative z-10">
+                    <div>
+                        <p class="text-gray-300 max-w-sm text-sm lg:text-base leading-relaxed font-medium">
+                            Accédez aux données financières en temps réel. Cours, analyses algorithmiques et performances du titre BlackWood.
+                        </p>
+                        <div class="mt-4 flex gap-4 text-xs font-mono text-gray-500">
+                            <span>BW.H: $1,242</span>
+                            <span>VOL: 45M</span>
+                        </div>
+                    </div>
+                    <div class="btn-arrow ml-auto sm:ml-0 group-hover:bg-white group-hover:text-black">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. VISUAL BLOCK (Redirection vers Presence Mondiale) -->
+            <div class="bento-card card-visual stagger-in delay-2 group relative h-64 md:h-auto" onclick="window.location.href='presence-mondiale.html'">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-50 group-hover:opacity-70 grayscale hover:grayscale-0" 
+                     alt="Siège">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <div class="absolute bottom-8 left-8 z-10">
+                    <div class="w-10 h-1 bg-white mb-4"></div>
+                    <p class="text-white font-bold text-2xl">The Tower</p>
+                    <p class="text-gray-400 text-sm font-mono mt-1">HQ: Manhattan, NYC</p>
+                </div>
+            </div>
+
+            <!-- 3. STAT BLOCK (Redirection Groupe) -->
+            <div class="bento-card card-stat stagger-in delay-3 h-48 md:h-auto" onclick="window.location.href='groupe.html'">
+                <div class="absolute top-4 right-4 text-gray-600"><i class="fas fa-layer-group"></i></div>
+                <div>
+                    <p class="label-text justify-center">Actifs sous Gestion</p>
+                    <div class="stat-value text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-500 mt-2">
+                        $800B
+                    </div>
+                    <div class="stat-change justify-center mt-3 bg-green-500/10 py-1 px-3 rounded-full inline-flex border border-green-500/20">
+                        <i class="fas fa-arrow-trend-up text-xs mr-2"></i> +12.4% YoY
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. INVESTISSEURS BLOCK (Redirection Bourse ou Toast pour Download) -->
+            <div class="bento-card card-ticker stagger-in delay-4 flex flex-col justify-center h-48 md:h-auto group hover:bg-white/5" onclick="window.location.href='actualite-bourse.html'">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="label-text mb-0">Actionnaires</p>
+                    <i class="fas fa-file-contract text-gray-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-1">Investisseurs</h3>
+                <p class="text-sm text-gray-400 mb-4">Rapports trimestriels et assemblées.</p>
+                <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs font-mono text-gray-500">
+                    <span>Q4 2024: PUBLIÉ</span>
+                    <!-- Ce bouton spécifique déclenche le toast -->
+                    <i class="fas fa-download hover:text-white" onclick="event.stopPropagation(); showToast('Téléchargement réservé aux membres');"></i>
+                </div>
+            </div>
+
+            <!-- 5. WIDE LINK BLOCK (Filiales) -->
+            <div class="bento-card card-wide stagger-in delay-5 group cursor-pointer" onclick="window.location.href='filiales.html'">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-900/10 to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex flex-col h-full justify-between relative z-10">
+                    <div class="flex justify-between items-start">
+                        <p class="label-text text-white"><span class="label-dot bg-white"></span>Structure</p>
+                        <i class="fas fa-th-large text-gray-600 group-hover:text-white transition-colors text-xl"></i>
+                    </div>
+                    <div class="flex items-end justify-between mt-8 sm:mt-0">
+                        <div>
+                            <h3 class="text-3xl font-bold text-white mb-3">9 Pôles Stratégiques</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white transition-colors">Finance</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white transition-colors">Tech</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white transition-colors">Industrie</span>
+                            </div>
+                        </div>
+                        <div class="btn-arrow bg-white/5 group-hover:bg-white group-hover:text-black">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. PHILOSOPHY BLOCK -->
+            <div class="bento-card stagger-in delay-6 h-auto" onclick="window.location.href='groupe.html'">
+                <i class="fas fa-quote-left text-3xl text-gray-700 mb-4 opacity-50"></i>
+                <p class="text-base md:text-lg font-light italic text-gray-300 leading-relaxed">
+                    "Le vrai pouvoir ne fait pas de bruit. Il construit des structures qui durent des siècles."
+                </p>
+                <div class="mt-8 pt-4 flex items-center gap-4 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-black overflow-hidden flex items-center justify-center border border-white/10">
+                         <span class="text-xs font-bold text-gray-400">YL</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-white">Yves Land</p>
+                        <p class="text-xs text-gray-500 font-mono">FONDATOR & CEO</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Simplifié -->
+        <footer class="py-12 text-center text-gray-500 text-sm border-t border-white/10 mt-20">
+            <p>Copyright © 2025 BlackWood International Corp. Tous droits réservés.</p>
+            <p class="mt-2 font-medium text-gray-400">Made with Precision by BlackWood Brand & Design</p>
+        </footer>
+
     </main>
 
-    <!-- Pied de page simple et élégant -->
-    <footer class="dark-gradient-bg py-8 lg:py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
-            <p class="text-sm">
-                Copyright &copy; 2025 BlackWood International Corp. Tous droits réservés.
-            </p>
-            <p class="text-xs lg:text-sm mt-2 font-medium text-gray-300">Made with Precision by BlackWood Brand & Design</p>
-        </div>
-    </footer>
-
     <script>
-        // IntersectionObserver pour animer les éléments au défilement
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        // Observer tous les éléments avec la classe 'fade-in' et 'info-card-animation'
-        document.querySelectorAll('.fade-in, .info-card-animation').forEach(element => {
-            observer.observe(element);
-        });
-
-        // Effet de parallaxe pour l'image de fond
-        window.addEventListener('scroll', function() {
-            const heroSection = document.getElementById('hero');
-            const scrollPosition = window.pageYOffset;
-            const parallaxValue = scrollPosition * 0.2;
-
-            heroSection.style.setProperty('--parallax-y', parallaxValue + 'px');
-        });
-
-        // Logique pour le menu de navigation mobile avec la nouvelle animation
+        // --- Navigation Mobile (INCHANGÉ) ---
         const mainNav = document.getElementById('main-nav');
         const menuToggleButton = document.getElementById('menu-toggle-button');
-        
+        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
+
         menuToggleButton.addEventListener('click', () => {
             mainNav.classList.toggle('is-expanded');
             menuToggleButton.classList.toggle('is-active');
         });
 
-        // Ferme le menu quand on clique sur un lien (sur les petits écrans)
-        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mainNav.classList.remove('is-expanded');
@@ -496,21 +433,31 @@
             });
         });
 
-        // Logique pour le défilement fluide du bouton "Glisser vers le bas"
-        const scrollDownButton = document.getElementById('scroll-down-button');
-        if (scrollDownButton) {
-            scrollDownButton.addEventListener('click', (event) => {
-                // Empêche le comportement par défaut du lien
-                event.preventDefault();
+        // --- Mouse Glow Effect (Desktop Only) ---
+        const cards = document.querySelectorAll('.bento-card');
+        
+        if (window.matchMedia("(min-width: 1024px)").matches) {
+            document.querySelector('main').addEventListener('mousemove', e => {
+                for(const card of cards) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
 
-                // Récupère l'élément cible (#about) et fait défiler la page
-                const targetElement = document.getElementById('about');
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
                 }
             });
+        }
+
+        // --- Toast Notification Function ---
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            // Change le texte si un message spécifique est fourni
+            if(message) {
+                toast.innerHTML = '<i class="fas fa-lock"></i> <span>' + message + '</span>';
+            }
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
     </script>
 </body>
