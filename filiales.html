@@ -67,7 +67,7 @@
             background: linear-gradient(to bottom, #0d0a1b 10%, rgba(13, 10, 27, 0));
         }
 
-        /* --- Navigation (Style identique) --- */
+        /* --- Navigation --- */
         .nav-link {
             transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
@@ -173,11 +173,9 @@
         }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
 
-        /* --- Styles Spécifiques Filiales --- */
+        /* --- Styles Spécifiques Filiales - MOTION DESIGN AMÉLIORÉ --- */
         
-        /* Titre de section */
         .section-header-line {
             width: 80px;
             height: 4px;
@@ -188,92 +186,177 @@
 
         /* Carte Filiale */
         .subsidiary-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 24px;
             padding: 2.5rem 2rem;
             position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden; /* Important pour l'effet shine */
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             height: 100%;
             display: flex;
             flex-direction: column;
+            /* Ombre douce par défaut */
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
         }
 
-        /* Effet de brillance au survol */
-        .subsidiary-card::before {
+        /* Effet SHINE (Reflet lumineux qui traverse) */
+        .subsidiary-card::after {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            left: -100%;
+            width: 50%;
             height: 100%;
-            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            transition: none;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .subsidiary-card:hover::after {
+            left: 200%;
+            transition: all 0.8s ease-in-out;
         }
 
         .subsidiary-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-12px) scale(1.01);
+            background: rgba(255, 255, 255, 0.05);
             border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            /* Ombre colorée dynamique */
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), 
+                        0 0 1px 0px rgba(255, 255, 255, 0.3) inset;
         }
 
-        .subsidiary-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Icône de la filiale */
+        /* Wrapper de l'icône */
         .card-icon-wrapper {
-            width: 64px;
-            height: 64px;
-            border-radius: 20px;
+            width: 72px;
+            height: 72px;
+            border-radius: 24px;
             background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.75rem;
+            font-size: 2rem;
             margin-bottom: 1.5rem;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Couleurs dynamiques des icônes au survol */
+        /* Animation de l'icône au survol */
         .subsidiary-card:hover .card-icon-wrapper {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.1) translateY(-5px);
             background: white;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: white;
         }
 
-        /* Gradients spécifiques pour les icônes au survol */
+        /* Dégradés des icônes au survol */
         .group-finance:hover .card-icon-wrapper i { background: linear-gradient(135deg, #FFD700, #DAA520); -webkit-background-clip: text; color: transparent; }
         .group-tech:hover .card-icon-wrapper i { background: linear-gradient(135deg, #00d2ff, #3a7bd5); -webkit-background-clip: text; color: transparent; }
         .group-auto:hover .card-icon-wrapper i { background: linear-gradient(135deg, #ff416c, #ff4b2b); -webkit-background-clip: text; color: transparent; }
         .group-design:hover .card-icon-wrapper i { background: linear-gradient(135deg, #833ab4, #fd1d1d); -webkit-background-clip: text; color: transparent; }
         .group-events:hover .card-icon-wrapper i { background: linear-gradient(135deg, #FDC830, #F37335); -webkit-background-clip: text; color: transparent; }
         .group-logistics:hover .card-icon-wrapper i { background: linear-gradient(135deg, #11998e, #38ef7d); -webkit-background-clip: text; color: transparent; }
-        .group-racing:hover .card-icon-wrapper i { background: linear-gradient(135deg, #000000, #434343); -webkit-background-clip: text; color: transparent; } /* Exception pour noir sur fond blanc */
+        .group-racing:hover .card-icon-wrapper i { background: linear-gradient(135deg, #000000, #434343); -webkit-background-clip: text; color: transparent; }
         .group-defense:hover .card-icon-wrapper i { background: linear-gradient(135deg, #2C3E50, #4CA1AF); -webkit-background-clip: text; color: transparent; }
         .group-photo:hover .card-icon-wrapper i { background: linear-gradient(135deg, #cc2b5e, #753a88); -webkit-background-clip: text; color: transparent; }
 
+        /* Titre */
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 0.75rem;
             color: white;
             transition: color 0.3s ease;
-        }
-        
-        .card-description {
-            font-size: 0.95rem;
-            font-weight: 300;
-            line-height: 1.6;
-            color: #9ca3af;
+            position: relative;
+            z-index: 10;
         }
 
         .subsidiary-card:hover .card-title {
-            color: #f06292; /* Teinte rose du logo */
+            background: linear-gradient(to right, #9f4d95, #f06292);
+            -webkit-background-clip: text;
+            color: transparent;
         }
+        
+        /* Description */
+        .card-description {
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.7;
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+            flex-grow: 1; /* Pousse le contenu vers le bas */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Tags (Nouveauté) */
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .subsidiary-card:hover .tag {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Lien CTA (Nouveauté) */
+        .card-cta {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #ffffff;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-cta i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .subsidiary-card:hover .card-cta {
+            opacity: 1;
+            color: #f06292;
+        }
+
+        .subsidiary-card:hover .card-cta i {
+            transform: translateX(5px);
+        }
+
     </style>
 </head>
 <body class="bg-[#0d0a1b]">
@@ -281,7 +364,7 @@
     <!-- Fond animé -->
     <div class="liquid-glass-bg"></div>
 
-    <!-- En-tête de navigation flottant -->
+    <!-- En-tête de navigation -->
     <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
         <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
             <div class="nav-content-top px-4 lg:px-8 py-4">
@@ -316,30 +399,36 @@
     </header>
 
     <main class="pt-32 pb-20">
-        <!-- Section Hero Simplifiée -->
-        <section class="text-center px-4 max-w-4xl mx-auto mb-16 fade-in-on-scroll">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                Nos Filiales
+        <!-- Section Hero -->
+        <section class="text-center px-4 max-w-4xl mx-auto mb-20 fade-in-on-scroll">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-lg">
+                Pôles d'Excellence
             </h1>
             <div class="section-header-line"></div>
-            <p class="text-lg md:text-xl text-gray-300 font-light">
-                Un écosystème diversifié, uni par la même exigence d'innovation et de contrôle. Découvrez les piliers qui soutiennent l'empire BlackWood.
+            <p class="text-lg md:text-xl text-gray-300 font-light leading-relaxed">
+                BlackWood International opère à la convergence de l'industrie, de la technologie et du luxe. Découvrez les neuf piliers stratégiques qui définissent notre empreinte mondiale.
             </p>
         </section>
 
         <!-- Grille des Filiales -->
         <section class="max-w-7xl mx-auto px-4 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
                 <!-- 1. BlackWood Capital Investments Inc. -->
                 <div class="subsidiary-card group-finance fade-in-on-scroll">
                     <div class="card-icon-wrapper text-yellow-400">
                         <i class="fas fa-chart-pie"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Capital Investments</h3>
+                    <h3 class="card-title">Capital Investments</h3>
                     <p class="card-description">
-                        Filiale financière et pilier historique. Gestion d’actifs institutionnels, fonds d’investissement et stratégies globales de capital allocation. Centre de profit majeur du groupe.
+                        Pilier historique et cœur financier du groupe. Nous gérons des actifs institutionnels et développons des produits financiers sophistiqués avec une stratégie d'allocation globale agressive.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Asset Mgmt</span>
+                        <span class="tag">Hedge Fund</span>
+                        <span class="tag">Global Macro</span>
+                    </div>
+                    <a href="#" class="card-cta">Explorer le pôle Finance <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 2. BlackWood Technologies Inc. -->
@@ -347,10 +436,16 @@
                     <div class="card-icon-wrapper text-blue-400">
                         <i class="fas fa-microchip"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Technologies</h3>
+                    <h3 class="card-title">BW Technologies</h3>
                     <p class="card-description">
-                        Acteur global de la tech : développement logiciel, IA, cybersécurité et hardware avancé. Pionnier en R&D quantique et fabricant de ses propres appareils.
+                        Pionnier technologique développant des solutions d'IA propriétaires, des infrastructures de cybersécurité militaire et du hardware quantique de nouvelle génération.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">A.I.</span>
+                        <span class="tag">Quantum R&D</span>
+                        <span class="tag">Cybersec</span>
+                    </div>
+                    <a href="#" class="card-cta">Découvrir l'Innovation <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 3. BlackWood Royal Motors Corp. -->
@@ -358,10 +453,16 @@
                     <div class="card-icon-wrapper text-red-400">
                         <i class="fas fa-car-side"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Royal Motors</h3>
+                    <h3 class="card-title">Royal Motors</h3>
                     <p class="card-description">
-                        Division automobile de prestige. Conception et ingénierie de véhicules premium, héritière d’une marque britannique historique. Gestion intégrée des concessions.
+                        Héritière d'une légende automobile britannique. Nous concevons l'avenir du luxe sur route, alliant artisanat d'exception et motorisation électrique haute performance.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Luxury Auto</span>
+                        <span class="tag">EV</span>
+                        <span class="tag">Engineering</span>
+                    </div>
+                    <a href="#" class="card-cta">Voir les modèles <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 4. BlackWood Defense Systems Corp. -->
@@ -369,10 +470,16 @@
                     <div class="card-icon-wrapper text-gray-400">
                         <i class="fas fa-shield-halved"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Defense Systems</h3>
+                    <h3 class="card-title">Defense Systems</h3>
                     <p class="card-description">
-                        Branche défense stratégique. Développement de technologies militaires, systèmes de sécurité avancés et ingénierie pour les gouvernements alliés.
+                        Solutions stratégiques pour la souveraineté. De l'avionique avancée aux systèmes de surveillance satellite, nous fournissons une supériorité technologique critique.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Military Tech</span>
+                        <span class="tag">Aerospace</span>
+                        <span class="tag">Intel</span>
+                    </div>
+                    <a href="#" class="card-cta">Accès Restreint <i class="fas fa-lock"></i></a>
                 </div>
 
                 <!-- 5. BlackWood Brand & Design Ltd. -->
@@ -380,10 +487,16 @@
                     <div class="card-icon-wrapper text-purple-400">
                         <i class="fas fa-pen-nib"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Brand & Design</h3>
+                    <h3 class="card-title">Brand & Design</h3>
                     <p class="card-description">
-                        Agence interne de design et d’identité visuelle. Création graphique, branding et conceptions créatives pour le groupe et une clientèle externe exclusive.
+                        L'agence créative interne qui façonne l'identité visuelle du groupe. Nous exportons également notre vision esthétique minimaliste pour une clientèle externe exclusive.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Branding</span>
+                        <span class="tag">UX/UI</span>
+                        <span class="tag">Art Direction</span>
+                    </div>
+                    <a href="#" class="card-cta">Voir le Portfolio <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 6. BlackWood Events Ltd. -->
@@ -391,10 +504,15 @@
                     <div class="card-icon-wrapper text-orange-400">
                         <i class="fas fa-champagne-glasses"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Events</h3>
+                    <h3 class="card-title">BW Events</h3>
                     <p class="card-description">
-                        Organisation d’événements premium : salons internationaux, conférences, lancements produits et expériences immersives inoubliables.
+                        Créateurs d'expériences. Organisation de sommets mondiaux, lancements de produits spectaculaires et gestion d'événements privés pour l'élite corporative.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Conferences</span>
+                        <span class="tag">VIP Experience</span>
+                    </div>
+                    <a href="#" class="card-cta">Nos Réalisations <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 7. BlackWood Logistics Corp. -->
@@ -402,10 +520,16 @@
                     <div class="card-icon-wrapper text-emerald-400">
                         <i class="fas fa-truck-fast"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Logistics</h3>
+                    <h3 class="card-title">Global Logistics</h3>
                     <p class="card-description">
-                        Expertise en chaînes d’approvisionnement, fret et distribution mondiale. Un opérateur de services commerciaux né de nos exigences internes.
+                        Initialement créée pour nos besoins internes, cette division gère aujourd'hui des chaînes d'approvisionnement complexes sur 4 continents avec une précision algorithmique.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Supply Chain</span>
+                        <span class="tag">Freight</span>
+                        <span class="tag">Maritime</span>
+                    </div>
+                    <a href="#" class="card-cta">Solutions <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 8. BlackWood Racing Team Inc. -->
@@ -413,10 +537,16 @@
                     <div class="card-icon-wrapper text-white">
                         <i class="fas fa-flag-checkered"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Racing Team</h3>
+                    <h3 class="card-title">Racing Team</h3>
                     <p class="card-description">
-                        Écurie de sport automobile de haut niveau (ex-F1). Gestion des programmes de compétition et laboratoire de R&D pour la performance mécanique.
+                        La performance pure. Notre écurie de course sert de laboratoire R&D à ciel ouvert, testant les limites de la mécanique et de l'aérodynamisme en compétition.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Motorsport</span>
+                        <span class="tag">R&D Lab</span>
+                        <span class="tag">Performance</span>
+                    </div>
+                    <a href="#" class="card-cta">Saison 2025 <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- 9. BlackWood Photography Ltd. -->
@@ -424,10 +554,16 @@
                     <div class="card-icon-wrapper text-pink-400">
                         <i class="fas fa-camera"></i>
                     </div>
-                    <h3 class="card-title">BlackWood Photography</h3>
+                    <h3 class="card-title">BW Studios</h3>
                     <p class="card-description">
-                        Studio photo et audiovisuel de pointe. Production d’images, shoots professionnels et création de contenus visuels haute définition.
+                        Studio de production visuelle intégré. Photographie, réalisation vidéo et post-production pour sublimer les actifs du groupe et capturer l'essence de nos marques.
                     </p>
+                    <div class="card-tags">
+                        <span class="tag">Photography</span>
+                        <span class="tag">Film</span>
+                        <span class="tag">Post-Prod</span>
+                    </div>
+                    <a href="#" class="card-cta">Galerie <i class="fas fa-arrow-right"></i></a>
                 </div>
 
             </div>
@@ -435,7 +571,7 @@
     </main>
 
     <!-- Pied de page -->
-    <footer class="py-8 lg:py-12 bg-black/10 backdrop-blur-xl border-t border-white/5">
+    <footer class="py-8 lg:py-12 bg-black/10 backdrop-blur-xl border-t border-white/5 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <p class="text-sm">
                 Copyright &copy; 2025 BlackWood International Corp. Tous droits réservés.
@@ -477,7 +613,7 @@
         const faders = document.querySelectorAll('.fade-in-on-scroll');
         const observerOptions = {
             root: null,
-            threshold: 0.1, // Déclenche un peu plus tôt pour une meilleure fluidité
+            threshold: 0.1, 
             rootMargin: '0px'
         };
 
@@ -485,7 +621,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target); // On arrête d'observer une fois animé
+                    observer.unobserve(entry.target); 
                 }
             });
         }, observerOptions);
