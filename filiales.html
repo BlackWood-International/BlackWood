@@ -44,14 +44,13 @@
             width: 100%;
             height: 100%;
             z-index: -10;
-            /* Fond plus sombre et texturé */
             background: 
                 radial-gradient(circle at 15% 50%, rgba(0, 78, 146, 0.05), transparent 40%),
                 radial-gradient(circle at 85% 30%, rgba(240, 98, 146, 0.05), transparent 40%),
                 #0d0a1b;
         }
 
-        /* Ajout d'une grille subtile pour l'effet "Tech" */
+        /* Grille subtile en fond */
         .grid-overlay {
             position: fixed;
             top: 0;
@@ -80,7 +79,7 @@
             background: linear-gradient(to bottom, #0d0a1b 20%, rgba(13, 10, 27, 0));
         }
 
-        /* --- Navigation (INCHANGÉE) --- */
+        /* --- Navigation --- */
         .nav-link {
             transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
@@ -173,7 +172,7 @@
             .hamburger.is-active .hamburger-line:nth-child(3) { transform: none; }
         }
 
-        /* --- FILTRES (Nouveau Design) --- */
+        /* --- FILTRES --- */
         .filters-wrapper {
             display: flex;
             justify-content: center;
@@ -204,7 +203,7 @@
             font-weight: 600;
             letter-spacing: 0.02em;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.2s ease-out; /* Plus rapide */
             overflow: hidden;
             border: 1px solid transparent;
         }
@@ -214,16 +213,15 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
-        /* État actif avec lueur */
         .filter-btn.active {
             color: white;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            padding-left: 1.8rem;
         }
 
-        /* Indicateur de sélection multiple */
         .filter-btn.active::before {
             content: '';
             position: absolute;
@@ -242,13 +240,9 @@
             box-shadow: 0 0 5px white;
         }
 
-        .filter-btn.active {
-            padding-left: 1.8rem; /* Espace pour le point */
-        }
-
-        /* --- CARTES FILIALES (Design Amélioré) --- */
+        /* --- CARTES FILIALES --- */
         .subsidiary-card {
-            background: rgba(13, 10, 27, 0.6); /* Plus sombre pour plus de contraste */
+            background: rgba(13, 10, 27, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -258,11 +252,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
         }
 
-        /* Hover effect sobre et élégant */
         .subsidiary-card:hover {
             transform: translateY(-8px);
             border-color: rgba(255, 255, 255, 0.15);
@@ -270,19 +263,6 @@
             background: rgba(20, 16, 35, 0.7);
         }
 
-        /* Bordure supérieure dégradée subtile */
-        .subsidiary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            opacity: 0.5;
-        }
-
-        /* Wrapper de l'icône */
         .card-icon-wrapper {
             width: 64px;
             height: 64px;
@@ -303,7 +283,7 @@
             transform: scale(1.05);
         }
 
-        /* Couleurs d'icônes avec glow */
+        /* Couleurs d'icônes */
         .group-finance i { color: #FCD34D; text-shadow: 0 0 15px rgba(252, 211, 77, 0.3); }
         .group-tech i { color: #60A5FA; text-shadow: 0 0 15px rgba(96, 165, 250, 0.3); }
         .group-auto i { color: #F87171; text-shadow: 0 0 15px rgba(248, 113, 113, 0.3); }
@@ -314,7 +294,6 @@
         .group-racing i { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
         .group-photo i { color: #F472B6; text-shadow: 0 0 15px rgba(244, 114, 182, 0.3); }
 
-        /* Titre */
         .card-title {
             font-size: 1.35rem;
             font-weight: 700;
@@ -323,17 +302,15 @@
             letter-spacing: -0.02em;
         }
 
-        /* Description */
         .card-description {
             font-size: 0.95rem;
             font-weight: 400;
             line-height: 1.6;
-            color: #9ca3af; /* Gris clair */
+            color: #9ca3af;
             margin-bottom: 1.5rem;
             flex-grow: 1;
         }
 
-        /* Tags améliorés */
         .card-tags {
             display: flex;
             flex-wrap: wrap;
@@ -359,28 +336,6 @@
             color: white;
         }
 
-        /* --- ANIMATIONS DE FILTRAGE --- */
-        .grid-item {
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center top;
-        }
-
-        /* État caché : scale down + opacité 0 + collapse */
-        .grid-item.hidden-item {
-            transform: scale(0.9) translateY(10px);
-            opacity: 0;
-            /* On utilise display: none via JS après l'animation pour reflow */
-            pointer-events: none; 
-            position: absolute; /* Sort du flux pour permettre l'animation */
-            z-index: -1;
-            width: 0; 
-            height: 0; 
-            margin: 0; 
-            padding: 0; 
-            border: none;
-        }
-
         .section-header-line {
             width: 80px;
             height: 4px;
@@ -390,25 +345,42 @@
             box-shadow: 0 0 10px rgba(240, 98, 146, 0.5);
         }
 
-        /* Animation d'entrée */
+        /* --- ANIMATIONS OPTIMISÉES --- */
+        
+        /* Entrée initiale de la page */
         .fade-in-entry {
-            animation: fadeInUp 0.8s ease-out forwards;
+            animation: fadeInEntry 0.8s ease-out forwards;
             opacity: 0;
         }
-        @keyframes fadeInUp {
+
+        @keyframes fadeInEntry {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animation pour les éléments filtrés (entrée TRÈS rapide) */
+        .fade-in-up {
+            animation: fadeInUpFast 0.25s ease-out forwards; /* Accéléré de 0.5s à 0.25s */
+        }
+
+        @keyframes fadeInUpFast {
+            from { opacity: 0; transform: translateY(10px); } /* Distance réduite de 20px à 10px */
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Classe pour masquer les éléments proprement */
+        .hidden-item {
+            display: none !important;
         }
 
     </style>
 </head>
 <body class="bg-[#0d0a1b]">
 
-    <!-- Fond animé et grille -->
     <div class="liquid-glass-bg"></div>
     <div class="grid-overlay"></div>
 
-    <!-- En-tête de navigation -->
+    <!-- En-tête -->
     <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
         <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
             <div class="nav-content-top px-4 lg:px-8 py-4">
@@ -443,7 +415,7 @@
     </header>
 
     <main class="pt-36 pb-20">
-        <!-- Section Hero -->
+        <!-- Hero -->
         <section class="text-center px-4 max-w-4xl mx-auto mb-16 fade-in-entry">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-2xl">
                 Pôles d'Excellence
@@ -454,7 +426,7 @@
             </p>
         </section>
 
-        <!-- Filtres Multi-sélection -->
+        <!-- Filtres -->
         <section class="max-w-7xl mx-auto px-4 lg:px-8 fade-in-entry" style="animation-delay: 0.1s;">
             <div class="filters-wrapper">
                 <div class="filters-container">
@@ -468,17 +440,15 @@
             </div>
         </section>
 
-        <!-- Grille des Filiales -->
+        <!-- Grille -->
         <section class="max-w-7xl mx-auto px-4 lg:px-8">
             <div id="subsidiary-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 
-                <!-- 1. Finance -->
+                <!-- Items -->
                 <div class="grid-item group-finance fade-in-entry" style="animation-delay: 0.2s;" data-category="finance">
                     <div class="subsidiary-card">
-                        <div class="flex justify-between items-start">
-                            <div class="card-icon-wrapper">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-chart-pie"></i>
                         </div>
                         <h3 class="card-title">Capital Investments</h3>
                         <p class="card-description">
@@ -492,7 +462,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Tech -->
                 <div class="grid-item group-tech fade-in-entry" style="animation-delay: 0.25s;" data-category="tech">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -510,7 +479,6 @@
                     </div>
                 </div>
 
-                <!-- 3. Industrie -->
                 <div class="grid-item group-auto fade-in-entry" style="animation-delay: 0.3s;" data-category="industrie">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -528,7 +496,6 @@
                     </div>
                 </div>
 
-                <!-- 4. Industrie / Defense -->
                 <div class="grid-item group-defense fade-in-entry" style="animation-delay: 0.35s;" data-category="industrie">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -546,7 +513,6 @@
                     </div>
                 </div>
 
-                <!-- 5. Créatif -->
                 <div class="grid-item group-design fade-in-entry" style="animation-delay: 0.4s;" data-category="creatif">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -564,7 +530,6 @@
                     </div>
                 </div>
 
-                <!-- 6. Services -->
                 <div class="grid-item group-events fade-in-entry" style="animation-delay: 0.45s;" data-category="services">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -581,7 +546,6 @@
                     </div>
                 </div>
 
-                <!-- 7. Services / Logistique -->
                 <div class="grid-item group-logistics fade-in-entry" style="animation-delay: 0.5s;" data-category="services">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -598,7 +562,6 @@
                     </div>
                 </div>
 
-                <!-- 8. Industrie / Sport -->
                 <div class="grid-item group-racing fade-in-entry" style="animation-delay: 0.55s;" data-category="industrie">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -616,7 +579,6 @@
                     </div>
                 </div>
 
-                <!-- 9. Créatif / Photo -->
                 <div class="grid-item group-photo fade-in-entry" style="animation-delay: 0.6s;" data-category="creatif">
                     <div class="subsidiary-card">
                         <div class="card-icon-wrapper">
@@ -638,7 +600,7 @@
         </section>
     </main>
 
-    <!-- Pied de page -->
+    <!-- Footer -->
     <footer class="py-8 lg:py-12 bg-black/10 backdrop-blur-xl border-t border-white/5 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <p class="text-sm">
@@ -652,14 +614,13 @@
         // --- Navigation Mobile ---
         const mainNav = document.getElementById('main-nav');
         const menuToggleButton = document.getElementById('menu-toggle-button');
-        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
 
         menuToggleButton.addEventListener('click', () => {
             mainNav.classList.toggle('is-expanded');
             menuToggleButton.classList.toggle('is-active');
         });
 
-        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mainNav.classList.remove('is-expanded');
@@ -667,19 +628,11 @@
             });
         });
 
-        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('data-path') === currentPath) {
-                link.classList.add('active');
-            }
-        });
-
-        // --- Logique de Filtrage Multi-sélection ---
+        // --- Logique de Filtrage Multi-sélection Corrigée ---
         const filterBtns = document.querySelectorAll('.filter-btn');
         const gridItems = document.querySelectorAll('.grid-item');
         
-        // On utilise un Set pour stocker les filtres actifs
+        // Initialisation avec "tout" par défaut
         let activeFilters = new Set(['all']);
 
         filterBtns.forEach(btn => {
@@ -687,22 +640,22 @@
                 const filterValue = btn.getAttribute('data-filter');
 
                 if (filterValue === 'all') {
-                    // Si on clique sur "Tout", on vide le reste et on active "Tout"
+                    // Si clic sur Tout, on réinitialise
                     activeFilters.clear();
                     activeFilters.add('all');
                 } else {
-                    // Si on clique sur une catégorie spécifique
+                    // Si clic sur une catégorie
                     if (activeFilters.has('all')) {
-                        activeFilters.delete('all'); // On enlève "Tout" si on sélectionne une cat
+                        activeFilters.delete('all');
                     }
 
                     if (activeFilters.has(filterValue)) {
-                        activeFilters.delete(filterValue); // Désélectionner
+                        activeFilters.delete(filterValue);
                     } else {
-                        activeFilters.add(filterValue); // Sélectionner
+                        activeFilters.add(filterValue);
                     }
 
-                    // Si plus aucun filtre n'est sélectionné, on remet "Tout" par défaut
+                    // Si plus rien n'est sélectionné, remettre Tout
                     if (activeFilters.size === 0) {
                         activeFilters.add('all');
                     }
@@ -713,7 +666,7 @@
         });
 
         function updateUI() {
-            // 1. Mettre à jour l'état visuel des boutons
+            // 1. Mise à jour des boutons
             filterBtns.forEach(btn => {
                 const val = btn.getAttribute('data-filter');
                 if (activeFilters.has(val)) {
@@ -723,16 +676,17 @@
                 }
             });
 
-            // 2. Mettre à jour la grille
+            // 2. Mise à jour de la grille avec animation fluide et RAPIDE
             gridItems.forEach(item => {
                 const itemCategory = item.getAttribute('data-category');
-                
-                // Vérifier si l'item doit être affiché
-                // Afficher si "all" est actif OU si la catégorie de l'item est dans les filtres actifs
                 const shouldShow = activeFilters.has('all') || activeFilters.has(itemCategory);
 
                 if (shouldShow) {
                     item.classList.remove('hidden-item');
+                    // Reset animation pour la rejouer
+                    item.classList.remove('fade-in-up');
+                    void item.offsetWidth; // Trigger reflow
+                    item.classList.add('fade-in-up');
                 } else {
                     item.classList.add('hidden-item');
                 }
