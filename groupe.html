@@ -121,15 +121,6 @@
         .big-headline { font-size: 3rem; font-weight: 800; letter-spacing: -0.04em; }
         @media (min-width: 1024px) { .big-headline { font-size: 6rem; } }
 
-        .section-label {
-            font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
-            letter-spacing: 0.2em; color: var(--neon-blue); margin-bottom: 1.5rem;
-            display: flex; align-items: center; gap: 0.75rem;
-            opacity: 0; transform: translateX(-20px); transition: all 0.8s ease;
-        }
-        .reveal-active .section-label { opacity: 1; transform: translateX(0); }
-        .section-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--neon-blue); }
-
         /* --- Cards & Bento System --- */
         .glass-card {
             background: rgba(20, 20, 30, 0.6);
@@ -149,25 +140,38 @@
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
         }
 
-        /* --- Value Cards (New Design) --- */
-        .value-card {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
-            padding: 2.5rem 2rem;
+        /* --- New Round Cards (Code Génétique) --- */
+        .round-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 40px; /* Très arrondi */
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .round-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .icon-bubble {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.5rem;
             transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
         }
-        .value-card:hover {
-            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
-            border-top-color: var(--card-color);
+        .round-card:hover .icon-bubble {
+            transform: scale(1.1) rotate(5deg);
         }
-        .value-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--card-color);
-            transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
-        }
-        .value-card:hover::before { transform: scaleX(1); }
 
         /* --- Stats Grid --- */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
@@ -247,7 +251,7 @@
         <!-- 1. HERO SECTION -->
         <section class="mb-32 lg:mb-40 relative px-4 lg:px-12">
             <div class="max-w-5xl reveal-trigger">
-                <div class="section-label">Corporate Overview</div>
+                <!-- Titre Bleu Supprimé -->
                 <h1 class="big-headline mb-8 leading-none">
                     <div class="word-reveal"><span>L'ARCHITECTURE</span></div><br>
                     <div class="word-reveal" style="transition-delay: 0.1s;"><span>DE</span></div>
@@ -263,7 +267,7 @@
             </div>
         </section>
 
-        <!-- 2. CHIFFRES CLÉS (Revue et Corrigée) -->
+        <!-- 2. CHIFFRES CLÉS (Mis à jour) -->
         <section class="mb-32 lg:mb-40 px-2 lg:px-0">
             <div class="flex justify-between items-end mb-12 px-4 reveal-trigger">
                 <h2 class="text-3xl font-bold text-white">Chiffres Clés</h2>
@@ -274,7 +278,7 @@
             </div>
 
             <div class="stats-grid">
-                <!-- Pays -->
+                <!-- Pays (32) -->
                 <div class="glass-card flex flex-col justify-between h-56 group">
                     <div class="flex justify-between items-start">
                         <i class="fas fa-globe text-gray-600 group-hover:text-blue-400 transition-colors text-2xl"></i>
@@ -286,7 +290,7 @@
                     </div>
                 </div>
                 
-                <!-- AUM -->
+                <!-- AUM (800B) -->
                 <div class="glass-card flex flex-col justify-between h-56 bg-white/[0.02] group">
                     <div class="flex justify-between items-start">
                         <i class="fas fa-wallet text-gray-600 group-hover:text-purple-400 transition-colors text-2xl"></i>
@@ -302,7 +306,7 @@
                     </div>
                 </div>
 
-                <!-- Pôles -->
+                <!-- Pôles (9) -->
                 <div class="glass-card flex flex-col justify-between h-56 group">
                     <div class="flex justify-between items-start">
                         <i class="fas fa-layer-group text-gray-600 group-hover:text-pink-400 transition-colors text-2xl"></i>
@@ -314,7 +318,7 @@
                     </div>
                 </div>
 
-                <!-- Valorisation -->
+                <!-- Valorisation (150B) -->
                 <div class="glass-card flex flex-col justify-between h-56 group">
                     <div class="flex justify-between items-start">
                         <i class="fas fa-chart-line text-gray-600 group-hover:text-green-400 transition-colors text-2xl"></i>
@@ -323,7 +327,7 @@
                     <div>
                         <div class="stat-value flex items-baseline gap-1">
                             <span class="text-2xl text-gray-500 mr-1">$</span>
-                            <span data-target="195">0</span>
+                            <span data-target="150">0</span>
                             <span class="text-2xl text-white">B</span>
                         </div>
                         <div class="stat-label">Valorisation Marché</div>
@@ -337,9 +341,7 @@
             
             <!-- HQ Visual -->
             <div class="sticky top-32 self-start h-[500px]">
-                <div class="reveal-trigger mb-6">
-                    <span class="section-label">Headquarters</span>
-                </div>
+                <!-- Titre Bleu Supprimé -->
                 
                 <div class="h-full rounded-2xl overflow-hidden relative group cursor-pointer border border-white/10" id="open-hq-modal">
                     <img src="https://i.imgur.com/raegV41.png" alt="BlackWood HQ Manhattan" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
@@ -359,7 +361,7 @@
 
             <!-- Timeline -->
             <div class="pt-12 lg:pt-32" id="timeline-wrapper">
-                <span class="section-label reveal-trigger mb-12">Timeline</span>
+                <!-- Titre Bleu Supprimé -->
                 <h2 class="text-4xl font-bold text-white mb-16 reveal-trigger">L'Ascension</h2>
 
                 <div class="timeline-container">
@@ -414,52 +416,58 @@
             </div>
         </div>
 
-        <!-- 4. CORE VALUES (Redesign "Code Génétique") -->
-        <section class="mb-20 px-4 max-w-6xl mx-auto">
-            <div class="text-left mb-16 reveal-trigger border-b border-white/10 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <span class="section-label mb-2">Manifesto</span>
-                    <h2 class="text-4xl md:text-5xl font-bold text-white">Notre Code Génétique</h2>
-                </div>
-                <p class="text-gray-400 max-w-sm text-sm text-right">
-                    Les quatre piliers immuables qui dictent chaque décision du conseil d'administration.
+        <!-- 4. CORE VALUES (Design Cases Rondes) -->
+        <section class="mb-20 px-4 max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal-trigger pb-8">
+                <!-- Titre Bleu Supprimé -->
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Notre Code Génétique</h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm">
+                    Les piliers immuables qui dictent chaque décision du conseil d'administration.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Value 1 -->
-                <div class="value-card group" style="--card-color: #60a5fa;">
-                    <i class="fas fa-gem text-3xl text-gray-700 group-hover:text-blue-400 mb-6 transition-colors duration-300"></i>
+                <div class="round-card group">
+                    <div class="icon-bubble group-hover:bg-blue-500/20 group-hover:text-blue-400 text-gray-400">
+                        <i class="fas fa-gem text-2xl"></i>
+                    </div>
                     <h3 class="text-xl font-bold text-white mb-2">Excellence</h3>
                     <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
-                        Le standard minimum est la perfection absolue. Aucun compromis toléré.
+                        Perfection absolue. Aucun compromis.
                     </p>
                 </div>
 
                 <!-- Value 2 -->
-                <div class="value-card group" style="--card-color: #a855f7;">
-                    <i class="fas fa-microchip text-3xl text-gray-700 group-hover:text-purple-400 mb-6 transition-colors duration-300"></i>
+                <div class="round-card group">
+                    <div class="icon-bubble group-hover:bg-purple-500/20 group-hover:text-purple-400 text-gray-400">
+                        <i class="fas fa-microchip text-2xl"></i>
+                    </div>
                     <h3 class="text-xl font-bold text-white mb-2">Innovation</h3>
                     <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
-                        Ne pas suivre le marché. Le précéder. Investissement R&D agressif.
+                        Précéder le marché, jamais le suivre.
                     </p>
                 </div>
 
                 <!-- Value 3 -->
-                <div class="value-card group" style="--card-color: #ec4899;">
-                    <i class="fas fa-crown text-3xl text-gray-700 group-hover:text-pink-400 mb-6 transition-colors duration-300"></i>
+                <div class="round-card group">
+                    <div class="icon-bubble group-hover:bg-pink-500/20 group-hover:text-pink-400 text-gray-400">
+                        <i class="fas fa-crown text-2xl"></i>
+                    </div>
                     <h3 class="text-xl font-bold text-white mb-2">Prestige</h3>
                     <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
-                        Une image de marque immaculée. L'élégance est notre arme de persuasion.
+                        L'élégance est notre arme de persuasion.
                     </p>
                 </div>
 
                 <!-- Value 4 -->
-                <div class="value-card group" style="--card-color: #22c55e;">
-                    <i class="fas fa-chess-rook text-3xl text-gray-700 group-hover:text-green-400 mb-6 transition-colors duration-300"></i>
+                <div class="round-card group">
+                    <div class="icon-bubble group-hover:bg-green-500/20 group-hover:text-green-400 text-gray-400">
+                        <i class="fas fa-chess-rook text-2xl"></i>
+                    </div>
                     <h3 class="text-xl font-bold text-white mb-2">Contrôle</h3>
                     <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
-                        Maîtrise totale de la chaîne de valeur, de la ressource brute au produit fini.
+                        Maîtrise totale de la chaîne de valeur.
                     </p>
                 </div>
             </div>
