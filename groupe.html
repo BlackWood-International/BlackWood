@@ -27,11 +27,10 @@
         /* --- Base Setup --- */
         :root {
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(13, 10, 27, 0.4); /* Plus transparent pour l'effet depth */
+            --glass-bg: rgba(13, 10, 27, 0.4); 
             --neon-accent: #f06292;
             --neon-blue: #004e92;
             --font-mono: 'JetBrains Mono', monospace;
-            --cursor-size: 400px;
         }
 
         body {
@@ -40,7 +39,6 @@
             color: white;
             overflow-x: hidden;
             position: relative;
-            cursor: default; /* On garde le curseur natif mais on ajoute un glow */
         }
 
         /* --- Ambient Background --- */
@@ -53,10 +51,10 @@
             pointer-events: none;
             z-index: -10;
             background: 
-                radial-gradient(circle at 15% 50%, rgba(0, 78, 146, 0.15), transparent 45%),
-                radial-gradient(circle at 85% 30%, rgba(240, 98, 146, 0.1), transparent 45%);
-            filter: blur(60px);
-            opacity: 0.8;
+                radial-gradient(circle at 15% 50%, rgba(0, 78, 146, 0.1), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(240, 98, 146, 0.08), transparent 50%);
+            filter: blur(80px);
+            opacity: 0.6;
         }
 
         .grid-overlay {
@@ -71,26 +69,10 @@
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
-            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
         }
 
-        /* --- Mouse Follower Glow (Le "Spotlight" global) --- */
-        #cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: var(--cursor-size);
-            height: var(--cursor-size);
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: screen;
-            transition: opacity 0.3s ease;
-        }
-
-        /* --- Navigation Styles (Fixes) --- */
-        /* Header Gradient Overlay */
+        /* --- Navigation Styles --- */
         body::before {
             content: '';
             position: fixed;
@@ -124,13 +106,8 @@
         .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
         @media (min-width: 1024px) { #main-nav.is-expanded { max-height: 56px; } .hamburger.is-active .hamburger-line { transform: none; opacity: 1; } }
 
-
-        /* --- CINEMATIC TEXT REVEAL --- */
-        .word-reveal {
-            overflow: hidden;
-            display: inline-flex;
-            line-height: 1.1;
-        }
+        /* --- Typography & Reveals --- */
+        .word-reveal { overflow: hidden; display: inline-flex; line-height: 1.1; }
         .word-reveal span {
             transform: translateY(110%);
             transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -139,185 +116,87 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .reveal-active .word-reveal span {
-            transform: translateY(0);
-        }
+        .reveal-active .word-reveal span { transform: translateY(0); }
 
-        .big-headline {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-        }
+        .big-headline { font-size: 3rem; font-weight: 800; letter-spacing: -0.04em; }
         @media (min-width: 1024px) { .big-headline { font-size: 6rem; } }
 
         .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--neon-blue);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: all 0.8s ease;
+            font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.2em; color: var(--neon-blue); margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.75rem;
+            opacity: 0; transform: translateX(-20px); transition: all 0.8s ease;
         }
         .reveal-active .section-label { opacity: 1; transform: translateX(0); }
         .section-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--neon-blue); }
 
-        /* --- SPOTLIGHT & 3D TILT CARD SYSTEM --- */
-        .spotlight-group {
-            /* Container pour l'effet spotlight partagé */
-            position: relative;
-        }
-
+        /* --- Cards & Bento System --- */
         .glass-card {
-            background: rgba(20, 20, 30, 0.4);
+            background: rgba(20, 20, 30, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-radius: 24px;
-            padding: 2.5rem;
+            border-radius: 20px;
+            padding: 2rem;
             position: relative;
             overflow: hidden;
-            transition: transform 0.1s ease-out; /* Très rapide pour le tilt */
-            transform-style: preserve-3d;
-            will-change: transform;
+            transition: all 0.4s ease-out;
         }
-        
-        /* Inner lighting effect controlled by JS */
-        .glass-card::before {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            left: 0;
-            top: 0;
-            background: radial-gradient(
-                800px circle at var(--mouse-x) var(--mouse-y), 
-                rgba(255, 255, 255, 0.06), 
-                transparent 40%
-            );
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .spotlight-group:hover .glass-card::before {
-            opacity: 1;
-        }
-        
-        /* Border lighting effect */
-        .glass-card::after {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            left: 0;
-            top: 0;
-            background: radial-gradient(
-                600px circle at var(--mouse-x) var(--mouse-y), 
-                rgba(255, 255, 255, 0.3), 
-                transparent 40%
-            );
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0;
-            mix-blend-mode: overlay;
-        }
-        .spotlight-group:hover .glass-card::after {
-            opacity: 1;
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(25, 25, 40, 0.8);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
         }
 
-        .card-content {
+        /* --- Value Cards (New Design) --- */
+        .value-card {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            padding: 2.5rem 2rem;
+            transition: all 0.4s ease;
             position: relative;
-            z-index: 10;
-            transform: translateZ(20px); /* 3D effect */
+            overflow: hidden;
         }
+        .value-card:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+            border-top-color: var(--card-color);
+        }
+        .value-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--card-color);
+            transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+        }
+        .value-card:hover::before { transform: scaleX(1); }
 
-        /* --- STATS GRID --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; perspective: 1000px; }
+        /* --- Stats Grid --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         @media (min-width: 1024px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
         
-        .stat-value { font-family: var(--font-mono); font-size: 3rem; font-weight: 700; color: white; line-height: 1; letter-spacing: -0.05em; }
-        .stat-label { font-size: 0.85rem; color: #9ca3af; margin-top: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-value { font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700; color: white; line-height: 1; letter-spacing: -0.05em; }
+        @media (min-width: 1024px) { .stat-value { font-size: 3.5rem; } }
+        .stat-label { font-size: 0.75rem; color: #9ca3af; margin-top: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* --- MAGNETIC TIMELINE --- */
+        /* --- Timeline --- */
         .timeline-container { position: relative; padding-left: 3rem; }
-        /* La ligne de fond grise */
-        .timeline-line-bg {
-            position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.1);
-        }
-        /* La ligne active qui se remplit */
+        .timeline-line-bg { position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.1); }
         .timeline-line-fill {
-            position: absolute; left: 0; top: 0; width: 2px; background: linear-gradient(to bottom, #004e92, #f06292);
-            height: 0%; /* JS will update this */
-            transition: height 0.1s linear;
+            position: absolute; left: 0; top: 0; width: 1px; background: #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            height: 0%; transition: height 0.1s linear;
         }
+        .timeline-item { position: relative; margin-bottom: 6rem; opacity: 0.2; transform: translateX(-10px); transition: all 0.6s ease; }
+        .timeline-item.active-item { opacity: 1; transform: translateX(0); }
+        .timeline-year { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--neon-blue); margin-bottom: 0.5rem; display: block; }
+        .timeline-item.active-item .timeline-year { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        .timeline-item { position: relative; margin-bottom: 6rem; opacity: 0.3; transform: scale(0.95); transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); filter: blur(2px); }
-        .timeline-item.active-item { opacity: 1; transform: scale(1); filter: blur(0); }
-        
-        .timeline-year { 
-            font-family: var(--font-mono); 
-            font-size: 1.5rem; 
-            font-weight: 700; 
-            color: transparent; 
-            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-            margin-bottom: 0.5rem;
-            display: inline-block;
-            transition: all 0.4s ease;
-        }
-        .timeline-item.active-item .timeline-year {
-            color: #fff;
-            -webkit-text-stroke: 0px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            transform: translateX(10px);
-        }
-
-        /* --- MAGNETIC BUTTON --- */
-        .magnetic-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* --- HQ Reveal --- */
-        .hq-wrapper {
-            position: relative;
-            height: 600px;
-            border-radius: 32px;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-        .hq-img {
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-            width: 110%; /* Pour le parallax */
-            height: 110%;
-            object-fit: cover;
-        }
-        .hq-wrapper:hover .hq-img {
-            transform: scale(1.05);
-        }
-
-        /* --- Footer & Modal (Utility) --- */
-        .footer-link { color: #9ca3af; transition: color 0.3s; }
-        .footer-link:hover { color: white; }
-        
+        /* --- Modal --- */
         #modal-overlay {
-            backdrop-filter: blur(20px);
-            background: rgba(5, 4, 10, 0.9);
+            backdrop-filter: blur(20px); background: rgba(5, 4, 10, 0.9);
             transition: opacity 0.4s ease;
         }
         .modal-content {
-            background: #0f0c1f;
-            border: 1px solid rgba(255,255,255,0.1);
+            background: #0f0c1f; border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 0 100px rgba(0,0,0,0.8);
         }
 
@@ -326,7 +205,6 @@
 <body class="antialiased">
 
     <!-- FX Layers -->
-    <div id="cursor-glow" class="hidden lg:block"></div>
     <div class="ambient-light"></div>
     <div class="grid-overlay"></div>
 
@@ -366,8 +244,8 @@
 
     <main class="pt-32 lg:pt-48 pb-20 px-4 lg:px-8 max-w-[1600px] mx-auto">
 
-        <!-- 1. HERO SECTION (Cinematic) -->
-        <section class="mb-32 lg:mb-48 relative px-4 lg:px-12">
+        <!-- 1. HERO SECTION -->
+        <section class="mb-32 lg:mb-40 relative px-4 lg:px-12">
             <div class="max-w-5xl reveal-trigger">
                 <div class="section-label">Corporate Overview</div>
                 <h1 class="big-headline mb-8 leading-none">
@@ -383,215 +261,206 @@
                     </p>
                 </div>
             </div>
-            
-            <!-- Deco Element Right (Rotating) -->
-            <div class="absolute top-0 right-0 hidden lg:block opacity-20 pointer-events-none mix-blend-overlay">
-                 <svg width="400" height="400" viewBox="0 0 100 100" fill="none" class="animate-[spin_40s_linear_infinite]">
-                    <circle cx="50" cy="50" r="48" stroke="white" stroke-width="0.2" stroke-dasharray="4 4"/>
-                    <circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.1"/>
-                    <path d="M50 0 L50 100 M0 50 L100 50" stroke="white" stroke-width="0.1" />
-                </svg>
-            </div>
         </section>
 
-        <!-- 2. BENTO GRID STATS (3D Tilt & Spotlight) -->
-        <section class="mb-32 lg:mb-48 spotlight-group px-2 lg:px-0">
+        <!-- 2. CHIFFRES CLÉS (Revue et Corrigée) -->
+        <section class="mb-32 lg:mb-40 px-2 lg:px-0">
             <div class="flex justify-between items-end mb-12 px-4 reveal-trigger">
                 <h2 class="text-3xl font-bold text-white">Chiffres Clés</h2>
-                <span class="font-mono text-xs text-green-400 flex items-center gap-2 border border-green-400/20 px-3 py-1 rounded-full bg-green-900/10">
-                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                    LIVE DATA
-                </span>
+                <div class="hidden md:flex items-center gap-3 text-xs font-mono text-gray-500">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span>LAST UPDATE: Q4 2024</span>
+                </div>
             </div>
 
-            <div class="stats-grid" id="tilt-grid">
-                <!-- Stat 1 -->
-                <div class="glass-card flex flex-col justify-between h-64 tilt-card">
-                    <div class="card-content flex flex-col justify-between h-full">
-                        <div class="text-right"><i class="fas fa-globe text-blue-400/50 text-3xl"></i></div>
-                        <div>
-                            <div class="stat-value" data-target="32">0</div>
-                            <div class="stat-label">Pays d'Implantation</div>
-                        </div>
+            <div class="stats-grid">
+                <!-- Pays -->
+                <div class="glass-card flex flex-col justify-between h-56 group">
+                    <div class="flex justify-between items-start">
+                        <i class="fas fa-globe text-gray-600 group-hover:text-blue-400 transition-colors text-2xl"></i>
+                        <span class="text-xs font-mono text-gray-600">GLOBAL</span>
+                    </div>
+                    <div>
+                        <div class="stat-value" data-target="32">0</div>
+                        <div class="stat-label">Pays d'Implantation</div>
                     </div>
                 </div>
                 
-                <!-- Stat 2 -->
-                <div class="glass-card flex flex-col justify-between h-64 tilt-card bg-white/5">
-                     <div class="card-content flex flex-col justify-between h-full">
-                        <div class="text-right"><i class="fas fa-wallet text-purple-400/50 text-3xl"></i></div>
-                        <div>
-                            <div class="stat-value flex items-baseline gap-1"><span data-target="800">0</span><span class="text-2xl text-gray-500">B</span></div>
-                            <div class="stat-label">Actifs Sous Gestion ($)</div>
+                <!-- AUM -->
+                <div class="glass-card flex flex-col justify-between h-56 bg-white/[0.02] group">
+                    <div class="flex justify-between items-start">
+                        <i class="fas fa-wallet text-gray-600 group-hover:text-purple-400 transition-colors text-2xl"></i>
+                        <span class="text-xs font-mono text-gray-600">FINANCE</span>
+                    </div>
+                    <div>
+                        <div class="stat-value flex items-baseline gap-1">
+                            <span class="text-2xl text-gray-500 mr-1">$</span>
+                            <span data-target="800">0</span>
+                            <span class="text-2xl text-white">B</span>
                         </div>
+                        <div class="stat-label">Actifs Sous Gestion</div>
                     </div>
                 </div>
 
-                <!-- Stat 3 -->
-                <div class="glass-card flex flex-col justify-between h-64 tilt-card">
-                     <div class="card-content flex flex-col justify-between h-full">
-                        <div class="text-right"><i class="fas fa-layer-group text-pink-400/50 text-3xl"></i></div>
-                        <div>
-                            <div class="stat-value" data-target="9">0</div>
-                            <div class="stat-label">Pôles Stratégiques</div>
-                        </div>
+                <!-- Pôles -->
+                <div class="glass-card flex flex-col justify-between h-56 group">
+                    <div class="flex justify-between items-start">
+                        <i class="fas fa-layer-group text-gray-600 group-hover:text-pink-400 transition-colors text-2xl"></i>
+                        <span class="text-xs font-mono text-gray-600">STRUCTURE</span>
+                    </div>
+                    <div>
+                        <div class="stat-value" data-target="9">0</div>
+                        <div class="stat-label">Pôles Stratégiques</div>
                     </div>
                 </div>
 
-                <!-- Stat 4 -->
-                <div class="glass-card flex flex-col justify-between h-64 tilt-card">
-                     <div class="card-content flex flex-col justify-between h-full">
-                        <div class="text-right"><i class="fas fa-chart-line text-green-400/50 text-3xl"></i></div>
-                        <div>
-                            <div class="stat-value flex items-baseline gap-1"><span data-target="195">0</span><span class="text-2xl text-gray-500">B</span></div>
-                            <div class="stat-label">Valorisation Marché ($)</div>
+                <!-- Valorisation -->
+                <div class="glass-card flex flex-col justify-between h-56 group">
+                    <div class="flex justify-between items-start">
+                        <i class="fas fa-chart-line text-gray-600 group-hover:text-green-400 transition-colors text-2xl"></i>
+                        <span class="text-xs font-mono text-gray-600">MARKET CAP</span>
+                    </div>
+                    <div>
+                        <div class="stat-value flex items-baseline gap-1">
+                            <span class="text-2xl text-gray-500 mr-1">$</span>
+                            <span data-target="195">0</span>
+                            <span class="text-2xl text-white">B</span>
                         </div>
+                        <div class="stat-label">Valorisation Marché</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. SPLIT SECTION: HQ & INTERACTIVE TIMELINE -->
+        <!-- 3. SPLIT SECTION: HQ & TIMELINE -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-32 mb-32 px-4 lg:px-12">
             
-            <!-- Left: The HQ Visual (Sticky Parallax) -->
-            <div class="sticky top-32 self-start h-[600px] perspective-container">
+            <!-- HQ Visual -->
+            <div class="sticky top-32 self-start h-[500px]">
                 <div class="reveal-trigger mb-6">
                     <span class="section-label">Headquarters</span>
                 </div>
                 
-                <div class="hq-wrapper group shadow-2xl magnetic-area" id="open-hq-modal">
-                    <img src="https://i.imgur.com/raegV41.png" alt="BlackWood HQ Manhattan" class="hq-img absolute top-0 left-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#05040a] via-transparent to-transparent z-10"></div>
+                <div class="h-full rounded-2xl overflow-hidden relative group cursor-pointer border border-white/10" id="open-hq-modal">
+                    <img src="https://i.imgur.com/raegV41.png" alt="BlackWood HQ Manhattan" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     
-                    <div class="absolute bottom-0 left-0 w-full p-10 z-20 transform transition-transform duration-500 group-hover:translate-y-[-10px]">
-                        <h3 class="text-4xl font-bold text-white mb-2">The Tower</h3>
-                        <p class="text-sm font-mono text-gray-300 mb-6">Manhattan, NYC • Est. 1920</p>
-                        
-                        <div class="magnetic-btn bg-white text-black px-6 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform">
-                            EXPLORER L'HISTOIRE <i class="fas fa-arrow-right ml-2"></i>
-                        </div>
+                    <div class="absolute bottom-8 left-8">
+                        <h3 class="text-3xl font-bold text-white mb-1">The Tower</h3>
+                        <p class="text-sm font-mono text-gray-400">Manhattan, NYC</p>
+                    </div>
+                    
+                    <div class="absolute top-8 right-8 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-black/20 backdrop-blur-md group-hover:bg-white group-hover:text-black transition-all">
+                        <i class="fas fa-expand-alt"></i>
                     </div>
                 </div>
             </div>
 
-            <!-- Right: The Vertical Timeline (Progressive) -->
+            <!-- Timeline -->
             <div class="pt-12 lg:pt-32" id="timeline-wrapper">
                 <span class="section-label reveal-trigger mb-12">Timeline</span>
-                <h2 class="text-4xl font-bold text-white mb-20 reveal-trigger">L'Ascension</h2>
+                <h2 class="text-4xl font-bold text-white mb-16 reveal-trigger">L'Ascension</h2>
 
                 <div class="timeline-container">
-                    <!-- Background Line -->
                     <div class="timeline-line-bg"></div>
-                    <!-- Filled Line (Height controlled by scroll) -->
                     <div class="timeline-line-fill" id="progress-line"></div>
 
                     <!-- 2009 -->
                     <div class="timeline-item" data-year="2009">
                         <span class="timeline-year">2009</span>
-                        <h3 class="text-2xl font-bold text-white mt-1">La Fondation</h3>
-                        <p class="text-gray-400 mt-4 text-base leading-relaxed">
-                            Création de BlackWood Capital Investments. La première pierre d'une stratégie financière agressive est posée.
+                        <h3 class="text-xl font-bold text-white">La Fondation</h3>
+                        <p class="text-gray-400 mt-2 text-sm leading-relaxed">
+                            Création de BlackWood Capital Investments. Stratégie high-risk, high-reward.
                         </p>
                     </div>
 
                     <!-- 2011 -->
                     <div class="timeline-item" data-year="2011">
                         <span class="timeline-year">2011</span>
-                        <h3 class="text-2xl font-bold text-white mt-1">IPO & Structure</h3>
-                        <p class="text-gray-400 mt-4 text-base leading-relaxed">
-                            Introduction en bourse majeure à New York. Réforme structurelle créant la holding internationale.
+                        <h3 class="text-xl font-bold text-white">IPO & Structure</h3>
+                        <p class="text-gray-400 mt-2 text-sm leading-relaxed">
+                            Introduction au NYSE. Transformation en holding internationale.
                         </p>
                     </div>
 
                     <!-- 2013 -->
                     <div class="timeline-item" data-year="2013">
                         <span class="timeline-year">2013</span>
-                        <h3 class="text-2xl font-bold text-white mt-1">Expansion Tech</h3>
-                        <p class="text-gray-400 mt-4 text-base leading-relaxed">
-                            Acquisition stratégique de brevets technologiques et lancement de la division BW Tech.
+                        <h3 class="text-xl font-bold text-white">Expansion Tech</h3>
+                        <p class="text-gray-400 mt-2 text-sm leading-relaxed">
+                            Lancement de la division BW Tech. Acquisition de brevets IA.
                         </p>
                     </div>
 
                     <!-- 2018 -->
                     <div class="timeline-item" data-year="2018">
                         <span class="timeline-year">2018</span>
-                        <h3 class="text-2xl font-bold text-white mt-1">Le Virage Industriel</h3>
-                        <p class="text-gray-400 mt-4 text-base leading-relaxed">
-                            Rachat de complexes industriels en Europe et en Asie. BlackWood devient un acteur physique, pas seulement financier.
+                        <h3 class="text-xl font-bold text-white">Le Virage Industriel</h3>
+                        <p class="text-gray-400 mt-2 text-sm leading-relaxed">
+                            BlackWood devient un acteur industriel physique (Mines, Énergie).
                         </p>
                     </div>
 
                     <!-- 2024 -->
                     <div class="timeline-item" data-year="2024">
                         <span class="timeline-year">2024</span>
-                        <h3 class="text-2xl font-bold text-white mt-1">L'Empire Systémique</h3>
-                        <p class="text-gray-400 mt-4 text-base leading-relaxed">
-                            Diversification totale : Défense, Luxe, Automobile. BlackWood est désormais "Too Big To Fail".
+                        <h3 class="text-xl font-bold text-white">L'Empire Systémique</h3>
+                        <p class="text-gray-400 mt-2 text-sm leading-relaxed">
+                            Diversification totale. BlackWood est désormais "Too Big To Fail".
                         </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 4. VALUES GRID (Horizontal UX on Desktop) -->
-        <section class="mb-20 spotlight-group px-4">
-            <div class="text-center max-w-2xl mx-auto mb-16 reveal-trigger">
-                <span class="section-label justify-center">Core Values</span>
-                <h2 class="text-4xl md:text-5xl font-bold text-white">Code Génétique</h2>
+        <!-- 4. CORE VALUES (Redesign "Code Génétique") -->
+        <section class="mb-20 px-4 max-w-6xl mx-auto">
+            <div class="text-left mb-16 reveal-trigger border-b border-white/10 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="section-label mb-2">Manifesto</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">Notre Code Génétique</h2>
+                </div>
+                <p class="text-gray-400 max-w-sm text-sm text-right">
+                    Les quatre piliers immuables qui dictent chaque décision du conseil d'administration.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
                 <!-- Value 1 -->
-                <div class="glass-card group hover:bg-white/5 cursor-default tilt-card h-80 flex flex-col justify-center items-center text-center">
-                    <div class="card-content">
-                        <div class="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-500 shadow-[0_0_30px_rgba(59,130,246,0.15)]">
-                            <i class="fas fa-gem text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Excellence</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed px-4">
-                            Le standard minimum est la perfection. Aucun compromis.
-                        </p>
-                    </div>
+                <div class="value-card group" style="--card-color: #60a5fa;">
+                    <i class="fas fa-gem text-3xl text-gray-700 group-hover:text-blue-400 mb-6 transition-colors duration-300"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Excellence</h3>
+                    <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
+                        Le standard minimum est la perfection absolue. Aucun compromis toléré.
+                    </p>
                 </div>
 
                 <!-- Value 2 -->
-                <div class="glass-card group hover:bg-white/5 cursor-default tilt-card h-80 flex flex-col justify-center items-center text-center">
-                    <div class="card-content">
-                        <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-6 text-purple-400 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all duration-500 shadow-[0_0_30px_rgba(168,85,247,0.15)]">
-                            <i class="fas fa-lightbulb text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Innovation</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed px-4">
-                            Anticiper le futur. Investissement massif en R&D.
-                        </p>
-                    </div>
+                <div class="value-card group" style="--card-color: #a855f7;">
+                    <i class="fas fa-microchip text-3xl text-gray-700 group-hover:text-purple-400 mb-6 transition-colors duration-300"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Innovation</h3>
+                    <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
+                        Ne pas suivre le marché. Le précéder. Investissement R&D agressif.
+                    </p>
                 </div>
 
                 <!-- Value 3 -->
-                <div class="glass-card group hover:bg-white/5 cursor-default tilt-card h-80 flex flex-col justify-center items-center text-center">
-                    <div class="card-content">
-                         <div class="w-16 h-16 rounded-full bg-pink-500/10 border border-pink-500/30 flex items-center justify-center mb-6 text-pink-400 group-hover:scale-110 group-hover:bg-pink-500/20 transition-all duration-500 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
-                            <i class="fas fa-crown text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Prestige</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed px-4">
-                            Une image de marque immaculée. L'élégance est une arme.
-                        </p>
-                    </div>
+                <div class="value-card group" style="--card-color: #ec4899;">
+                    <i class="fas fa-crown text-3xl text-gray-700 group-hover:text-pink-400 mb-6 transition-colors duration-300"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Prestige</h3>
+                    <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
+                        Une image de marque immaculée. L'élégance est notre arme de persuasion.
+                    </p>
                 </div>
 
                 <!-- Value 4 -->
-                <div class="glass-card group hover:bg-white/5 cursor-default tilt-card h-80 flex flex-col justify-center items-center text-center">
-                    <div class="card-content">
-                         <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mb-6 text-green-400 group-hover:scale-110 group-hover:bg-green-500/20 transition-all duration-500 shadow-[0_0_30px_rgba(34,197,94,0.15)]">
-                            <i class="fas fa-globe text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Influence</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed px-4">
-                            Au-delà du business, nous façonnons les économies.
-                        </p>
-                    </div>
+                <div class="value-card group" style="--card-color: #22c55e;">
+                    <i class="fas fa-chess-rook text-3xl text-gray-700 group-hover:text-green-400 mb-6 transition-colors duration-300"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Contrôle</h3>
+                    <p class="text-sm text-gray-500 group-hover:text-gray-300 transition-colors leading-relaxed">
+                        Maîtrise totale de la chaîne de valeur, de la ressource brute au produit fini.
+                    </p>
                 </div>
             </div>
         </section>
@@ -599,7 +468,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 bg-black/10 backdrop-blur-xl border-t border-white/5">
+    <footer class="py-12 bg-black/20 backdrop-blur-xl border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <p class="text-sm">
                 Copyright &copy; 2025 BlackWood International Corp. Tous droits réservés.
@@ -608,7 +477,7 @@
         </div>
     </footer>
 
-    <!-- MODAL HQ (Hidden by default) -->
+    <!-- MODAL HQ -->
     <div id="modal-overlay" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="modal-content w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl relative transform scale-95 transition-transform duration-300" id="modal-panel">
             <button id="close-modal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-20">
@@ -630,10 +499,6 @@
                         <p>
                             Entre 2011 et 2013, sous l'impulsion d'Yves Land, le bâtiment a subi une métamorphose de 450 millions de dollars.
                         </p>
-                        <div class="mt-8 pt-6 border-t border-white/10">
-                            <h4 class="text-white font-bold mb-2">Visites Privées</h4>
-                            <p class="text-xs text-gray-500">Accessibles uniquement aux actionnaires Platinum.</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -641,61 +506,7 @@
     </div>
 
     <script>
-        // --- 1. GLOBAL CURSOR GLOW EFFECT ---
-        const cursor = document.getElementById('cursor-glow');
-        
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX;
-            const y = e.clientY;
-            
-            // Move cursor glow
-            cursor.style.left = x + 'px';
-            cursor.style.top = y + 'px';
-
-            // Update CSS vars for Spotlight Cards
-            document.querySelectorAll('.spotlight-group').forEach(group => {
-                const rect = group.getBoundingClientRect();
-                const groupX = e.clientX - rect.left;
-                const groupY = e.clientY - rect.top;
-                
-                // Pour chaque carte, on update la position relative à la souris
-                group.querySelectorAll('.glass-card').forEach(card => {
-                    const cardRect = card.getBoundingClientRect();
-                    const cardX = e.clientX - cardRect.left;
-                    const cardY = e.clientY - cardRect.top;
-                    
-                    card.style.setProperty('--mouse-x', `${cardX}px`);
-                    card.style.setProperty('--mouse-y', `${cardY}px`);
-                });
-            });
-        });
-
-        // --- 2. 3D TILT EFFECT ON CARDS ---
-        const tiltCards = document.querySelectorAll('.tilt-card');
-
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                // Calculer le centre
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                // Rotation max
-                const rotateX = ((y - centerY) / centerY) * -5; // -5deg to 5deg
-                const rotateY = ((x - centerX) / centerX) * 5;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-            });
-        });
-
-        // --- 3. CINEMATIC TEXT REVEAL & ANIMATIONS ---
+        // --- 1. ANIMATIONS & REVEALS ---
         const observerOptions = { threshold: 0.15, rootMargin: "0px" };
         
         const revealObserver = new IntersectionObserver((entries) => {
@@ -703,17 +514,18 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('reveal-active');
                     
-                    // Trigger Text Slide Up
                     if(entry.target.querySelector('.reveal-text')) {
                         entry.target.querySelector('.reveal-text').style.transform = 'translateY(0)';
                     }
 
                     // Trigger Counters
-                    const counters = entry.target.querySelectorAll('.stat-value[data-target]');
+                    const counters = entry.target.querySelectorAll('.stat-value[data-target], .stat-value [data-target]');
                     counters.forEach(counter => {
-                        if(!counter.classList.contains('counted')) {
-                            animateCounter(counter);
-                            counter.classList.add('counted');
+                        // Handle both direct element and nested span
+                        const targetEl = counter.hasAttribute('data-target') ? counter : counter.querySelector('[data-target]');
+                        if(targetEl && !targetEl.classList.contains('counted')) {
+                            animateCounter(targetEl);
+                            targetEl.classList.add('counted');
                         }
                     });
 
@@ -726,8 +538,8 @@
 
         function animateCounter(el) {
             const target = parseInt(el.getAttribute('data-target'));
-            const duration = 2500;
-            const step = Math.ceil(target / (duration / 16));
+            const duration = 1500; // Plus rapide (1.5s)
+            const step = Math.max(1, Math.ceil(target / (duration / 16)));
             let current = 0;
 
             const timer = setInterval(() => {
@@ -741,7 +553,7 @@
             }, 16);
         }
 
-        // --- 4. ADVANCED TIMELINE SCROLL ---
+        // --- 2. TIMELINE SCROLL ---
         const timelineWrapper = document.getElementById('timeline-wrapper');
         const progressLine = document.getElementById('progress-line');
         const timelineItems = document.querySelectorAll('.timeline-item');
@@ -752,19 +564,14 @@
             const rect = timelineWrapper.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             
-            // Calculer la progression de la ligne
-            // On commence à remplir quand le wrapper est à 50% de l'écran
             const startOffset = windowHeight * 0.6;
             let progress = (windowHeight - rect.top - startOffset) / (rect.height);
-            
-            // Clamper la valeur entre 0 et 100%
             progress = Math.max(0, Math.min(1, progress));
             progressLine.style.height = `${progress * 100}%`;
 
-            // Active State pour les items
             timelineItems.forEach(item => {
                 const itemRect = item.getBoundingClientRect();
-                const triggerPoint = windowHeight * 0.7; // Point d'activation
+                const triggerPoint = windowHeight * 0.75;
 
                 if (itemRect.top < triggerPoint && itemRect.bottom > 0) {
                     item.classList.add('active-item');
@@ -774,21 +581,7 @@
             });
         });
 
-        // --- 5. MAGNETIC BUTTONS ---
-        document.querySelectorAll('.magnetic-btn').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
-
-        // --- Navigation Mobile Logic ---
+        // --- 3. MOBILE NAV ---
         const mainNav = document.getElementById('main-nav');
         const menuToggleButton = document.getElementById('menu-toggle-button');
         const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
@@ -805,7 +598,7 @@
             });
         });
 
-        // --- Modal Logic ---
+        // --- 4. MODAL ---
         const modalOverlay = document.getElementById('modal-overlay');
         const modalPanel = document.getElementById('modal-panel');
         const openModalBtn = document.getElementById('open-hq-modal');
@@ -831,8 +624,8 @@
             }, 300);
         }
 
-        openModalBtn.addEventListener('click', openModal);
-        closeModalBtn.addEventListener('click', closeModal);
+        if(openModalBtn) openModalBtn.addEventListener('click', openModal);
+        if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) closeModal();
         });
