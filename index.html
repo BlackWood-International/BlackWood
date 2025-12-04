@@ -170,7 +170,11 @@
         /* BOUTON INTERACTIF - Modification de l'effet hover */
         .btn-arrow { 
             width: 48px; 
-            height: 48px; 
+            height: 48px;
+            /* CORRECTIF MOBILE : Empêche l'écrasement */
+            min-width: 48px; 
+            flex-shrink: 0;
+            
             border-radius: 50%; 
             border: 1px solid rgba(255,255,255,0.15); 
             display: flex; 
@@ -498,15 +502,15 @@
 
         // --- GESTION DU TICKER BOURSIER ALÉATOIRE ---
         function generateRandomTicker() {
-            // Configuration des actions
+            // Configuration des actions avec des données réalistes pour 2025
             const stocks = [
+                { name: "S&P 500", basePrice: 5980, volatility: 2 },
+                { name: "NASDAQ", basePrice: 19200, volatility: 5 },
+                { name: "CAC 40", basePrice: 7800, volatility: 5 },
+                { name: "DAX", basePrice: 18900, volatility: 8 },
                 { name: "BW.HOLDINGS", basePrice: 1240, volatility: 20 },
                 { name: "BW.TECH", basePrice: 890, volatility: 15 },
-                { name: "BW.AUTO", basePrice: 455, volatility: 10 },
-                { name: "S&P 500", basePrice: 4150, volatility: 50 },
-                { name: "NASDAQ", basePrice: 12600, volatility: 100 },
-                { name: "BW.ENERGY", basePrice: 320, volatility: 8 },
-                { name: "BW.DEFENSE", basePrice: 560, volatility: 12 }
+                { name: "BW.ENERGY", basePrice: 320, volatility: 8 }
             ];
 
             const tickerContainer = document.getElementById('ticker-content');
