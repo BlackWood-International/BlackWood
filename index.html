@@ -44,25 +44,92 @@
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
-        /* --- Navigation --- */
-        .nav-link { transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; display: inline-block; cursor: pointer;}
-        .nav-link.active { font-weight: 600; transform: translateY(-3px); color: #ffffff; }
-        .nav-link:not(.active):hover { color: #ffffff; }
-        .nav-link.active::after, .nav-link:hover::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 100%; height: 2px; background: linear-gradient(to right, #004e92, #f06292); opacity: 1; transition: all 0.3s; transform: translateX(-50%) scaleX(1); border-radius: 9999px; }
-        .nav-link:not(.active)::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 100%; height: 2px; background: linear-gradient(to right, #004e92, #f06292); opacity: 0; transform: translateX(-50%) scaleX(0); transition: all 0.3s; }
-        #main-nav { transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); max-height: 56px; overflow: hidden; border-radius: 32px; }
-        #main-nav.is-expanded { max-height: 450px; }
-        .nav-content-top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; }
-        .logo-link, .hamburger-button { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* --- NAVIGATION (RESTAURÉE DEPUIS LE CODE ORIGINAL) --- */
+        .nav-link {
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            display: inline-block;
+        }
+        .nav-link.active {
+            font-weight: 600;
+            transform: translateY(-3px);
+            color: #ffffff;
+        }
+        .nav-link:not(.active):hover {
+            color: #ffffff;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            transition: width 0.3s ease-out;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Menu Mobile */
+        #main-nav {
+            max-height: 56px;
+            overflow: hidden;
+            border-radius: 32px;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #main-nav.is-expanded {
+            max-height: 450px;
+        }
+        .nav-content-top {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
+        }
+        .logo-link, .hamburger-button {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         #main-nav.is-expanded .logo-link { transform: translate(10px, 10px); }
         #main-nav.is-expanded .hamburger-button { transform: translate(-10px, 10px); }
-        .mobile-links { opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out 0.2s; padding-top: 1.5rem; padding-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
-        #main-nav.is-expanded .mobile-links { opacity: 1; pointer-events: auto; }
-        .hamburger { display: flex; flex-direction: column; justify-content: space-between; width: 24px; height: 18px; cursor: pointer; }
-        .hamburger-line { width: 100%; height: 2px; background-color: white; transition: all 0.3s ease-in-out; }
+        
+        .mobile-links {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out 0.2s;
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #main-nav.is-expanded .mobile-links {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .hamburger-line {
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
         .hamburger.is-active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
         @media (min-width: 1024px) {
             #main-nav.is-expanded { max-height: 56px; }
             .hamburger.is-active .hamburger-line:nth-child(1) { transform: none; }
@@ -116,8 +183,10 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            cursor: pointer; /* Indique que tout est cliquable */
+            /* Suppression du cursor pointer global */
+            cursor: default; 
         }
+        /* Effet de levée au survol conservé pour le visuel, mais sans l'effet de clic global */
         .bento-card:hover {
             border-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-6px);
@@ -142,16 +211,24 @@
         @media (min-width: 768px) { .card-wide { grid-column: span 2; } }
         @media (min-width: 1024px) { .card-wide { grid-column: span 2; } }
 
-        /* --- Typographie --- */
+        /* --- Typographie Adaptative --- */
         .hero-title {
-            font-size: 2.5rem; line-height: 0.9; font-weight: 900; letter-spacing: -0.04em; color: white;
+            font-size: 2.25rem; /* Adapté mobile */
+            line-height: 0.9; 
+            font-weight: 900; 
+            letter-spacing: -0.04em; 
+            color: white;
             text-shadow: 0 0 40px rgba(255,255,255,0.1);
         }
+        @media (min-width: 768px) { .hero-title { font-size: 3.5rem; } }
         @media (min-width: 1024px) { .hero-title { font-size: 4.5rem; } }
 
         .label-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #6b7280; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px; }
         .label-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--success); box-shadow: 0 0 8px var(--success); }
-        .stat-value { font-size: 3rem; font-weight: 800; color: white; line-height: 1; font-family: var(--font-mono); letter-spacing: -0.05em; }
+        
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; font-family: var(--font-mono); letter-spacing: -0.05em; }
+        @media (min-width: 768px) { .stat-value { font-size: 3rem; } }
+
         .stat-change { font-size: 0.9rem; font-weight: 600; color: var(--success); display: flex; align-items: center; gap: 0.25rem; font-family: var(--font-mono); }
 
         /* --- Animations --- */
@@ -160,8 +237,29 @@
         .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; } .delay-5 { animation-delay: 0.5s; } .delay-6 { animation-delay: 0.6s; }
 
-        .btn-arrow { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: white; background: rgba(255,255,255,0.05); }
-        .bento-card:hover .btn-arrow { background: white; color: black; transform: rotate(-45deg); border-color: white; }
+        /* BOUTON INTERACTIF */
+        .btn-arrow { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%; 
+            border: 1px solid rgba(255,255,255,0.15); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.3s; 
+            color: white; 
+            background: rgba(255,255,255,0.05); 
+            cursor: pointer; /* Le curseur main est seulement ICI */
+            position: relative;
+            z-index: 20;
+        }
+        .btn-arrow:hover { 
+            background: white; 
+            color: black; 
+            transform: rotate(-45deg); 
+            border-color: white; 
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
 
         /* --- Footer & Toast --- */
         .footer-link { color: #9ca3af; transition: color 0.3s; font-size: 0.9rem; cursor: pointer; }
@@ -199,6 +297,14 @@
         
         #toast i { color: var(--neon-blue); font-size: 1.2rem; }
 
+        /* Responsive Big Title */
+        .big-title {
+            font-size: 3rem; /* Mobile */
+        }
+        @media (min-width: 640px) { .big-title { font-size: 5rem; } }
+        @media (min-width: 1024px) { .big-title { font-size: 8rem; } }
+        @media (min-width: 1280px) { .big-title { font-size: 10rem; } }
+
     </style>
 </head>
 <body class="bg-[#05040a]">
@@ -207,7 +313,9 @@
     <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
         <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
             <div class="nav-content-top px-4 lg:px-8 py-4">
-                <a href="#hero" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">BlackWood</a>
+                <a href="index.html" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">
+                    BlackWood
+                </a>
                 <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
                     <li><a href="index.html" class="nav-link active">Accueil</a></li>
                     <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
@@ -241,12 +349,12 @@
     <!-- Main Content -->
     <main class="pt-28 lg:pt-32 px-4 lg:px-8 max-w-[1600px] mx-auto min-h-screen">
 
-        <!-- GRAND TITRE "BLACKWOOD" -->
+        <!-- GRAND TITRE "BLACKWOOD" Responsive -->
         <section class="text-center py-12 lg:py-20 stagger-in">
-            <h1 class="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-700 leading-none select-none drop-shadow-2xl">
+            <h1 class="big-title font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-700 leading-none select-none drop-shadow-2xl">
                 BLACKWOOD
             </h1>
-            <p class="text-gray-500 text-xs md:text-sm tracking-[0.6em] uppercase mt-6 font-bold">International Corp. Holdings</p>
+            <p class="text-gray-500 text-[10px] md:text-sm tracking-[0.4em] md:tracking-[0.6em] uppercase mt-4 md:mt-6 font-bold">International Corp. Holdings</p>
         </section>
         
         <!-- Live Ticker Bar -->
@@ -271,7 +379,7 @@
         <section class="mb-12 lg:mb-16 text-center lg:text-left stagger-in delay-1">
             <div class="flex flex-col lg:flex-row justify-between items-end gap-6">
                 <div class="max-w-3xl">
-                    <p class="label-text text-pink-500 mb-3"><span class="label-dot bg-pink-500"></span>Statement 2025</p>
+                    <p class="label-text text-pink-500 mb-3 justify-center lg:justify-start"><span class="label-dot bg-pink-500"></span>Statement 2025</p>
                     <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                         La convergence de la<br>
                         <span class="text-gray-600">finance et du contrôle.</span>
@@ -288,7 +396,8 @@
         <div class="bento-grid">
             
             <!-- 1. HERO BLOCK (Bourse) -->
-            <div class="bento-card card-market-hero stagger-in delay-1 group" onclick="window.location.href='actualite-bourse.html'">
+            <!-- RETRAIT de onclick sur la div parente -->
+            <div class="bento-card card-market-hero stagger-in delay-1 group">
                 <div class="absolute w-[400px] h-[400px] bg-blue-600/10 blur-[120px] -top-20 -right-20 group-hover:bg-blue-600/20 transition-all duration-700"></div>
                 <div class="absolute top-0 right-10 w-[1px] h-full bg-white/5"></div>
                 
@@ -316,28 +425,35 @@
                             <span>VOL: 45M</span>
                         </div>
                     </div>
-                    <div class="btn-arrow ml-auto sm:ml-0 group-hover:bg-white group-hover:text-black">
+                    <!-- Le lien est uniquement sur le bouton -->
+                    <a href="actualite-bourse.html" class="btn-arrow ml-auto sm:ml-0 group-hover:bg-white group-hover:text-black">
                         <i class="fas fa-chart-line"></i>
-                    </div>
+                    </a>
                 </div>
             </div>
 
-            <!-- 2. VISUAL BLOCK (Redirection vers Presence Mondiale) -->
-            <div class="bento-card card-visual stagger-in delay-2 group relative h-64 md:h-auto" onclick="window.location.href='presence-mondiale.html'">
+            <!-- 2. VISUAL BLOCK (The Tower) -->
+            <div class="bento-card card-visual stagger-in delay-2 group relative h-64 md:h-auto">
                 <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-50 group-hover:opacity-70 grayscale hover:grayscale-0" 
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-50 group-hover:opacity-70 grayscale hover:grayscale-0 pointer-events-none" 
                      alt="Siège">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                <div class="absolute bottom-8 left-8 z-10">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-8 left-8 z-10 pointer-events-none">
                     <div class="w-10 h-1 bg-white mb-4"></div>
                     <p class="text-white font-bold text-2xl">The Tower</p>
                     <p class="text-gray-400 text-sm font-mono mt-1">HQ: Manhattan, NYC</p>
                 </div>
+                <!-- Bouton d'action explicite -->
+                <a href="presence-mondiale.html" class="absolute top-6 right-6 btn-arrow z-20 group-hover:bg-white group-hover:text-black">
+                    <i class="fas fa-map-marker-alt"></i>
+                </a>
             </div>
 
-            <!-- 3. STAT BLOCK (Redirection Groupe) -->
-            <div class="bento-card card-stat stagger-in delay-3 h-48 md:h-auto" onclick="window.location.href='groupe.html'">
-                <div class="absolute top-4 right-4 text-gray-600"><i class="fas fa-layer-group"></i></div>
+            <!-- 3. STAT BLOCK (Groupe) -->
+            <div class="bento-card card-stat stagger-in delay-3 h-48 md:h-auto group relative">
+                <a href="groupe.html" class="absolute top-4 right-4 btn-arrow w-8 h-8 text-xs z-20 group-hover:bg-white group-hover:text-black">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                 <div>
                     <p class="label-text justify-center">Actifs sous Gestion</p>
                     <div class="stat-value text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-500 mt-2">
@@ -349,47 +465,54 @@
                 </div>
             </div>
 
-            <!-- 4. INVESTISSEURS BLOCK (Redirection Bourse ou Toast pour Download) -->
-            <div class="bento-card card-ticker stagger-in delay-4 flex flex-col justify-center h-48 md:h-auto group hover:bg-white/5" onclick="window.location.href='actualite-bourse.html'">
+            <!-- 4. INVESTISSEURS BLOCK -->
+            <div class="bento-card card-ticker stagger-in delay-4 flex flex-col justify-center h-48 md:h-auto group hover:bg-white/5">
                 <div class="flex items-center justify-between mb-2">
                     <p class="label-text mb-0">Actionnaires</p>
-                    <i class="fas fa-file-contract text-gray-500"></i>
+                    <!-- Lien vers page Bourse -->
+                    <a href="actualite-bourse.html" class="text-gray-500 hover:text-white transition-colors"><i class="fas fa-external-link-alt"></i></a>
                 </div>
                 <h3 class="text-2xl font-bold text-white mb-1">Investisseurs</h3>
                 <p class="text-sm text-gray-400 mb-4">Rapports trimestriels et assemblées.</p>
                 <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs font-mono text-gray-500">
                     <span>Q4 2024: PUBLIÉ</span>
-                    <!-- Ce bouton spécifique déclenche le toast -->
-                    <i class="fas fa-download hover:text-white" onclick="event.stopPropagation(); showToast('Téléchargement réservé aux membres');"></i>
+                    <!-- Bouton Download qui déclenche le Toast -->
+                    <button class="btn-arrow w-8 h-8 group-hover:bg-white group-hover:text-black" onclick="showToast('Téléchargement réservé aux membres');">
+                        <i class="fas fa-download"></i>
+                    </button>
                 </div>
             </div>
 
             <!-- 5. WIDE LINK BLOCK (Filiales) -->
-            <div class="bento-card card-wide stagger-in delay-5 group cursor-pointer" onclick="window.location.href='filiales.html'">
-                <div class="absolute inset-0 bg-gradient-to-r from-purple-900/10 to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="bento-card card-wide stagger-in delay-5 group">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-900/10 to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                 <div class="flex flex-col h-full justify-between relative z-10">
                     <div class="flex justify-between items-start">
                         <p class="label-text text-white"><span class="label-dot bg-white"></span>Structure</p>
-                        <i class="fas fa-th-large text-gray-600 group-hover:text-white transition-colors text-xl"></i>
+                        <i class="fas fa-th-large text-gray-600 transition-colors text-xl"></i>
                     </div>
                     <div class="flex items-end justify-between mt-8 sm:mt-0">
                         <div>
                             <h3 class="text-3xl font-bold text-white mb-3">9 Pôles Stratégiques</h3>
                             <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white transition-colors">Finance</span>
-                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white transition-colors">Tech</span>
-                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white transition-colors">Industrie</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5">Finance</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5">Tech</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs font-medium text-gray-400 border border-white/5">Industrie</span>
                             </div>
                         </div>
-                        <div class="btn-arrow bg-white/5 group-hover:bg-white group-hover:text-black">
+                        <!-- Lien uniquement sur le bouton -->
+                        <a href="filiales.html" class="btn-arrow bg-white/5 group-hover:bg-white group-hover:text-black">
                             <i class="fas fa-arrow-right"></i>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- 6. PHILOSOPHY BLOCK -->
-            <div class="bento-card stagger-in delay-6 h-auto" onclick="window.location.href='groupe.html'">
+            <div class="bento-card stagger-in delay-6 h-auto group relative">
+                 <a href="groupe.html" class="absolute top-6 right-6 btn-arrow w-8 h-8 text-xs z-20 group-hover:bg-white group-hover:text-black">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                 <i class="fas fa-quote-left text-3xl text-gray-700 mb-4 opacity-50"></i>
                 <p class="text-base md:text-lg font-light italic text-gray-300 leading-relaxed">
                     "Le vrai pouvoir ne fait pas de bruit. Il construit des structures qui durent des siècles."
@@ -416,7 +539,7 @@
     </main>
 
     <script>
-        // --- Navigation Mobile (INCHANGÉ) ---
+        // --- Navigation Mobile ---
         const mainNav = document.getElementById('main-nav');
         const menuToggleButton = document.getElementById('menu-toggle-button');
         const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
@@ -452,7 +575,6 @@
         // --- Toast Notification Function ---
         function showToast(message) {
             var toast = document.getElementById("toast");
-            // Change le texte si un message spécifique est fourni
             if(message) {
                 toast.innerHTML = '<i class="fas fa-lock"></i> <span>' + message + '</span>';
             }
