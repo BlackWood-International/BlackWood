@@ -3,259 +3,604 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackWood - Le Groupe</title>
+    <title>BlackWood International</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
-    
-    <!-- Meta Open Graph -->
-    <meta property="og:title" content="BlackWood International Corp." />
-    <meta property="og:description" content="L'architecture du pouvoir. Histoire et Gouvernance." />
-    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood+Group" />
+
+    <!-- Balises Meta pour un meilleur affichage sur les réseaux sociaux (Open Graph) -->
+    <meta property="og:title" content="BlackWood International" />
+    <meta property="og:description" content="Découvrez notre histoire, nos valeurs et notre leadership. Excellence, Innovation, Influence." />
+    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://www.blackwood.com/groupe.html" />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#05040a">
+    <meta property="og:site_name" content="BlackWood" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="theme-color" content="#0d0a1b">
 
-    <!-- Tailwind & Fonts -->
+    <!-- Chargement de Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Police d'écriture Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        /* --- Base & Variables (Identiques à l'accueil) --- */
-        :root {
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(10, 8, 20, 0.6);
-            --neon-accent: #f06292;
-            --neon-blue: #004e92;
-            --success: #34d399;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
-
+        /* Styles personnalisés pour le design BlackWood */
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #05040a;
-            color: white;
+            background-color: #0d0a1b;
+            scroll-behavior: smooth;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 0%, #1a162e 0%, #05040a 50%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-        }
-
-        /* --- NAVIGATION (STRICTEMENT IDENTIQUE) --- */
-        .nav-link { transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; display: inline-block; cursor: pointer;}
-        .nav-link.active { font-weight: 600; transform: translateY(-3px); color: #ffffff; }
-        .nav-link:not(.active):hover { color: #ffffff; }
-        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: linear-gradient(to right, #004e92, #f06292); transition: width 0.3s ease-out; }
-        .nav-link.active::after, .nav-link:hover::after { width: 100%; }
-
-        #main-nav { transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); max-height: 56px; overflow: hidden; border-radius: 32px; }
-        #main-nav.is-expanded { max-height: 450px; }
-        .nav-content-top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; }
-        .logo-link, .hamburger-button { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        #main-nav.is-expanded .logo-link { transform: translate(10px, 10px); }
-        #main-nav.is-expanded .hamburger-button { transform: translate(-10px, 10px); }
-        .mobile-links { opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out 0.2s; padding-top: 1.5rem; padding-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
-        #main-nav.is-expanded .mobile-links { opacity: 1; pointer-events: auto; }
-        .hamburger { display: flex; flex-direction: column; justify-content: space-between; width: 24px; height: 18px; cursor: pointer; }
-        .hamburger-line { width: 100%; height: 2px; background-color: white; transition: all 0.3s ease-in-out; transform-origin: center; }
-        .hamburger.is-active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-        .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-        @media (min-width: 1024px) { #main-nav.is-expanded { max-height: 56px; } .hamburger.is-active .hamburger-line { transform: none; opacity: 1; } }
-
-        /* --- Bento Grid Layout --- */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.25rem;
-            margin-bottom: 4rem;
-        }
-
-        @media (min-width: 768px) {
-            .bento-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-auto-rows: minmax(250px, auto);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .bento-grid {
-                grid-template-columns: repeat(4, 1fr);
-                /* Grille un peu plus haute pour accommoder le contenu textuel */
-                grid-template-rows: repeat(4, 280px); 
-                gap: 1.5rem;
-            }
-        }
-
-        /* --- Carte Bento --- */
-        .bento-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 2.25rem;
             position: relative;
+        }
+
+        /* Effet Liquid Glass pour l'arrière-plan */
+        .liquid-glass-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 78, 146, 0.1) 0%, rgba(240, 98, 146, 0.1) 100%);
+            animation: liquid-flow 25s ease-in-out infinite;
+            background-size: 200% 200%;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Animation des dégradés pour l'effet Liquid Glass */
+        @keyframes liquid-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Effet de fondu en haut de l'écran */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 40;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+        }
+
+        /* Style pour les liens de navigation */
+        .nav-link {
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            display: inline-block;
+        }
+        .nav-link.active {
+            font-weight: 600;
+            transform: translateY(-3px);
+            color: #ffffff;
+        }
+        .nav-link:not(.active):hover {
+            color: #ffffff;
+        }
+
+        /* Barres de dégradé sous les liens */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+            transition: width 0.3s ease-out;
+        }
+
+        /* La barre est visible au survol et pour le lien actif */
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* --- STYLES POUR LE MENU MOBILE --- */
+        #main-nav {
+            /* Garde la hauteur fixe pour le débordement sur les petits écrans */
+            max-height: 56px;
             overflow: hidden;
+            border-radius: 32px;
+            /* Transition pour l'animation du menu mobile */
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #main-nav.is-expanded {
+            max-height: 450px;
+        }
+
+        .nav-content-top {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
+        }
+
+        .logo-link,
+        .hamburger-button {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #main-nav.is-expanded .logo-link {
+            transform: translate(10px, 10px);
+        }
+
+        #main-nav.is-expanded .hamburger-button {
+            transform: translate(-10px, 10px);
+        }
+
+        .mobile-links {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out 0.2s;
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main-nav.is-expanded .mobile-links {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hamburger {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            cursor: default;
-        }
-        .bento-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-6px);
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.05) inset;
-            z-index: 10;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+            position: relative;
         }
 
-        /* --- Specific Cards --- */
-        /* Carte HQ (Siège) */
-        .card-hq {
-            grid-column: span 1;
-            grid-row: span 1;
-            padding: 0; /* Full bleed image */
+        .hamburger-line {
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
         }
-        @media (min-width: 768px) { .card-hq { grid-column: span 2; grid-row: span 2; } }
-        
-        /* Carte Valeurs */
-        .card-values {
-            grid-column: span 1;
-            grid-row: span 1;
-            background: linear-gradient(160deg, rgba(20, 16, 40, 0.9), rgba(5, 4, 12, 0.95));
-        }
-        @media (min-width: 1024px) { .card-values { grid-column: span 2; grid-row: span 2; } }
 
-        /* Carte Histoire (Longue verticale ou large horizontale selon le besoin) */
-        .card-history {
-            grid-column: span 1;
-            grid-row: span 2; /* Prend de la hauteur */
-            background: rgba(13, 10, 27, 0.8);
-            overflow-y: auto; /* Scrollable si trop long */
+        .hamburger.is-active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
         }
-        @media (min-width: 1024px) { .card-history { grid-column: span 1; grid-row: span 3; } }
+        .hamburger.is-active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.is-active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
 
-        /* Carte Chiffres */
-        .card-stat-group {
-            grid-column: span 1;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            padding: 0;
+        @media (min-width: 1024px) {
+            #main-nav.is-expanded {
+                max-height: 56px;
+            }
+            .hamburger.is-active .hamburger-line:nth-child(1) {
+                transform: none;
+            }
+            .hamburger.is-active .hamburger-line:nth-child(2) {
+                opacity: 1;
+                transform: none;
+            }
+            .hamburger.is-active .hamburger-line:nth-child(3) {
+                transform: none;
+            }
         }
-        .mini-stat-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
+
+        /* --- Effets d'animations au scroll (fade-in) --- */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Effet de fondu avec décalage */
+        .fade-in-delay-1 { transition-delay: 0.1s; }
+        .fade-in-delay-2 { transition-delay: 0.2s; }
+        .fade-in-delay-3 { transition-delay: 0.3s; }
+        .fade-in-delay-4 { transition-delay: 0.4s; }
+
+        /* Style pour les sections */
+        section {
+            padding: 80px 0;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Barres de séparation pour les titres */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, #004e92, #f06292);
+        }
+
+        /* Style pour les cartes d'histoire */
+        .key-date-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
             padding: 1.5rem;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .key-date-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style pour les cartes des chiffres clés */
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style pour les cartes des valeurs */
+        .values-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .values-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styles pour les nombres animés */
+        .counter-number {
+            font-weight: 800;
+            transition: color 0.3s;
+        }
+
+        /* Styles pour le bouton "Lire l'histoire complète" */
+        .read-more-btn {
+            background: linear-gradient(to right, #004e92, #f06292);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-size 0.5s ease;
+            background-size: 200% auto;
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 78, 146, 0.2), 0 10px 20px rgba(240, 98, 146, 0.2);
+            background-position: right center;
+        }
+
+        /* Styles pour la fenêtre modale de l'histoire */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
             display: flex;
-            flex-col: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .modal-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- NOUVEAU STYLE pour la mise en page de la modale d'histoire --- */
+        .modal-container {
+            position: relative;
+            background: #0d0a1b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            max-width: 90%;
+            width: 1000px;
+            max-height: 90vh; /* Permet un défilement sur les petits écrans */
+            overflow-y: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            transition: all 0.3s;
         }
-        .mini-stat-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
 
-        /* --- Typo --- */
-        .big-title {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            color: white;
-            line-height: 0.9;
+        .modal-overlay.is-visible .modal-container {
+            transform: translateY(0);
+            opacity: 1;
         }
-        @media (min-width: 1024px) { .big-title { font-size: 6rem; } }
 
-        .label-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #6b7280; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
-        .label-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue); }
-        .label-dot.pink { background-color: var(--neon-accent); box-shadow: 0 0 8px var(--neon-accent); }
+        /* Conteneur pour le contenu (2 colonnes) */
+        .modal-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-height: 90vh;
+        }
 
-        .stat-val { font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700; color: white; }
-        .stat-label { font-size: 0.8rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.5rem; }
+        @media (min-width: 768px) {
+            .modal-content-wrapper {
+                flex-direction: row;
+            }
+        }
 
-        /* --- Timeline Styles --- */
-        .timeline-item {
+        .modal-image-col {
+            flex: 1 1 50%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: relative;
-            padding-left: 2rem;
-            padding-bottom: 2rem;
-            border-left: 1px solid rgba(255,255,255,0.1);
         }
-        .timeline-item:last-child { border-left: none; }
-        .timeline-dot {
+
+        .modal-image-col img {
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-text-col {
+            flex: 1 1 50%;
+            padding: 2rem;
+            overflow-y: auto; /* Permet le défilement */
+            position: relative;
+        }
+
+        /* Retrait de la bordure élégante entre les deux colonnes (visible sur les grands écrans) */
+        .modal-text-col::before {
+            display: none;
+        }
+
+        /* Titre de la modale */
+        .modal-text-col h3 {
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            background-clip: text;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-image: linear-gradient(to right, #ffffff, #b3cde0);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* Styles des paragraphes dans la modale */
+        .modal-text-col p {
+            text-align: justify;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            color: #ccc;
+        }
+
+        /* --- STYLE POUR LA BARRE DE DÉFILEMENT (Webkit) --- */
+        /* Fond de la barre de défilement */
+        .modal-text-col::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        /* Le "rail" de la barre de défilement (la piste) */
+        .modal-text-col::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Le "thumb" de la barre de défilement (la poignée) */
+        .modal-text-col::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        /* Au survol, la poignée devient plus visible */
+        .modal-text-col::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Bouton de fermeture de la modale */
+        .modal-close-btn {
             position: absolute;
-            left: -5px;
-            top: 0;
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            background: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
-        .timeline-year { font-family: var(--font-mono); font-weight: bold; color: white; font-size: 1.1rem; }
-        .timeline-desc { font-size: 0.85rem; color: #9ca3af; margin-top: 0.25rem; line-height: 1.4; }
-
-        /* --- Boutons --- */
-        .btn-arrow { 
-            width: 48px; 
-            height: 48px;
-            min-width: 48px; 
-            min-height: 48px;
-            flex-shrink: 0;
-            border-radius: 50%; 
-            border: 1px solid rgba(255,255,255,0.15); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
-            color: white; 
-            background: rgba(255,255,255,0.05); 
+            top: 1.5rem;
+            right: 1.5rem;
+            color: #ccc;
+            font-size: 1.5rem;
             cursor: pointer;
-            z-index: 20;
-        }
-        .btn-arrow:hover { 
-            background: white; 
-            color: black; 
-            transform: scale(1.1);
-            border-color: white; 
-            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            transition: color 0.2s, transform 0.2s;
+            z-index: 110;
         }
 
-        /* --- Animations --- */
-        .stagger-in { opacity: 0; transform: translateY(20px); animation: fadeInGrid 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        @keyframes fadeInGrid { to { opacity: 1; transform: translateY(0); } }
-        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
-        
-        /* Modal Style (Minimalist) */
-        #modal-history {
-            backdrop-filter: blur(40px);
-            background: rgba(0,0,0,0.8);
+        .modal-close-btn:hover {
+            color: #fff;
+            transform: rotate(90deg);
         }
+
+        /* Classe pour la correction du défilement */
+        .modal-open {
+            overflow-y: hidden;
+            padding-right: var(--scrollbar-width, 0);
+        }
+
+        /* --- Styles pour le carrousel --- */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .carousel-slide {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Flèches de navigation (initialement cachées) */
+        .arrow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* NOUVEAU STYLE pour le cercle arrière-plan des flèches */
+        .arrow-btn-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.4);
+            transition: background-color 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* NOUVEAU STYLE pour l'icône SVG de la flèche */
+        .arrow-btn svg {
+            position: relative;
+            z-index: 2; /* S'assure que l'icône est au-dessus du cercle */
+            color: white;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Les flèches et leur cercle apparaissent au survol du conteneur du carrousel */
+        .carousel-container:hover .arrow-btn {
+            opacity: 1;
+        }
+
+        .arrow-btn:hover .arrow-btn-circle {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .arrow-btn.prev-btn { left: 1rem; }
+        .arrow-btn.next-btn { right: 1rem; }
+
+        /* Styles pour les indicateurs de navigation (points) */
+        .carousel-nav-dots {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 15;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: white;
+        }
+
     </style>
 </head>
-<body class="bg-[#05040a]">
+<body class="bg-[#0d0a1b] text-white">
 
-    <!-- En-tête -->
+    <!-- Effet de fond Liquid Glass -->
+    <div class="liquid-glass-bg"></div>
+
+    <!-- En-tête de navigation flottant -->
     <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
+        <!-- La barre de navigation principale (la pilule) -->
         <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
+            <!-- Contenu du haut de la barre de navigation (toujours visible) -->
             <div class="nav-content-top px-4 lg:px-8 py-4">
-                <a href="index.html" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">BlackWood</a>
+                <!-- Logo BlackWood -->
+                <a href="index.html" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">
+                    BlackWood
+                </a>
+                <!-- Menu de navigation pour PC -->
                 <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
-                    <li><a href="index.html" class="nav-link">Accueil</a></li>
-                    <li><a href="groupe.html" class="nav-link active">Le Groupe</a></li>
-                    <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
-                    <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
-                    <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
+                    <li><a href="index.html" class="nav-link" data-path="index.html">Accueil</a></li>
+                    <li><a href="groupe.html" class="nav-link active" data-path="groupe.html">Le Groupe</a></li>
+                    <li><a href="filiales.html" class="nav-link" data-path="filiales.html">Nos Filiales</a></li>
+                    <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
+                    <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
                 </ul>
+
+                <!-- Bouton hamburger pour mobile -->
                 <div class="lg:hidden flex items-center justify-end flex-grow">
                     <button id="menu-toggle-button" class="hamburger-button text-white focus:outline-none z-[60]">
                         <div class="hamburger">
@@ -266,201 +611,289 @@
                     </button>
                 </div>
             </div>
+            <!-- Conteneur pour les liens du menu mobile -->
             <ul class="mobile-links lg:hidden text-white font-medium text-xl text-center space-y-3">
-                <li><a href="index.html" class="nav-link">Accueil</a></li>
-                <li><a href="groupe.html" class="nav-link active">Le Groupe</a></li>
-                <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
-                <li><a href="presence-mondiale.html" class="nav-link">Présence Mondiale</a></li>
-                <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
+                <li><a href="index.html" class="nav-link" data-path="index.html">Accueil</a></li>
+                <li><a href="groupe.html" class="nav-link active" data-path="groupe.html">Le Groupe</a></li>
+                <li><a href="filiales.html" class="nav-link" data-path="filiales.html">Nos Filiales</a></li>
+                <li><a href="presence-mondiale.html" class="nav-link" data-path="presence-mondiale.html">Présence Mondiale</a></li>
+                <li><a href="actualite-bourse.html" class="nav-link" data-path="actualite-bourse.html">Actualité Boursière</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Notification Toast -->
-    <div id="toast"><i class="fas fa-info-circle"></i> <span>Détails historiques chargés.</span></div>
-
-    <!-- Main Content -->
-    <main class="pt-28 lg:pt-32 px-4 lg:px-8 max-w-[1600px] mx-auto min-h-screen">
-
-        <!-- Header Section -->
-        <section class="mb-12 lg:mb-16 stagger-in">
-            <p class="label-text text-pink-500 justify-center lg:justify-start"><span class="label-dot pink"></span>À Propos</p>
-            <h1 class="big-title text-center lg:text-left drop-shadow-2xl mb-4">LE GROUPE</h1>
-            <p class="text-xl md:text-2xl text-gray-400 font-light text-center lg:text-left max-w-2xl">
-                Excellence. Innovation. Influence.
-            </p>
+    <main>
+        <!-- Section d'accueil (Hero) -->
+        <section class="min-h-[50vh] flex flex-col items-center justify-center text-center relative overflow-hidden pt-32 pb-16">
+            <div class="relative z-10 fade-in-on-scroll">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-xl">BlackWood International</h1>
+                <p class="mt-2 md:mt-4 text-lg md:text-xl font-light text-gray-200 fade-in-on-scroll fade-in-delay-1">Excellence, Innovation, Influence.</p>
+            </div>
+            <!-- Effet visuel abstrait en fond (lignes lumineuses) -->
+            <div class="absolute inset-0 z-0 opacity-20">
+                <svg viewBox="0 0 1440 810" class="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                    <path fill="none" stroke="url(#gradient-lines)" stroke-width="1.5" d="M0 0 C200 150, 400 -50, 720 100 S1240 350, 1440 200" transform="translate(0, 100) scale(1.2)" />
+                    <path fill="none" stroke="url(#gradient-lines)" stroke-width="1.5" d="M0 810 C200 660, 400 910, 720 760 S1240 510, 1440 660" transform="translate(0, -100) scale(1.2)" />
+                    <defs>
+                        <linearGradient id="gradient-lines" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color: #004e92; stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color: #f06292; stop-opacity:0.8" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
         </section>
 
-        <!-- Bento Grid -->
-        <div class="bento-grid">
-
-            <!-- 1. HEADQUARTERS (Large Visual) -->
-            <div class="bento-card card-hq stagger-in delay-1 group relative">
-                <img src="https://i.imgur.com/raegV41.png" alt="BlackWood HQ" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                
-                <div class="absolute top-8 left-8 z-10">
-                    <p class="label-text text-white"><span class="label-dot"></span>Siège Mondial</p>
-                </div>
-
-                <div class="absolute bottom-8 left-8 right-8 z-10 flex justify-between items-end">
-                    <div class="max-w-md">
-                        <h2 class="text-3xl font-bold text-white mb-2">Manhattan HQ</h2>
-                        <p class="text-sm text-gray-300 leading-relaxed mb-4">
-                            Un bijou architectural de 450M$ situé au cœur de New York. Symbole de puissance et de vision à long terme.
-                        </p>
-                        <div class="flex gap-4 text-xs font-mono text-gray-400">
-                            <span>BUILT: 1920</span>
-                            <span>RENOVATED: 2013</span>
+        <!-- Section Siège Social (Déplacée en haut) -->
+        <section id="leadership" class="py-20">
+            <div class="max-w-5xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
+                <div class="fade-in-on-scroll">
+                    <!-- Image du siège social -->
+                    <img id="hq-image" src="https://i.imgur.com/raegV41.png" alt="Vue détaillée du siège social de BlackWood International à Manhattan" class="w-full h-auto rounded-[32px] shadow-2xl transform transition-transform duration-500">
+                    <!-- Conteneur pour le carrousel d'images -->
+                    <div id="image-carousel" class="carousel-container">
+                        <!-- Piste de défilement des images -->
+                        <div class="carousel-track">
+                            <div class="carousel-slide">
+                                <img src="https://i.imgur.com/raegV41.png" alt="Vue détaillée du siège social de BlackWood International à Manhattan (Jour)">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://i.imgur.com/hLI1M19.png" alt="Vue détaillée du siège social de BlackWood International à Manhattan (Nuit)">
+                            </div>
+                        </div>
+                        
+                        <!-- Flèche de navigation gauche -->
+                        <button class="arrow-btn prev-btn" id="prev-btn">
+                            <span class="arrow-btn-circle"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <!-- Flèche de navigation droite -->
+                        <button class="arrow-btn next-btn" id="next-btn">
+                            <span class="arrow-btn-circle"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Indicateurs de navigation (points) -->
+                        <div id="carousel-dots" class="carousel-nav-dots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
                         </div>
                     </div>
-                    <!-- Bouton qui ouvre la modale -->
-                    <button id="open-modal-btn" class="btn-arrow bg-white/10 backdrop-blur-md hover:bg-white hover:text-black">
-                        <i class="fas fa-plus"></i>
+                </div>
+                <div class="fade-in-on-scroll fade-in-delay-1">
+                    <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto md:mx-0">Notre Siège Social</h2>
+                    <!-- Résumé du texte -->
+                    <p class="mt-6 text-lg text-gray-400 leading-relaxed">
+                        Situé au cœur de Manhattan, notre siège allie héritage historique et modernité. Construit dans les années 1920, ce bâtiment a été totalement repensé entre 2011 et 2013 pour devenir le centre névralgique de BlackWood International, un bijou architectural à près de 450 millions de dollars.
+                    </p>
+                    <!-- Bouton pour révéler l'histoire complète -->
+                    <button id="read-more-btn" class="read-more-btn mt-6 py-3 px-8 rounded-full text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                        Lire l'histoire complète
                     </button>
                 </div>
             </div>
+        </section>
 
-            <!-- 2. HISTORY TIMELINE (Vertical Scroll) -->
-            <div class="bento-card card-history stagger-in delay-2 custom-scrollbar">
-                <p class="label-text sticky top-0 bg-[#0d0a1b]/80 backdrop-blur-md py-2 z-10"><span class="label-dot pink"></span>Notre Histoire</p>
-                
-                <div class="mt-4 space-y-1">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2009</div>
-                        <p class="timeline-desc">Fondation de BlackWood Capital Investments. La première pierre.</p>
+        <!-- Section Notre histoire (Dates Clés) -->
+        <section id="histoire" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Notre Histoire</h2>
+            <div class="max-w-4xl mx-auto mt-16 space-y-8">
+                <!-- Événement 2009 -->
+                <div class="key-date-card flex items-start gap-6 fade-in-on-scroll">
+                    <div class="flex-shrink-0 text-5xl text-blue-400">
+                        <i class="fas fa-building"></i>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2011</div>
-                        <p class="timeline-desc">IPO historique. Naissance de la structure International Corp.</p>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white text-left">2009</h3>
+                        <p class="mt-2 text-gray-400 text-left">
+                            Fondation de BlackWood Capital Investments, posant la première pierre de notre empire financier.
+                        </p>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2013</div>
-                        <p class="timeline-desc">Expansion agressive. Acquisition de technologies clés.</p>
+                </div>
+                <!-- Événement 2011 -->
+                <div class="key-date-card flex items-start gap-6 fade-in-on-scroll fade-in-delay-1">
+                    <div class="flex-shrink-0 text-5xl text-purple-400">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2015-22</div>
-                        <p class="timeline-desc">Diversification majeure et consolidation globale.</p>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white text-left">2011</h3>
+                        <p class="mt-2 text-gray-400 text-left">
+                            Réforme structurelle et introduction en bourse (IPO) qui marquent la naissance de BlackWood International.
+                        </p>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot" style="background: var(--success); box-shadow: 0 0 10px var(--success);"></div>
-                        <div class="timeline-year text-green-400">Aujourd'hui</div>
-                        <p class="timeline-desc">Leader mondial multisectoriel. Influence totale.</p>
+                </div>
+                <!-- Événement 2013 -->
+                <div class="key-date-card flex items-start gap-6 fade-in-on-scroll fade-in-delay-2">
+                    <div class="flex-shrink-0 text-5xl text-rose-400">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white text-left">2013</h3>
+                        <p class="mt-2 text-gray-400 text-left">
+                            Début de notre expansion agressive à travers des rachats stratégiques de technologies et de marques leaders.
+                        </p>
+                    </div>
+                </div>
+                <!-- Événement 2015-2022 -->
+                <div class="key-date-card flex items-start gap-6 fade-in-on-scroll fade-in-delay-3">
+                    <div class="flex-shrink-0 text-5xl text-cyan-400">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white text-left">2015–2022</h3>
+                        <p class="mt-2 text-gray-400 text-left">
+                            Période de diversification et de consolidation intensive, transformant BlackWood en un empire global.
+                        </p>
+                    </div>
+                </div>
+                <!-- Événement Aujourd'hui -->
+                <div class="key-date-card flex items-start gap-6 fade-in-on-scroll fade-in-delay-4">
+                    <div class="flex-shrink-0 text-5xl text-orange-400">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white text-left">Aujourd'hui</h3>
+                        <p class="mt-2 text-gray-400 text-left">
+                            BlackWood est un groupe international d'influence mondiale, leader dans de multiples secteurs clés.
+                        </p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- 3. KEY STATS (Grid of mini cards) -->
-            <div class="card-stat-group stagger-in delay-3">
-                <div class="mini-stat-card">
-                    <i class="fas fa-globe-americas text-blue-500 mb-2 text-xl"></i>
-                    <div class="stat-val" id="count-countries">0</div>
-                    <div class="stat-label">Pays</div>
+        <!-- Section Chiffres clés -->
+        <section id="chiffres" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Chiffres Clés</h2>
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Chiffre 1 -->
+                <div class="metric-card fade-in-on-scroll">
+                    <span id="counter-countries" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Pays</p>
+                    <p class="text-sm mt-1 text-gray-500">Notre présence mondiale sur quatre continents.</p>
                 </div>
-                <div class="mini-stat-card">
-                    <i class="fas fa-wallet text-purple-500 mb-2 text-xl"></i>
-                    <div class="stat-val" id="count-aum">0</div>
-                    <div class="stat-label">Mds $ AUM</div>
+                <!-- Chiffre 2 -->
+                <div class="metric-card fade-in-on-scroll fade-in-delay-1">
+                    <span id="counter-aum" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Milliards USD AUM</p>
+                    <p class="text-sm mt-1 text-gray-500">Actifs sous gestion : la confiance de nos partenaires.</p>
                 </div>
-                <div class="mini-stat-card">
-                    <i class="fas fa-layer-group text-pink-500 mb-2 text-xl"></i>
-                    <div class="stat-val" id="count-poles">0</div>
-                    <div class="stat-label">Pôles</div>
+                <!-- Chiffre 3 -->
+                <div class="metric-card fade-in-on-scroll fade-in-delay-2">
+                    <span id="counter-poles" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Pôles Stratégiques</p>
+                    <p class="text-sm mt-1 text-gray-500">Le nombre de nos filiales et secteurs d'activité.</p>
                 </div>
-                <div class="mini-stat-card">
-                    <i class="fas fa-chart-line text-green-500 mb-2 text-xl"></i>
-                    <div class="stat-val" id="count-val">0</div>
-                    <div class="stat-label">Mds $ Val.</div>
-                </div>
-            </div>
-
-            <!-- 4. VALUES (Large Card) -->
-            <div class="bento-card card-values stagger-in delay-2 flex flex-col justify-center">
-                <p class="label-text mb-6"><span class="label-dot"></span>ADN BlackWood</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-white font-bold text-lg">Excellence</h3>
-                            <p class="text-gray-400 text-xs mt-1 leading-relaxed">Perfection absolue dans chaque processus et investissement.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-white font-bold text-lg">Innovation</h3>
-                            <p class="text-gray-400 text-xs mt-1 leading-relaxed">Investir dans les technologies de rupture qui façonnent demain.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 flex-shrink-0">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-white font-bold text-lg">Prestige</h3>
-                            <p class="text-gray-400 text-xs mt-1 leading-relaxed">Une réputation bâtie sur la confiance, l'élégance et la réussite.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 flex-shrink-0">
-                            <i class="fas fa-handshake"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-white font-bold text-lg">Influence</h3>
-                            <p class="text-gray-400 text-xs mt-1 leading-relaxed">Un impact tangible sur l'économie mondiale.</p>
-                        </div>
-                    </div>
+                <!-- Chiffre 4 -->
+                <div class="metric-card fade-in-on-scroll fade-in-delay-3">
+                    <span id="counter-valuation" class="counter-number text-4xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-rose-400">0</span>
+                    <p class="text-lg mt-2 font-semibold">Milliards de Dollars</p>
+                    <p class="text-sm mt-1 text-gray-500">Notre valorisation boursière, preuve de notre solidité.</p>
                 </div>
             </div>
+        </section>
 
-        </div>
-
-        <!-- Footer Simplifié -->
-        <footer class="py-12 text-center text-gray-500 text-sm border-t border-white/10 mt-20">
-            <p>Copyright © 2025 BlackWood International Corp. Tous droits réservés.</p>
-            <p class="mt-2 font-medium text-gray-400">Made with Precision by BlackWood Brand & Design</p>
-        </footer>
-
+        <!-- Section Notre Vision & Nos Valeurs -->
+        <section id="valeurs" class="py-20 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold section-title mx-auto fade-in-on-scroll">Notre Vision & Nos Valeurs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+                <!-- Bloc Excellence -->
+                <div class="values-card p-8 text-center fade-in-on-scroll">
+                    <div class="text-5xl text-blue-400 mb-4">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Excellence</h3>
+                    <p class="mt-2 text-gray-400">Nous repoussons les limites pour atteindre la perfection dans tout ce que nous entreprenons.</p>
+                </div>
+                <!-- Bloc Innovation -->
+                <div class="values-card p-8 text-center fade-in-on-scroll fade-in-delay-1">
+                    <div class="text-5xl text-purple-400 mb-4">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Innovation</h3>
+                    <p class="mt-2 text-gray-400">Nous créons l'avenir en investissant dans des idées audacieuses et des technologies de rupture.</p>
+                </div>
+                <!-- Bloc Prestige -->
+                <div class="values-card p-8 text-center fade-in-on-scroll fade-in-delay-2">
+                    <div class="text-5xl text-rose-400 mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Prestige</h3>
+                    <p class="mt-2 text-gray-400">Notre nom est synonyme de qualité et d'élégance, une marque de confiance mondiale.</p>
+                </div>
+                <!-- Bloc Influence -->
+                <div class="values-card p-8 text-center fade-in-on-scroll fade-in-delay-3">
+                    <div class="text-5xl text-cyan-400 mb-4">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Influence</h3>
+                    <p class="mt-2 text-gray-400">Nous façonnons les marchés et inspirons le changement à l'échelle internationale.</p>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Modal Histoire -->
-    <div id="modal-history" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-[#0d0a1b] border border-white/10 rounded-3xl max-w-2xl w-full p-8 relative shadow-2xl">
-            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
-                <i class="fas fa-times text-xl"></i>
+    <!-- Pied de page simple et élégant -->
+    <footer class="py-8 lg:py-12 bg-black/10 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p class="text-sm">
+                Copyright &copy; 2025 BlackWood International Corp. Tous droits réservés.
+            </p>
+            <p class="text-xs lg:text-sm mt-2 font-medium text-gray-300">Made with Precision by BlackWood Brand & Design</p>
+        </div>
+    </footer>
+
+    <!-- Fenêtre modale pour l'histoire (cachée par défaut) -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-container">
+            <!-- Bouton de fermeture -->
+            <button id="modal-close-btn" class="modal-close-btn">
+                <i class="fas fa-times"></i>
             </button>
-            <h3 class="text-2xl font-bold text-white mb-4">L'Histoire du Siège</h3>
-            <div class="text-gray-300 space-y-4 text-sm leading-relaxed max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-                <p>L’immeuble, construit dans les années 1920, abritait à l’origine l’un des plus grands sièges bancaires de Wall Street. Son architecture néo-classique en faisait déjà un symbole de pouvoir.</p>
-                <p>Lorsque la réforme de 2011 transforma BlackWood en groupe international, Yves Land décida d’en faire le centre névralgique du nouvel empire. La rénovation, estimée à 450 millions de dollars, a duré deux ans.</p>
-                <p>Aujourd'hui, il abrite non seulement la direction générale, mais aussi le BlackWood Innovation Hub, un centre de recherche secret dédié aux technologies futures.</p>
+
+            <!-- Conteneur pour le contenu de la modale -->
+            <div class="modal-content-wrapper p-8">
+                <!-- Colonne du texte -->
+                <div class="modal-text-col w-full">
+                    <h3 class="text-white">Histoire Complète du Siège Social</h3>
+                    <p class="text-gray-400">
+                        L’immeuble, construit dans les années 1920, abritait à l’origine l’un des plus grands sièges bancaires de Wall Street. Son architecture néo-classique, ses colonnes imposantes et son marbre d’origine en faisaient déjà un symbole de pouvoir financier.
+                    </p>
+                    <p class="text-gray-400">
+                        Lorsque la réforme de 2011 transforma BlackWood en groupe international, Yves Land décida d’en faire le centre névralgique du nouvel empire. Entre 2011 et 2013, le bâtiment fut totalement repensé : les façades historiques furent restaurées, un immense atrium vitré fut ajouté, et les intérieurs furent modernisés avec des matériaux nobles et des technologies dernier cri.
+                    </p>
+                    <p class="text-gray-400">
+                        Le coût global de cette rénovation est estimé à près de 450 millions de dollars, faisant du siège un bijou architectural unique à Manhattan. Aujourd’hui, il accueille non seulement la direction générale, mais aussi le BlackWood Innovation Hub, un centre dédié à la recherche et aux projets stratégiques.
+                    </p>
+                    <p class="text-gray-400">
+                        Dominant l’horizon new-yorkais, le siège de BlackWood est plus qu’un simple lieu de travail : c’est un symbole de puissance, de luxe et de vision internationale.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Navigation Mobile ---
+        // Logique pour le menu de navigation mobile
         const mainNav = document.getElementById('main-nav');
         const menuToggleButton = document.getElementById('menu-toggle-button');
-        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const readMoreBtn = document.getElementById('read-more-btn');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const counterSection = document.getElementById('chiffres');
+        let hasCounterAnimated = false;
 
         menuToggleButton.addEventListener('click', () => {
             mainNav.classList.toggle('is-expanded');
             menuToggleButton.classList.toggle('is-active');
         });
 
+        // Ferme le menu quand on clique sur un lien (sur les petits écrans)
+        const mobileLinks = document.querySelectorAll('.mobile-links .nav-link');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mainNav.classList.remove('is-expanded');
@@ -468,66 +901,155 @@
             });
         });
 
-        // --- Mouse Glow Effect ---
-        const cards = document.querySelectorAll('.bento-card, .mini-stat-card');
-        if (window.matchMedia("(min-width: 1024px)").matches) {
-            document.querySelector('main').addEventListener('mousemove', e => {
-                for(const card of cards) {
-                    const rect = card.getBoundingClientRect(),
-                          x = e.clientX - rect.left,
-                          y = e.clientY - rect.top;
-                    card.style.setProperty('--mouse-x', `${x}px`);
-                    card.style.setProperty('--mouse-y', `${y}px`);
-                }
-            });
-        }
-
-        // --- Counter Animation ---
-        function animateValue(id, start, end, duration) {
-            const obj = document.getElementById(id);
-            if(!obj) return;
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start);
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        // Trigger animations on load
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                animateValue("count-countries", 0, 32, 2000);
-                animateValue("count-aum", 0, 800, 2500);
-                animateValue("count-poles", 0, 9, 1500);
-                animateValue("count-val", 0, 195, 2200);
-            }, 500);
-        });
-
-        // --- Modal Logic ---
-        const modal = document.getElementById('modal-history');
-        const openBtn = document.getElementById('open-modal-btn');
-        const closeBtn = document.getElementById('close-modal-btn');
-
-        openBtn.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-
-        // Close on click outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.add('hidden');
+        // Logique pour marquer le lien actif en fonction de la page actuelle
+        const currentPath = window.location.pathname.split('/').pop();
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const linkPath = link.getAttribute('data-path');
+            if (linkPath === currentPath) {
+                link.classList.add('active');
             }
         });
 
+        // Fonction pour animer les nombres
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const stepTime = 10;
+            const increment = Math.ceil(target / (duration / stepTime));
+
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = start;
+                    setTimeout(updateCounter, stepTime);
+                } else {
+                    element.textContent = target;
+                }
+            }
+            updateCounter();
+        }
+
+        // Utilisation de l'IntersectionObserver pour les animations au scroll
+        const faders = document.querySelectorAll('.fade-in-on-scroll');
+
+        const observerOptions = {
+            root: null,
+            threshold: 0.2, // Déclenche quand 20% de l'élément est visible
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('fade-in-on-scroll')) {
+                        entry.target.classList.add('is-visible');
+                    }
+
+                    if (entry.target.id === 'chiffres' && !hasCounterAnimated) {
+                        animateCounter(document.getElementById('counter-countries'), 32);
+                        animateCounter(document.getElementById('counter-aum'), 800);
+                        animateCounter(document.getElementById('counter-poles'), 9);
+                        animateCounter(document.getElementById('counter-valuation'), 195);
+                        hasCounterAnimated = true;
+                    }
+                }
+            });
+        }, observerOptions);
+
+        faders.forEach(fader => {
+            observer.observe(fader);
+        });
+
+        // On observe la section des chiffres pour déclencher l'animation
+        observer.observe(counterSection);
+
+        // Cette fonction calcule et définit la largeur de la barre de défilement pour la compensation
+        function setScrollbarWidth() {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setScrollbarWidth(); // Calcule une première fois au chargement de la page
+            const path = window.location.pathname.split('/').pop();
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-path') === path) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Gère le recalcul de la largeur en cas de redimensionnement de la fenêtre
+        window.addEventListener('resize', setScrollbarWidth);
+
+        // Logique pour ouvrir et fermer la fenêtre modale de l'histoire
+        readMoreBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('is-visible');
+            document.body.classList.add('modal-open');
+        });
+
+        modalCloseBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('is-visible');
+            document.body.classList.remove('modal-open');
+        });
+
+        // Fermer la modale en cliquant en dehors
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('is-visible');
+                document.body.classList.remove('modal-open');
+            }
+        });
+        
+        // Logique du carrousel
+        const carousel = document.getElementById('image-carousel');
+        const track = carousel.querySelector('.carousel-track');
+        const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const dotsContainer = document.getElementById('carousel-dots');
+        const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+
+        let currentIndex = 0;
+
+        function updateCarousel(direction) {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            
+            // La transition s'applique au glissement
+            track.style.transition = `transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            
+            const newTransform = `translateX(-${currentIndex * slideWidth}px)`;
+            track.style.transform = newTransform;
+            
+            // Mettre à jour les points de navigation
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+        
+        // Gérer le clic sur la flèche précédente
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateCarousel('prev');
+        });
+
+        // Gérer le clic sur la flèche suivante
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel('next');
+        });
+        
+        // Gérer le clic sur les points de navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+        
+        // Initialisation du carrousel
+        window.addEventListener('resize', () => updateCarousel());
+        updateCarousel(); // Initialisation au chargement de la page
     </script>
 </body>
 </html>
