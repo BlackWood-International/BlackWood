@@ -167,12 +167,13 @@
         .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; } .delay-5 { animation-delay: 0.5s; } .delay-6 { animation-delay: 0.6s; }
 
-        /* BOUTON INTERACTIF - Modification de l'effet hover */
+        /* BOUTON INTERACTIF - Forme Parfaite */
         .btn-arrow { 
             width: 48px; 
             height: 48px;
-            /* CORRECTIF MOBILE : Empêche l'écrasement */
+            /* Force les dimensions pour éviter l'ovale */
             min-width: 48px; 
+            min-height: 48px;
             flex-shrink: 0;
             
             border-radius: 50%; 
@@ -186,11 +187,21 @@
             cursor: pointer;
             position: relative;
             z-index: 20;
+            aspect-ratio: 1 / 1; /* Sécurité supplémentaire */
         }
+
+        /* Classe spécifique pour les petits boutons afin qu'ils restent ronds */
+        .btn-sm {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            min-height: 32px !important;
+        }
+
         .btn-arrow:hover { 
             background: white; 
             color: black; 
-            transform: scale(1.1); /* Pas de rotation, juste un léger grossissement */
+            transform: scale(1.1); 
             border-color: white; 
             box-shadow: 0 0 20px rgba(255,255,255,0.4);
         }
@@ -285,7 +296,8 @@
             <h1 class="big-title font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-700 leading-none select-none drop-shadow-2xl">
                 BLACKWOOD
             </h1>
-            <p class="text-gray-500 text-[10px] md:text-sm tracking-[0.4em] md:tracking-[0.6em] uppercase mt-4 md:mt-6 font-bold">International Corp. Holdings</p>
+            <!-- Modification du sous-titre ici -->
+            <p class="text-gray-500 text-[10px] md:text-sm tracking-[0.4em] md:tracking-[0.6em] uppercase mt-4 md:mt-6 font-bold">International Corp.</p>
         </section>
         
         <!-- Live Ticker Bar (DYNAMIQUE) -->
@@ -365,14 +377,14 @@
                     <p class="text-white font-bold text-2xl">The Tower</p>
                     <p class="text-gray-400 text-sm font-mono mt-1">HQ: Manhattan, NYC</p>
                 </div>
-                <a href="presence-mondiale.html" class="absolute top-6 right-6 btn-arrow z-20 group-hover:bg-white group-hover:text-black">
+                <a href="presence-mondiale.html" class="absolute top-6 right-6 btn-arrow btn-sm z-20 group-hover:bg-white group-hover:text-black">
                     <i class="fas fa-map-marker-alt"></i>
                 </a>
             </div>
 
             <!-- 3. STAT BLOCK (Groupe) -->
             <div class="bento-card card-stat stagger-in delay-3 h-48 md:h-auto group relative">
-                <a href="groupe.html" class="absolute top-4 right-4 btn-arrow w-8 h-8 text-xs z-20 group-hover:bg-white group-hover:text-black">
+                <a href="groupe.html" class="absolute top-4 right-4 btn-arrow btn-sm w-8 h-8 text-xs z-20 group-hover:bg-white group-hover:text-black">
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 <div>
@@ -396,7 +408,7 @@
                 <p class="text-sm text-gray-400 mb-4">Rapports trimestriels et assemblées.</p>
                 <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs font-mono text-gray-500">
                     <span>Q4 2024: PUBLIÉ</span>
-                    <button class="btn-arrow w-8 h-8 group-hover:bg-white group-hover:text-black" onclick="showToast('Téléchargement réservé aux membres');">
+                    <button class="btn-arrow btn-sm w-8 h-8 group-hover:bg-white group-hover:text-black" onclick="showToast('Téléchargement réservé aux membres');">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
@@ -428,7 +440,7 @@
 
             <!-- 6. PHILOSOPHY BLOCK -->
             <div class="bento-card stagger-in delay-6 h-auto group relative">
-                 <a href="groupe.html" class="absolute top-6 right-6 btn-arrow w-8 h-8 text-xs z-20 group-hover:bg-white group-hover:text-black">
+                 <a href="groupe.html" class="absolute top-6 right-6 btn-arrow btn-sm w-8 h-8 text-xs z-20 group-hover:bg-white group-hover:text-black">
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 <i class="fas fa-quote-left text-3xl text-gray-700 mb-4 opacity-50"></i>
