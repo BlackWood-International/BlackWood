@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackWood - Données de Marché</title>
+    <title>BlackWood - Market Data Center</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
     
@@ -15,19 +15,20 @@
     <!-- Bibliothèques -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- Styles Globaux --- */
         :root {
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(10, 8, 20, 0.7);
+            --glass-bg: rgba(10, 8, 20, 0.6); /* Plus sombre pour le contraste */
             --neon-blue: #004e92;
-            --neon-pink: #f06292;
+            --neon-gold: #d4af37; /* Touche Luxe */
             --success: #34d399;
             --danger: #ef4444;
             --font-main: 'Montserrat', sans-serif;
+            --font-serif: 'Playfair Display', serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -36,12 +37,15 @@
             background-color: #05040a;
             color: white;
             overflow-x: hidden;
+            /* Fond plus riche et profond */
             background-image: 
                 radial-gradient(circle at 50% 0%, #1a162e 0%, #05040a 60%),
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
-        /* --- Navigation --- */
+        h1, h2, h3, .serif-title { font-family: var(--font-serif); }
+
+        /* --- Navigation (INTOUCHABLE) --- */
         .nav-link { transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; display: inline-block; cursor: pointer; }
         .nav-link.active { font-weight: 600; transform: translateY(-3px); color: #ffffff; }
         .nav-link:not(.active):hover { color: #ffffff; }
@@ -63,146 +67,155 @@
         .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
         @media (min-width: 1024px) { #main-nav.is-expanded { max-height: 56px; } .hamburger.is-active .hamburger-line { transform: none; opacity: 1; } }
 
-        /* --- UI Elements Spécifiques --- */
+        /* --- UI Elements Premium --- */
         .glass-panel {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
+            border-radius: 16px; /* Coins un peu plus serrés pour un look technique */
+            backdrop-filter: blur(24px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
         }
 
-        .mono-num { font-family: var(--font-mono); letter-spacing: -0.05em; }
+        .mono-num { font-family: var(--font-mono); letter-spacing: -0.05em; font-feature-settings: "tnum"; }
         
         .live-dot {
-            width: 8px; height: 8px; border-radius: 50%; background-color: var(--success);
-            box-shadow: 0 0 10px var(--success);
+            width: 6px; height: 6px; border-radius: 50%; background-color: var(--success);
+            box-shadow: 0 0 8px var(--success);
             animation: pulse-live 2s infinite;
             display: inline-block;
-            margin-right: 6px;
+            margin-right: 8px;
         }
-        @keyframes pulse-live { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        @keyframes pulse-live { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-        /* Order Book Animation */
-        .order-book-row {
-            display: flex; justify-content: space-between; padding: 4px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            font-size: 0.8rem; font-family: var(--font-mono);
-            animation: fadeInRow 0.3s ease-out;
-        }
-        @keyframes fadeInRow { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        /* Scrollbar Invisible mais fonctionnelle */
+        .custom-scroll::-webkit-scrollbar { width: 0px; }
+        .custom-scroll { scrollbar-width: none; }
 
-        /* Custom Scrollbar */
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-
-        /* --- NOUVEAU DESIGN BOUTONS (SEGMENTED CONTROL) --- */
+        /* --- CONTROL SEGMENTÉ (TABS) --- */
         .segmented-control {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.4);
             padding: 4px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
-            gap: 4px;
+            gap: 2px;
         }
 
         .segment-btn {
-            padding: 8px 20px;
+            padding: 8px 24px;
             border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #9ca3af;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.3s ease;
             cursor: pointer;
             border: none;
             background: transparent;
-        }
-
-        .segment-btn:hover:not(.active-segment) {
-            color: white;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .segment-btn.active-segment {
-            background: white;
-            color: black;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            font-weight: 700;
-        }
-
-        /* Timeframe buttons */
-        .time-btn {
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            color: #6b7280;
-            transition: all 0.2s;
-        }
-        .time-btn:hover { background: rgba(255,255,255,0.05); color: white; }
-        .time-btn.active { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
-
-        /* Financial Table */
-        .fin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        .fin-table th { text-align: left; color: #6b7280; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
-        .fin-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); color: white; }
-        .fin-table tr:hover { background: rgba(255,255,255,0.02); }
-        .fin-table .num { font-family: var(--font-mono); text-align: right; }
-
-        /* News Item */
-        .news-card {
-            padding: 1rem;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid transparent;
-            transition: all 0.3s;
-            animation: fadeIn 0.5s ease-out;
-        }
-        .news-card:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(255,255,255,0.1);
-            transform: translateX(5px);
-        }
-
-        /* Tabs Visibility */
-        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
-        .tab-content.active-content { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Load More Button */
-        .btn-load-more {
-            width: 100%;
-            margin-top: 1rem;
-            padding: 0.75rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #9ca3af;
-            background: transparent;
-            transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        .btn-load-more:hover {
-            background: white;
-            color: black;
-            border-color: white;
+
+        .segment-btn:hover:not(.active-segment) { color: white; }
+
+        .segment-btn.active-segment {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .btn-load-more:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: transparent !important;
-            color: #9ca3af !important;
+
+        /* --- TIMEFRAME BUTTONS --- */
+        .time-selector {
+            display: flex;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 2px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
+        .time-btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            color: #555;
+            transition: all 0.2s;
+        }
+        .time-btn:hover { color: white; }
+        .time-btn.active { background: white; color: black; box-shadow: 0 2px 10px rgba(255,255,255,0.1); }
+
+        /* --- NEWS CARDS & MODAL --- */
+        .news-card {
+            padding: 1.25rem;
+            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .news-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%;
+            background: var(--neon-blue); opacity: 0; transition: opacity 0.3s;
+        }
+        .news-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateX(4px);
+        }
+        .news-card:hover::before { opacity: 1; }
+
+        /* Modal Styles */
+        #news-modal {
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        #news-modal.hidden-modal {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        #news-modal:not(.hidden-modal) {
+            opacity: 1; visibility: visible; pointer-events: auto;
+        }
+        .modal-content {
+            transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #news-modal:not(.hidden-modal) .modal-content { transform: scale(1); }
+
+        /* --- TABLEAUX FINANCIERS --- */
+        .fin-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
+        .fin-table th { text-align: right; color: #555; padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 500; font-family: var(--font-mono); font-size: 0.7rem; }
+        .fin-table th:first-child { text-align: left; }
+        .fin-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.02); color: #ccc; transition: color 0.2s; }
+        .fin-table tr:hover td { color: white; background: rgba(255,255,255,0.02); }
+        .fin-table .num { font-family: var(--font-mono); text-align: right; letter-spacing: -0.5px; }
+        
+        /* Tabs Visibility */
+        .tab-content { display: none; animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .tab-content.active-content { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Load More / Collapse Button */
+        .btn-toggle-news {
+            width: 100%; margin-top: 1.5rem; padding: 1rem;
+            border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px;
+            font-size: 0.75rem; font-weight: 600; color: #888;
+            background: transparent; transition: all 0.3s;
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .btn-toggle-news:hover { background: rgba(255,255,255,0.05); color: white; border-color: white; border-style: solid; }
 
     </style>
 </head>
 <body class="bg-[#05040a]">
 
-    <!-- Header -->
+    <!-- Header (Strictement respecté) -->
     <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
         <nav id="main-nav" class="mx-auto bg-black/10 backdrop-blur-xl shadow-2xl border border-white/10">
             <div class="nav-content-top px-4 lg:px-8 py-4">
@@ -232,149 +245,188 @@
         </nav>
     </header>
 
+    <!-- NEWS MODAL (Overlay) -->
+    <div id="news-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden-modal">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <!-- Content -->
+        <div class="modal-content relative bg-[#0a0a0e] border border-white/10 w-full max-w-2xl mx-4 rounded-2xl p-8 shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div id="modal-body">
+                <!-- Content injected via JS -->
+                <span id="modal-tag" class="text-[10px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded uppercase tracking-wider">TAG</span>
+                <span id="modal-date" class="text-xs text-gray-500 ml-3">DATE</span>
+                <h2 id="modal-title" class="text-2xl font-serif italic text-white mt-4 mb-6">Titre de l'article</h2>
+                <div id="modal-text" class="text-gray-300 text-sm leading-relaxed space-y-4 font-light">
+                    <!-- Texte -->
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-white/5 flex justify-between items-center">
+                <span class="text-xs text-gray-600">BlackWood Investor Relations</span>
+                <button class="text-xs text-white uppercase tracking-widest hover:text-blue-400 transition-colors">Partager</button>
+            </div>
+        </div>
+    </div>
+
     <main class="pt-28 lg:pt-36 px-4 lg:px-8 max-w-[1600px] mx-auto min-h-screen pb-20">
         
         <!-- Dashboard Header -->
-        <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 animate-[fadeIn_0.5s_ease-out]">
-            <div>
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-1 bg-white/10 rounded text-[10px] uppercase font-bold tracking-widest text-gray-300 border border-white/5">NASDAQ: BLWD</span>
-                    <span class="text-xs text-green-400 font-mono flex items-center"><span class="live-dot"></span>MARCHÉ OUVERT</span>
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6 animate-[fadeIn_0.5s_ease-out]">
+            <div class="relative">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="px-2 py-1 bg-white/5 rounded text-[9px] uppercase font-bold tracking-[0.2em] text-gray-400 border border-white/5">NASDAQ: BLWD</span>
+                    <span class="text-[10px] text-green-400 font-mono flex items-center tracking-widest"><span class="live-dot"></span>MARKET OPEN</span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight">BLACKWOOD INT.</h1>
+                <h1 class="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none italic font-serif">
+                    BlackWood <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Int.</span>
+                </h1>
+                <p class="text-gray-500 text-xs mt-2 font-mono">ISIN: US0928374510 • SECTEUR: CONGLOMÉRAT</p>
             </div>
-            <!-- Nouveau Design des Boutons (Segmented Control) -->
+            
             <div class="segmented-control">
                 <button id="btn-overview" class="segment-btn active-segment" onclick="switchTab('overview')">Vue d'ensemble</button>
                 <button id="btn-financials" class="segment-btn" onclick="switchTab('financials')">États Financiers</button>
             </div>
         </div>
 
-        <!-- TAB 1: OVERVIEW (Graphiques & News) -->
+        <!-- TAB 1: OVERVIEW -->
         <div id="tab-overview" class="tab-content active-content">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                <!-- Chart Section -->
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="glass-panel p-6 md:p-8 h-[500px] relative flex flex-col">
-                        <div class="flex justify-between items-start mb-6">
+                <!-- Chart Section (Prend plus de place: 8/12 colonnes) -->
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="glass-panel p-6 md:p-10 h-[550px] relative flex flex-col">
+                        <!-- Top Info -->
+                        <div class="flex justify-between items-start mb-8">
                             <div>
-                                <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Cours en Direct</p>
-                                <div class="flex items-baseline gap-4">
-                                    <span id="current-price" class="text-5xl md:text-6xl font-bold mono-num text-white">$1,242.50</span>
-                                    <span id="price-change" class="text-lg md:text-xl font-bold mono-num text-green-400 bg-green-500/10 px-2 py-1 rounded">+1.45%</span>
+                                <p class="text-gray-500 text-[10px] uppercase tracking-[0.2em] mb-2">Cours en Direct</p>
+                                <div class="flex items-end gap-4">
+                                    <span id="current-price" class="text-6xl md:text-7xl font-light mono-num text-white tracking-tighter">$1,025.64</span>
+                                    <div class="mb-2">
+                                        <span id="price-change" class="text-sm font-bold mono-num text-green-400 bg-green-900/20 px-2 py-1 rounded border border-green-500/20">+1.12%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="text-right hidden sm:block">
-                                <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Volume</p>
-                                <span class="text-2xl font-bold mono-num text-white">4.2M</span>
+                            <div class="time-selector">
+                                <button class="time-btn" onclick="updateTimeframe('1H', this)">1H</button>
+                                <button class="time-btn active" onclick="updateTimeframe('1D', this)">1J</button>
+                                <button class="time-btn" onclick="updateTimeframe('1S', this)">1S</button>
+                                <button class="time-btn" onclick="updateTimeframe('1M', this)">1M</button>
+                                <button class="time-btn" onclick="updateTimeframe('YTD', this)">YTD</button>
                             </div>
                         </div>
                         
+                        <!-- Graphique -->
                         <div class="flex-grow w-full relative">
                             <canvas id="mainChart"></canvas>
-                        </div>
-                        
-                        <!-- Functional Timeframe Buttons -->
-                        <div class="flex gap-2 mt-4 border-t border-white/5 pt-4 overflow-x-auto">
-                            <button class="time-btn" onclick="updateTimeframe('1H', this)">1H</button>
-                            <button class="time-btn active" onclick="updateTimeframe('1D', this)">1J</button>
-                            <button class="time-btn" onclick="updateTimeframe('1W', this)">1S</button>
-                            <button class="time-btn" onclick="updateTimeframe('1M', this)">1M</button>
-                            <button class="time-btn" onclick="updateTimeframe('YTD', this)">YTD</button>
                         </div>
                     </div>
 
                     <!-- KPIs -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="glass-panel p-4 text-center">
-                            <p class="text-gray-500 text-xs uppercase mb-1">Cap. Boursière</p>
-                            <p class="text-lg font-bold mono-num">$248.4 Md</p>
+                        <div class="glass-panel p-5">
+                            <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-2">Cap. Boursière</p>
+                            <p class="text-xl font-bold mono-num text-white">$800.0 Md</p>
                         </div>
-                        <div class="glass-panel p-4 text-center">
-                            <p class="text-gray-500 text-xs uppercase mb-1">PER (P/E)</p>
-                            <p class="text-lg font-bold mono-num">18.42</p>
+                        <div class="glass-panel p-5">
+                            <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-2">Actions (A+B)</p>
+                            <p class="text-xl font-bold mono-num text-white">780.0 M</p>
                         </div>
-                        <div class="glass-panel p-4 text-center">
-                            <p class="text-gray-500 text-xs uppercase mb-1">Haut 52S</p>
-                            <p class="text-lg font-bold mono-num">$1,290.00</p>
+                        <div class="glass-panel p-5">
+                            <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-2">PER (P/E)</p>
+                            <p class="text-xl font-bold mono-num text-white">24.8</p>
                         </div>
-                        <div class="glass-panel p-4 text-center">
-                            <p class="text-gray-500 text-xs uppercase mb-1">Rendement Div.</p>
-                            <p class="text-lg font-bold mono-num text-blue-400">2.1%</p>
+                        <div class="glass-panel p-5">
+                            <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-2">Vol. Moyen</p>
+                            <p class="text-xl font-bold mono-num text-white">3.2 M</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sidebar Info -->
-                <div class="space-y-6">
-                    
-                    <!-- Investor News -->
-                    <div class="glass-panel p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-bold font-serif italic">Relations Investisseurs</h3>
-                            <i class="fas fa-rss text-gray-500"></i>
+                <!-- News Section (Prend 4/12 colonnes, plus haute) -->
+                <div class="lg:col-span-4 flex flex-col h-full">
+                    <div class="glass-panel p-6 flex-grow flex flex-col">
+                        <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/5">
+                            <h3 class="text-xl font-serif italic text-white">Relations Investisseurs</h3>
+                            <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
                         </div>
-                        <div id="news-container" class="space-y-4">
-                            <!-- Les news statiques de base -->
-                            <div class="news-card cursor-pointer group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-[10px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">TECH</span>
-                                    <span class="text-[10px] text-gray-500">IL Y A 2H</span>
+                        
+                        <!-- Container News Scrollable -->
+                        <div id="news-container" class="space-y-4 overflow-y-auto custom-scroll flex-grow pr-2 max-h-[600px]">
+                            <!-- News 1 -->
+                            <div class="news-card" onclick="openNews(0)">
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="text-[9px] font-bold bg-blue-900/30 text-blue-300 px-2 py-1 rounded border border-blue-500/20">TECH</span>
+                                    <span class="text-[9px] text-gray-500 font-mono">IL Y A 2H</span>
                                 </div>
-                                <h4 class="font-bold text-sm text-white group-hover:text-blue-400 transition-colors">Acquisition de QuantumCore</h4>
-                                <p class="text-xs text-gray-400 mt-1 line-clamp-2">BlackWood finalise l'achat du leader européen des processeurs quantiques pour 4.2Mds$.</p>
+                                <h4 class="font-bold text-base text-white mb-2 leading-snug">Acquisition de QuantumCore finalisée</h4>
+                                <p class="text-xs text-gray-400 line-clamp-2">L'intégration du leader européen des processeurs quantiques marque une nouvelle ère pour la division BW Tech, visant la suprématie computationnelle.</p>
                             </div>
 
-                            <div class="news-card cursor-pointer group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-[10px] font-bold bg-green-500/20 text-green-300 px-2 py-0.5 rounded">ÉNERGIE</span>
-                                    <span class="text-[10px] text-gray-500">HIER</span>
+                            <!-- News 2 -->
+                            <div class="news-card" onclick="openNews(1)">
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="text-[9px] font-bold bg-green-900/30 text-green-300 px-2 py-1 rounded border border-green-500/20">ÉNERGIE</span>
+                                    <span class="text-[9px] text-gray-500 font-mono">HIER</span>
                                 </div>
-                                <h4 class="font-bold text-sm text-white group-hover:text-green-400 transition-colors">Projet "Helios" validé</h4>
-                                <p class="text-xs text-gray-400 mt-1 line-clamp-2">Le Conseil d'Administration approuve la construction de la centrale géothermique en Islande.</p>
+                                <h4 class="font-bold text-base text-white mb-2 leading-snug">Projet "Helios" validé en Islande</h4>
+                                <p class="text-xs text-gray-400 line-clamp-2">Le Conseil d'Administration a approuvé l'investissement de 12 Mds$ pour la plus grande centrale géothermique carbone-négatif au monde.</p>
                             </div>
 
-                            <div class="news-card cursor-pointer group">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-[10px] font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">FINANCE</span>
-                                    <span class="text-[10px] text-gray-500">IL Y A 2 JOURS</span>
+                            <!-- News 3 -->
+                            <div class="news-card" onclick="openNews(2)">
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="text-[9px] font-bold bg-purple-900/30 text-purple-300 px-2 py-1 rounded border border-purple-500/20">FINANCE</span>
+                                    <span class="text-[9px] text-gray-500 font-mono">2 JRS</span>
                                 </div>
-                                <h4 class="font-bold text-sm text-white group-hover:text-purple-400 transition-colors">Résultats Q3 Record</h4>
-                                <p class="text-xs text-gray-400 mt-1 line-clamp-2">BlackWood surperforme les attentes du marché avec un BPA (EPS) de $14.20.</p>
+                                <h4 class="font-bold text-base text-white mb-2 leading-snug">Résultats Q3 : Au-delà des attentes</h4>
+                                <p class="text-xs text-gray-400 line-clamp-2">BlackWood International affiche une santé de fer avec un Bénéfice Par Action (EPS) de $41.20, propulsé par la branche Défense.</p>
+                            </div>
+                            
+                            <!-- Hidden News Container -->
+                            <div id="extra-news" class="hidden space-y-4">
+                                <!-- News 4 -->
+                                <div class="news-card" onclick="openNews(3)">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <span class="text-[9px] font-bold bg-red-900/30 text-red-300 px-2 py-1 rounded border border-red-500/20">AUTO</span>
+                                        <span class="text-[9px] text-gray-500 font-mono">SEMAINE DERNIÈRE</span>
+                                    </div>
+                                    <h4 class="font-bold text-base text-white mb-2 leading-snug">Royal Motors : La "Spectre" dévoilée</h4>
+                                    <p class="text-xs text-gray-400 line-clamp-2">L'hypercar électrique de luxe bat déjà des records de précommandes en Asie et au Moyen-Orient.</p>
+                                </div>
+                                <!-- News 5 -->
+                                <div class="news-card" onclick="openNews(4)">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <span class="text-[9px] font-bold bg-yellow-900/30 text-yellow-300 px-2 py-1 rounded border border-yellow-500/20">GOUVERNANCE</span>
+                                        <span class="text-[9px] text-gray-500 font-mono">15 OCT</span>
+                                    </div>
+                                    <h4 class="font-bold text-base text-white mb-2 leading-snug">Yves Land confirme la stratégie 2030</h4>
+                                    <p class="text-xs text-gray-400 line-clamp-2">Dans une lettre aux actionnaires (Classe A), le Fondateur réaffirme la vision long-terme du conglomérat.</p>
+                                </div>
                             </div>
                         </div>
-                        <!-- Bouton Fonctionnel -->
-                        <button id="btn-load-more" class="btn-load-more" onclick="loadMoreNews()">Voir plus d'actualités</button>
+
+                        <!-- Toggle Button -->
+                        <button id="btn-toggle-news" class="btn-toggle-news" onclick="toggleNews()">
+                            Voir toutes les news <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
                     </div>
-
-                    <!-- Order Book -->
-                    <div class="glass-panel p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Flux d'Ordres</h3>
-                            <span class="text-[10px] font-mono text-green-400">● EN DIRECT</span>
-                        </div>
-                        <div class="flex justify-between text-[10px] text-gray-600 uppercase font-bold mb-2 px-2">
-                            <span>Heure</span>
-                            <span>Prix</span>
-                            <span>Vol</span>
-                        </div>
-                        <div id="order-book" class="h-[250px] overflow-hidden relative custom-scroll px-2">
-                            <!-- JS Inject -->
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: FINANCIALS (Tableaux) -->
+        <!-- TAB 2: FINANCIALS -->
         <div id="tab-financials" class="tab-content">
-            <div class="glass-panel p-8 mb-8">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold font-serif italic">Compte de Résultat</h2>
+            <div class="glass-panel p-8 md:p-12 mb-8">
+                <div class="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
+                    <div>
+                        <h2 class="text-3xl font-serif italic text-white">Compte de Résultat Consolidé</h2>
+                        <p class="text-gray-500 text-sm mt-1">Données auditées • Normes GAAP</p>
+                    </div>
                     <div class="flex gap-2">
-                        <span class="text-xs text-gray-500 uppercase">Valeurs en M$ USD</span>
+                        <span class="px-3 py-1 bg-white/5 rounded text-xs font-mono text-gray-400">USD (M$)</span>
                     </div>
                 </div>
                 
@@ -383,54 +435,54 @@
                         <thead>
                             <tr>
                                 <th>Exercice Fiscal</th>
-                                <th class="text-right">2024</th>
-                                <th class="text-right">2023</th>
-                                <th class="text-right">2022</th>
-                                <th class="text-right">Croissance (A/A)</th>
+                                <th>2024</th>
+                                <th>2023</th>
+                                <th>2022</th>
+                                <th>Croissance (A/A)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Chiffre d'Affaires</td>
-                                <td class="num font-bold text-white">84,250</td>
-                                <td class="num text-gray-300">72,100</td>
-                                <td class="num text-gray-300">65,400</td>
-                                <td class="num text-green-400">+16.8%</td>
+                                <td class="font-bold text-white">Chiffre d'Affaires</td>
+                                <td class="num font-bold text-white">142,500</td>
+                                <td class="num">128,100</td>
+                                <td class="num">115,400</td>
+                                <td class="num text-green-400">+11.2%</td>
                             </tr>
                             <tr>
                                 <td>Coût des Ventes</td>
-                                <td class="num text-gray-400">(42,100)</td>
-                                <td class="num text-gray-400">(38,050)</td>
-                                <td class="num text-gray-400">(34,200)</td>
-                                <td class="num text-red-400">+10.6%</td>
+                                <td class="num text-gray-500">(68,400)</td>
+                                <td class="num text-gray-500">(62,200)</td>
+                                <td class="num text-gray-500">(58,100)</td>
+                                <td class="num text-red-400">+9.9%</td>
                             </tr>
                             <tr class="bg-white/5">
-                                <td class="font-bold">Marge Brute</td>
-                                <td class="num font-bold">42,150</td>
-                                <td class="num">34,050</td>
-                                <td class="num">31,200</td>
-                                <td class="num text-green-400">+23.7%</td>
+                                <td class="font-bold text-gray-200">Marge Brute</td>
+                                <td class="num font-bold text-gray-200">74,100</td>
+                                <td class="num">65,900</td>
+                                <td class="num">57,300</td>
+                                <td class="num text-green-400">+12.4%</td>
                             </tr>
                             <tr>
-                                <td>Dépenses Opér.</td>
-                                <td class="num text-gray-400">(18,400)</td>
-                                <td class="num text-gray-400">(16,200)</td>
-                                <td class="num text-gray-400">(15,800)</td>
-                                <td class="num">+13.5%</td>
+                                <td>R&D & Opérations</td>
+                                <td class="num text-gray-500">(28,400)</td>
+                                <td class="num text-gray-500">(25,100)</td>
+                                <td class="num text-gray-500">(23,800)</td>
+                                <td class="num">+13.1%</td>
                             </tr>
                             <tr class="bg-white/5">
-                                <td class="font-bold">EBITDA</td>
-                                <td class="num font-bold">23,750</td>
-                                <td class="num">17,850</td>
-                                <td class="num">15,400</td>
-                                <td class="num text-green-400">+33.0%</td>
+                                <td class="font-bold text-white">EBITDA</td>
+                                <td class="num font-bold text-white">45,700</td>
+                                <td class="num">40,800</td>
+                                <td class="num">33,500</td>
+                                <td class="num text-green-400">+12.0%</td>
                             </tr>
                             <tr>
-                                <td>Résultat Net</td>
-                                <td class="num font-bold text-blue-300">18,200</td>
-                                <td class="num">14,100</td>
-                                <td class="num">12,050</td>
-                                <td class="num text-green-400">+29.1%</td>
+                                <td class="font-bold text-blue-300">Résultat Net</td>
+                                <td class="num font-bold text-blue-300">32,150</td>
+                                <td class="num">28,400</td>
+                                <td class="num">23,100</td>
+                                <td class="num text-green-400">+13.2%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -438,46 +490,46 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div class="glass-panel p-6">
-                    <h3 class="text-lg font-bold mb-4">Bilan Synthétique</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between border-b border-white/5 pb-2">
+                 <div class="glass-panel p-8">
+                    <h3 class="text-xl font-serif italic mb-6">Bilan Synthétique</h3>
+                    <div class="space-y-5">
+                        <div class="flex justify-between border-b border-white/5 pb-3">
                             <span class="text-gray-400 text-sm">Total Actifs</span>
-                            <span class="mono-num font-bold">$480.5 Md</span>
+                            <span class="mono-num font-bold text-white">$980.5 Md</span>
                         </div>
-                        <div class="flex justify-between border-b border-white/5 pb-2">
+                        <div class="flex justify-between border-b border-white/5 pb-3">
                             <span class="text-gray-400 text-sm">Total Passifs</span>
-                            <span class="mono-num text-gray-300">$190.2 Md</span>
+                            <span class="mono-num text-gray-300">$350.2 Md</span>
                         </div>
-                        <div class="flex justify-between border-b border-white/5 pb-2">
+                        <div class="flex justify-between border-b border-white/5 pb-3">
                             <span class="text-gray-400 text-sm">Capitaux Propres</span>
-                            <span class="mono-num text-green-400">$290.3 Md</span>
+                            <span class="mono-num text-green-400 font-bold">$630.3 Md</span>
                         </div>
                         <div class="flex justify-between pt-2">
-                            <span class="text-gray-400 text-sm">Trésorerie & Équiv.</span>
-                            <span class="mono-num text-white">$45.2 Md</span>
+                            <span class="text-gray-400 text-sm">Trésorerie (Cash)</span>
+                            <span class="mono-num text-white">$112.4 Md</span>
                         </div>
                     </div>
                  </div>
 
-                 <div class="glass-panel p-6">
-                    <h3 class="text-lg font-bold mb-4">Flux de Trésorerie</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between border-b border-white/5 pb-2">
+                 <div class="glass-panel p-8">
+                    <h3 class="text-xl font-serif italic mb-6">Flux de Trésorerie</h3>
+                    <div class="space-y-5">
+                        <div class="flex justify-between border-b border-white/5 pb-3">
                             <span class="text-gray-400 text-sm">Flux Opérationnel</span>
-                            <span class="mono-num font-bold text-green-400">$22.4 Md</span>
+                            <span class="mono-num font-bold text-green-400">$38.4 Md</span>
                         </div>
-                        <div class="flex justify-between border-b border-white/5 pb-2">
+                        <div class="flex justify-between border-b border-white/5 pb-3">
                             <span class="text-gray-400 text-sm">Flux d'Investissement</span>
-                            <span class="mono-num text-red-400">($8.5 Md)</span>
+                            <span class="mono-num text-red-400">($15.5 Md)</span>
                         </div>
-                        <div class="flex justify-between border-b border-white/5 pb-2">
-                            <span class="text-gray-400 text-sm">Flux de Financement</span>
-                            <span class="mono-num text-red-400">($4.2 Md)</span>
+                        <div class="flex justify-between border-b border-white/5 pb-3">
+                            <span class="text-gray-400 text-sm">Rachat d'actions</span>
+                            <span class="mono-num text-blue-300">($8.2 Md)</span>
                         </div>
                         <div class="flex justify-between pt-2">
-                            <span class="text-gray-400 text-sm">Flux de Trésorerie Disponible</span>
-                            <span class="mono-num text-blue-300">$13.9 Md</span>
+                            <span class="text-gray-400 text-sm">Free Cash Flow</span>
+                            <span class="mono-num text-white font-bold">$22.9 Md</span>
                         </div>
                     </div>
                  </div>
@@ -487,9 +539,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 text-center text-gray-500 text-xs border-t border-white/10">
-        <p class="mb-2">Copyright © 2025 BlackWood International Corp. Tous droits réservés.</p>
-        <p class="font-medium text-gray-400">Made with Precision by BlackWood Brand & Design</p>
+    <footer class="py-12 text-center text-gray-600 text-xs font-serif italic border-t border-white/5 mt-12">
+        <p>Copyright © 2026 BlackWood International Corp. Données simulées à des fins de démonstration.</p>
     </footer>
 
     <script>
@@ -502,94 +553,127 @@
 
         // --- TABS LOGIC ---
         function switchTab(tabName) {
-            // Masquer tout
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
-            // Désactiver les boutons
             document.querySelectorAll('.segment-btn').forEach(btn => btn.classList.remove('active-segment'));
-            
-            // Activer la sélection
             document.getElementById(`tab-${tabName}`).classList.add('active-content');
             document.getElementById(`btn-${tabName}`).classList.add('active-segment');
         }
 
-        // --- LOAD MORE NEWS LOGIC ---
-        function loadMoreNews() {
-            const container = document.getElementById('news-container');
-            const btn = document.getElementById('btn-load-more');
+        // --- NEWS LOGIC ---
+        const newsData = [
+            {
+                tag: 'TECH', date: 'IL Y A 2H',
+                title: 'Acquisition de QuantumCore finalisée',
+                content: "BlackWood International a officiellement finalisé l'acquisition de QuantumCore, le leader européen des processeurs quantiques, pour un montant de 4.2 Milliards de dollars. Cette opération stratégique permet à la division BW Tech de sécuriser une infrastructure critique pour le développement de ses prochaines IA génératives. 'C'est un saut quantique, littéralement, pour notre souveraineté technologique', a déclaré le CTO du groupe."
+            },
+            {
+                tag: 'ÉNERGIE', date: 'HIER',
+                title: 'Projet "Helios" validé en Islande',
+                content: "Le Conseil d'Administration a donné son feu vert pour le projet Helios : une centrale géothermique de nouvelle génération en Islande. Avec un investissement de 12 Milliards, cette infrastructure sera capable de capturer plus de CO2 qu'elle n'en émet, rendant l'ensemble de la branche data-center de BlackWood carbone-négatif d'ici 2028."
+            },
+            {
+                tag: 'FINANCE', date: 'IL Y A 2 JOURS',
+                title: 'Résultats Q3 : Au-delà des attentes',
+                content: "Les résultats du troisième trimestre confirment la robustesse du modèle congloméral de BlackWood. Avec un chiffre d'affaires consolidé en hausse de 11.2% et un résultat net record de 32 Milliards, le groupe surperforme le consensus des analystes. La division Défense et les revenus de licences technologiques sont les principaux moteurs de cette croissance."
+            },
+            {
+                tag: 'AUTO', date: 'SEMAINE DERNIÈRE',
+                title: 'Royal Motors : La "Spectre" dévoilée',
+                content: "Royal Motors a levé le voile sur la 'Spectre', sa première hypercar 100% électrique. Alliant le luxe traditionnel britannique à une propulsion de 1800 chevaux, le carnet de commande est déjà plein pour les deux prochaines années, confirmant l'appétit des ultra-riches pour des véhicules exclusifs et durables."
+            },
+            {
+                tag: 'GOUVERNANCE', date: '15 OCT',
+                title: 'Yves Land confirme la stratégie 2030',
+                content: "Dans sa lettre annuelle aux actionnaires, Yves Land a réaffirmé sa vision de long terme : 'Nous ne construisons pas pour le prochain trimestre, mais pour la prochaine décennie'. Il a également confirmé qu'aucune vente d'actions de classe B n'était prévue, garantissant la stabilité du contrôle du groupe face à la volatilité des marchés."
+            }
+        ];
+
+        function toggleNews() {
+            const extra = document.getElementById('extra-news');
+            const btn = document.getElementById('btn-toggle-news');
             
-            // Simulation de données news
-            const moreNews = [
-                {
-                    tag: 'STRATÉGIE', color: 'blue', date: 'IL Y A 3 JOURS',
-                    title: 'Expansion en Asie-Pacifique',
-                    desc: 'Ouverture du nouveau quartier général régional à Singapour pour piloter les opérations BW Tech.'
-                },
-                {
-                    tag: 'AUTOMOBILE', color: 'red', date: 'SEMAINE DERNIÈRE',
-                    title: 'Royal Motors dévoile la "Spectre"',
-                    desc: 'La première hypercar 100% électrique de la marque reçoit un accueil triomphal à Genève.'
-                }
-            ];
-
-            // Injection des nouvelles cartes
-            moreNews.forEach(news => {
-                const colors = {
-                    'blue': 'text-blue-300 bg-blue-500/20 group-hover:text-blue-400',
-                    'red': 'text-red-300 bg-red-500/20 group-hover:text-red-400'
-                };
-                const colorClass = colors[news.color];
-
-                const html = `
-                <div class="news-card cursor-pointer group">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-[10px] font-bold ${colorClass.split('group')[0]} px-2 py-0.5 rounded">${news.tag}</span>
-                        <span class="text-[10px] text-gray-500">${news.date}</span>
-                    </div>
-                    <h4 class="font-bold text-sm text-white ${colorClass.split(' ')[2]} transition-colors">${news.title}</h4>
-                    <p class="text-xs text-gray-400 mt-1 line-clamp-2">${news.desc}</p>
-                </div>`;
-                
-                container.insertAdjacentHTML('beforeend', html);
-            });
-
-            // Désactiver le bouton après chargement (Simulation de fin de liste)
-            btn.textContent = "Toutes les actualités chargées";
-            btn.disabled = true;
+            if (extra.classList.contains('hidden')) {
+                extra.classList.remove('hidden');
+                extra.classList.add('fade-in');
+                btn.innerHTML = 'Réduire les actualités <i class="fas fa-chevron-up ml-2"></i>';
+            } else {
+                extra.classList.add('hidden');
+                btn.innerHTML = 'Voir toutes les news <i class="fas fa-chevron-down ml-2"></i>';
+            }
         }
 
-        // --- CHART LOGIC & TIMEFRAME ---
+        function openNews(index) {
+            const data = newsData[index];
+            document.getElementById('modal-tag').innerText = data.tag;
+            document.getElementById('modal-date').innerText = data.date;
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-text').innerText = data.content;
+            
+            document.getElementById('news-modal').classList.remove('hidden-modal');
+        }
+
+        function closeModal() {
+            document.getElementById('news-modal').classList.add('hidden-modal');
+        }
+
+        // --- CHART LOGIC ---
         const ctx = document.getElementById('mainChart').getContext('2d');
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(52, 211, 153, 0.2)');
+        gradient.addColorStop(0, 'rgba(52, 211, 153, 0.1)');
         gradient.addColorStop(1, 'rgba(52, 211, 153, 0)');
 
         let mainChart;
-        let currentTimeframe = '1D';
 
+        // Génération de données intelligente (Timeframe logic)
         function generateData(timeframe) {
             let dataPoints = [];
             let labels = [];
-            let basePrice = 1240;
-            let volatility = 2;
-            let points = 60;
+            // Prix cible autour de 1025.64
+            let basePrice = 1025.64; 
+            
+            let volatility = 0.5; // Par défaut
+            let trend = 0;
+            let points = 50;
 
-            if (timeframe === '1H') { volatility = 5; points = 60; }
-            if (timeframe === '1D') { volatility = 2; points = 24; }
-            if (timeframe === '1W') { volatility = 10; points = 7; }
-            if (timeframe === '1M') { volatility = 20; points = 30; }
-            if (timeframe === 'YTD') { volatility = 50; points = 12; basePrice = 1100; }
+            if (timeframe === '1H') { 
+                // Très granulaire, bruité, peu de tendance
+                volatility = 1.2; 
+                points = 60; 
+                trend = 0.1;
+            }
+            if (timeframe === '1D') { 
+                // Journée standard
+                volatility = 0.8; 
+                points = 40; 
+                trend = 0.5;
+            }
+            if (timeframe === '1S') { 
+                // Semaine
+                volatility = 2.5; 
+                points = 20; 
+                trend = 1.5;
+            }
+            if (timeframe === '1M') { 
+                // Mois
+                volatility = 5.0; 
+                points = 30; 
+                trend = 3.0;
+            }
+            if (timeframe === 'YTD') { 
+                // Année : Tendance haussière claire, moins de bruit "micro"
+                volatility = 15.0; 
+                points = 12; 
+                trend = 120.0; // Grosse croissance sur l'année
+                basePrice = 900; // Commence plus bas
+            }
 
             let current = basePrice;
             for(let i=0; i<points; i++) {
-                let change = (Math.random() - 0.45) * volatility;
+                // Random walk avec biais (trend)
+                let change = (Math.random() - 0.45) * volatility + (trend / points);
                 current += change;
                 dataPoints.push(current);
-                
-                if(timeframe === '1H') labels.push(i + 'm');
-                if(timeframe === '1D') labels.push(i + 'h');
-                if(timeframe === '1W') labels.push('J' + (i+1));
-                if(timeframe === '1M') labels.push('S' + (i+1));
-                if(timeframe === 'YTD') labels.push('M' + (i+1));
+                labels.push(i);
             }
             return { data: dataPoints, labels: labels, lastPrice: current };
         }
@@ -602,40 +686,41 @@
                 data: {
                     labels: simulated.labels,
                     datasets: [{
-                        label: 'Prix',
                         data: simulated.data,
                         borderColor: '#34d399',
-                        backgroundColor: gradient,
                         borderWidth: 2,
+                        backgroundColor: gradient,
+                        fill: true,
                         pointRadius: 0,
                         pointHoverRadius: 6,
-                        fill: true,
-                        tension: 0.4
+                        tension: 0.4 
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { legend: { display: false }, tooltip: { enabled: true, mode: 'index', intersect: false } },
                     scales: {
                         x: { display: false },
                         y: {
                             position: 'right',
                             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#6b7280', font: { family: "'JetBrains Mono'" } }
+                            ticks: { 
+                                color: '#6b7280', 
+                                font: { family: "'JetBrains Mono'" },
+                                callback: function(value) { return '$' + value.toFixed(0); }
+                            }
                         }
                     },
                     animation: { duration: 0 }
                 }
             });
-
+            // Update le prix affiché pour matcher la fin du graph
             updatePriceDisplay(simulated.lastPrice, simulated.data[0]);
         }
 
         function updateTimeframe(tf, btn) {
             if (!mainChart) return;
-
-            currentTimeframe = tf;
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
@@ -643,7 +728,6 @@
             mainChart.data.labels = sim.labels;
             mainChart.data.datasets[0].data = sim.data;
             mainChart.update();
-            
             updatePriceDisplay(sim.lastPrice, sim.data[0]);
         }
 
@@ -657,59 +741,38 @@
             const sign = pctChange >= 0 ? '+' : '';
             changeEl.innerText = `${sign}${pctChange.toFixed(2)}%`;
             
-            if (mainChart && mainChart.data && mainChart.data.datasets) {
-                if(pctChange >= 0) {
-                    changeEl.classList.remove('text-red-400', 'bg-red-500/10');
-                    changeEl.classList.add('text-green-400', 'bg-green-500/10');
-                    mainChart.data.datasets[0].borderColor = '#34d399';
-                } else {
-                    changeEl.classList.remove('text-green-400', 'bg-green-500/10');
-                    changeEl.classList.add('text-red-400', 'bg-red-500/10');
-                    mainChart.data.datasets[0].borderColor = '#ef4444';
-                }
-                mainChart.update('none');
+            if(pctChange >= 0) {
+                changeEl.classList.remove('text-red-400', 'bg-red-900/20', 'border-red-500/20');
+                changeEl.classList.add('text-green-400', 'bg-green-900/20', 'border-green-500/20');
+                if(mainChart) mainChart.data.datasets[0].borderColor = '#34d399';
+            } else {
+                changeEl.classList.remove('text-green-400', 'bg-green-900/20', 'border-green-500/20');
+                changeEl.classList.add('text-red-400', 'bg-red-900/20', 'border-red-500/20');
+                if(mainChart) mainChart.data.datasets[0].borderColor = '#ef4444';
             }
+            if(mainChart) mainChart.update('none');
         }
 
-        // --- LIVE UPDATE (5 secondes) ---
+        // Live simulation (Update toutes les 3s)
         setInterval(() => {
             if (!mainChart) return;
             const data = mainChart.data.datasets[0].data;
             if (!data || data.length === 0) return;
 
             const lastVal = data[data.length - 1];
-            const change = (Math.random() - 0.45) * 1.5; 
+            // Petite fluctuation aléatoire
+            const change = (Math.random() - 0.45) * 0.8; 
             const newVal = lastVal + change;
             
             data.shift();
             data.push(newVal);
-            mainChart.update();
+            mainChart.update('none'); // Update fluide sans redessiner tout
             updatePriceDisplay(newVal, data[0]);
-            addTradeToBook(newVal);
-        }, 5000);
-
-        // --- TAPE LOGIC ---
-        const orderBook = document.getElementById('order-book');
-        function addTradeToBook(price) {
-            const time = new Date().toLocaleTimeString('fr-FR', {hour12: false});
-            const vol = Math.floor(Math.random() * 800) + 10;
-            const color = Math.random() > 0.5 ? 'text-green-400' : 'text-red-400';
-            
-            const row = document.createElement('div');
-            row.className = 'order-book-row';
-            row.innerHTML = `
-                <span class="text-gray-400">${time}</span>
-                <span class="${color} font-bold">$${price.toFixed(2)}</span>
-                <span class="text-white">${vol}</span>
-            `;
-            orderBook.prepend(row);
-            if(orderBook.children.length > 15) orderBook.lastElementChild.remove();
-        }
+        }, 3000);
 
         // Init
         document.addEventListener('DOMContentLoaded', () => {
              initChart('1D');
-             for(let i=0; i<10; i++) addTradeToBook(1240 + Math.random()*10);
         });
 
     </script>
