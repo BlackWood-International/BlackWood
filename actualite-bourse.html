@@ -8,18 +8,18 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="BlackWood Markets" />
+    <meta property="og:title" content="BlackWood Markets (BLWD)" />
     <meta property="og:description" content="Données financières en temps réel et analyses stratégiques." />
     <meta name="theme-color" content="#05040a">
 
     <!-- Bibliothèques -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js pour le graphique -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- Styles Globaux (Hérités de l'Index) --- */
+        /* --- Styles Globaux --- */
         :root {
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-bg: rgba(10, 8, 20, 0.7);
@@ -41,7 +41,7 @@
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
-        /* --- Navigation (Strictement Identique) --- */
+        /* --- Navigation --- */
         .nav-link { transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; display: inline-block; cursor: pointer; }
         .nav-link.active { font-weight: 600; transform: translateY(-3px); color: #ffffff; }
         .nav-link:not(.active):hover { color: #ffffff; }
@@ -70,6 +70,7 @@
             border-radius: 24px;
             backdrop-filter: blur(20px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
         }
 
         .mono-num { font-family: var(--font-mono); letter-spacing: -0.05em; }
@@ -77,7 +78,7 @@
         .live-dot {
             width: 8px; height: 8px; border-radius: 50%; background-color: var(--success);
             box-shadow: 0 0 10px var(--success);
-            animation: pulse-live 1.5s infinite;
+            animation: pulse-live 2s infinite;
             display: inline-block;
             margin-right: 6px;
         }
@@ -92,26 +93,63 @@
         }
         @keyframes fadeInRow { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* Custom Scrollbar for panels */
+        /* Custom Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
         .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 
-        /* Boutons Actions */
+        /* Boutons Actions & Tabs */
         .action-btn {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 10px 20px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;
-            transition: all 0.2s; cursor: pointer;
+            color: #9ca3af; padding: 10px 24px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;
+            transition: all 0.3s; cursor: pointer;
         }
-        .action-btn:hover { background: white; color: black; transform: translateY(-2px); }
-        .action-btn.primary { background: var(--neon-blue); border-color: var(--neon-blue); }
-        .action-btn.primary:hover { background: #0062b3; color: white; box-shadow: 0 0 15px rgba(0, 78, 146, 0.5); }
+        .action-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        
+        .action-btn.active-tab {
+            background: white; 
+            color: black; 
+            border-color: white;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
 
-        /* Chart Tooltip Customization */
-        #chartjs-tooltip {
-            opacity: 1; position: absolute; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 8px; pointer-events: none;
-            transform: translate(-50%, 0); transition: all .1s ease; border: 1px solid rgba(255,255,255,0.1); padding: 8px; font-family: var(--font-mono); font-size: 0.8rem;
+        /* Timeframe buttons */
+        .time-btn {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            color: #6b7280;
+            transition: all 0.2s;
         }
+        .time-btn:hover { background: rgba(255,255,255,0.05); color: white; }
+        .time-btn.active { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* Financial Table */
+        .fin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .fin-table th { text-align: left; color: #6b7280; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        .fin-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); color: white; }
+        .fin-table tr:hover { background: rgba(255,255,255,0.02); }
+        .fin-table .num { font-family: var(--font-mono); text-align: right; }
+
+        /* News Item */
+        .news-card {
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        .news-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        /* Tabs Visibility */
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
+        .tab-content.active-content { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
@@ -149,314 +187,457 @@
 
     <main class="pt-28 lg:pt-36 px-4 lg:px-8 max-w-[1600px] mx-auto min-h-screen pb-20">
         
-        <!-- En-tête de page / Dashboard Control -->
+        <!-- Dashboard Header -->
         <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 animate-[fadeIn_0.5s_ease-out]">
             <div>
                 <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-1 bg-white/10 rounded text-[10px] uppercase font-bold tracking-widest text-gray-300 border border-white/5">NYSE: BW.H</span>
-                    <span class="text-xs text-green-400 font-mono"><span class="live-dot"></span>MARKET OPEN</span>
+                    <span class="px-2 py-1 bg-white/10 rounded text-[10px] uppercase font-bold tracking-widest text-gray-300 border border-white/5">NASDAQ: BLWD</span>
+                    <span class="text-xs text-green-400 font-mono flex items-center"><span class="live-dot"></span>MARKET OPEN</span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight">BW.HOLDINGS</h1>
+                <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight">BLACKWOOD INT.</h1>
             </div>
-            <div class="flex gap-3">
-                <button class="action-btn active text-xs md:text-sm">Overview</button>
-                <button class="action-btn text-xs md:text-sm">Financials</button>
-                <button class="action-btn primary text-xs md:text-sm"><i class="fas fa-file-download mr-2"></i>Q4 Report</button>
+            <div class="flex bg-white/5 rounded-xl p-1 border border-white/5">
+                <button id="btn-overview" class="action-btn active-tab text-xs md:text-sm" onclick="switchTab('overview')">Overview</button>
+                <button id="btn-financials" class="action-btn text-xs md:text-sm" onclick="switchTab('financials')">Financials</button>
             </div>
         </div>
 
-        <!-- GRID PRINCIPALE -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- COLONNE GAUCHE (Graphique & Data) -->
-            <div class="lg:col-span-2 space-y-6">
+        <!-- TAB 1: OVERVIEW (Graphiques & News) -->
+        <div id="tab-overview" class="tab-content active-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <!-- Carte Graphique Principal -->
-                <div class="glass-panel p-6 md:p-8 h-[450px] md:h-[500px] relative flex flex-col">
-                    <!-- Stats Rapides -->
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Current Price</p>
-                            <div class="flex items-baseline gap-4">
-                                <span id="current-price" class="text-5xl md:text-6xl font-bold mono-num text-white">$1,242.50</span>
-                                <span id="price-change" class="text-lg md:text-xl font-bold mono-num text-green-400 bg-green-500/10 px-2 py-1 rounded">+1.45%</span>
+                <!-- Chart Section -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-panel p-6 md:p-8 h-[500px] relative flex flex-col">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Live Price</p>
+                                <div class="flex items-baseline gap-4">
+                                    <span id="current-price" class="text-5xl md:text-6xl font-bold mono-num text-white">$1,242.50</span>
+                                    <span id="price-change" class="text-lg md:text-xl font-bold mono-num text-green-400 bg-green-500/10 px-2 py-1 rounded">+1.45%</span>
+                                </div>
+                            </div>
+                            <div class="text-right hidden sm:block">
+                                <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Volume</p>
+                                <span class="text-2xl font-bold mono-num text-white">4.2M</span>
                             </div>
                         </div>
-                        <div class="text-right hidden sm:block">
-                            <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Volume (24h)</p>
-                            <span class="text-2xl font-bold mono-num text-white">4.2M</span>
+                        
+                        <div class="flex-grow w-full relative">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                        
+                        <!-- Functional Timeframe Buttons -->
+                        <div class="flex gap-2 mt-4 border-t border-white/5 pt-4 overflow-x-auto">
+                            <button class="time-btn" onclick="updateTimeframe('1H', this)">1H</button>
+                            <button class="time-btn active" onclick="updateTimeframe('1D', this)">1D</button>
+                            <button class="time-btn" onclick="updateTimeframe('1W', this)">1W</button>
+                            <button class="time-btn" onclick="updateTimeframe('1M', this)">1M</button>
+                            <button class="time-btn" onclick="updateTimeframe('YTD', this)">YTD</button>
                         </div>
                     </div>
+
+                    <!-- KPIs -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="glass-panel p-4 text-center">
+                            <p class="text-gray-500 text-xs uppercase mb-1">Market Cap</p>
+                            <p class="text-lg font-bold mono-num">$248.4B</p>
+                        </div>
+                        <div class="glass-panel p-4 text-center">
+                            <p class="text-gray-500 text-xs uppercase mb-1">P/E Ratio</p>
+                            <p class="text-lg font-bold mono-num">18.42</p>
+                        </div>
+                        <div class="glass-panel p-4 text-center">
+                            <p class="text-gray-500 text-xs uppercase mb-1">52W High</p>
+                            <p class="text-lg font-bold mono-num">$1,290.00</p>
+                        </div>
+                        <div class="glass-panel p-4 text-center">
+                            <p class="text-gray-500 text-xs uppercase mb-1">Dividend Yield</p>
+                            <p class="text-lg font-bold mono-num text-blue-400">2.1%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Info -->
+                <div class="space-y-6">
                     
-                    <!-- Le Graphique -->
-                    <div class="flex-grow w-full relative">
-                        <canvas id="mainChart"></canvas>
-                    </div>
-                    
-                    <!-- Timeframe Selectors -->
-                    <div class="flex gap-2 mt-4 border-t border-white/5 pt-4 overflow-x-auto">
-                        <button class="px-3 py-1 rounded hover:bg-white/10 text-xs font-mono text-gray-400 transition-colors">1H</button>
-                        <button class="px-3 py-1 rounded bg-white/10 text-xs font-mono text-white transition-colors border border-white/10">1D</button>
-                        <button class="px-3 py-1 rounded hover:bg-white/10 text-xs font-mono text-gray-400 transition-colors">1W</button>
-                        <button class="px-3 py-1 rounded hover:bg-white/10 text-xs font-mono text-gray-400 transition-colors">1M</button>
-                        <button class="px-3 py-1 rounded hover:bg-white/10 text-xs font-mono text-gray-400 transition-colors">YTD</button>
-                    </div>
-                </div>
-
-                <!-- Sous-Grille Indicateurs -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="glass-panel p-4 text-center">
-                        <p class="text-gray-500 text-xs uppercase mb-1">Market Cap</p>
-                        <p class="text-lg font-bold mono-num">$195.4B</p>
-                    </div>
-                    <div class="glass-panel p-4 text-center">
-                        <p class="text-gray-500 text-xs uppercase mb-1">P/E Ratio</p>
-                        <p class="text-lg font-bold mono-num">18.42</p>
-                    </div>
-                    <div class="glass-panel p-4 text-center">
-                        <p class="text-gray-500 text-xs uppercase mb-1">EPS (TTM)</p>
-                        <p class="text-lg font-bold mono-num">$64.20</p>
-                    </div>
-                    <div class="glass-panel p-4 text-center">
-                        <p class="text-gray-500 text-xs uppercase mb-1">Dividend</p>
-                        <p class="text-lg font-bold mono-num text-blue-400">2.1%</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- COLONNE DROITE (Feed & Carnet) -->
-            <div class="space-y-6">
-
-                <!-- Filiales / Autres Actions -->
-                <div class="glass-panel p-6">
-                    <h3 class="text-lg font-bold mb-4">Group Entities</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                            <div>
-                                <p class="font-bold text-sm">BW.TECH</p>
-                                <p class="text-xs text-gray-500">Technology & AI</p>
+                    <!-- Investor News -->
+                    <div class="glass-panel p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold font-serif italic">Investor Relations</h3>
+                            <i class="fas fa-rss text-gray-500"></i>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Article 1 -->
+                            <div class="news-card cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-[10px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">TECH</span>
+                                    <span class="text-[10px] text-gray-500">2H AGO</span>
+                                </div>
+                                <h4 class="font-bold text-sm text-white group-hover:text-blue-400 transition-colors">Acquisition de QuantumCore</h4>
+                                <p class="text-xs text-gray-400 mt-1 line-clamp-2">BlackWood finalise l'achat du leader européen des processeurs quantiques pour 4.2Mds$.</p>
                             </div>
-                            <div class="text-right">
-                                <p class="mono-num font-bold">$890.15</p>
-                                <p class="mono-num text-xs text-green-400">+0.8%</p>
+
+                            <!-- Article 2 -->
+                            <div class="news-card cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-[10px] font-bold bg-green-500/20 text-green-300 px-2 py-0.5 rounded">ENERGY</span>
+                                    <span class="text-[10px] text-gray-500">YESTERDAY</span>
+                                </div>
+                                <h4 class="font-bold text-sm text-white group-hover:text-green-400 transition-colors">Projet "Helios" validé</h4>
+                                <p class="text-xs text-gray-400 mt-1 line-clamp-2">Le Conseil d'Administration approuve la construction de la centrale géothermique en Islande.</p>
+                            </div>
+
+                            <!-- Article 3 -->
+                            <div class="news-card cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-[10px] font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">FINANCE</span>
+                                    <span class="text-[10px] text-gray-500">2 DAYS AGO</span>
+                                </div>
+                                <h4 class="font-bold text-sm text-white group-hover:text-purple-400 transition-colors">Résultats Q3 Record</h4>
+                                <p class="text-xs text-gray-400 mt-1 line-clamp-2">BlackWood surperforme les attentes du marché avec un EPS de $14.20.</p>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center pb-3 border-b border-white/5">
-                            <div>
-                                <p class="font-bold text-sm">BW.AUTO</p>
-                                <p class="text-xs text-gray-500">Royal Motors</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="mono-num font-bold">$455.20</p>
-                                <p class="mono-num text-xs text-green-400">+2.1%</p>
-                            </div>
+                        <button class="w-full mt-4 py-2 border border-white/10 rounded-lg text-xs hover:bg-white hover:text-black transition-colors">Voir toutes les news</button>
+                    </div>
+
+                    <!-- Order Book -->
+                    <div class="glass-panel p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Tape Reading</h3>
+                            <span class="text-[10px] font-mono text-green-400">● LIVE</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="font-bold text-sm">BW.NRGY</p>
-                                <p class="text-xs text-gray-500">Energy Solutions</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="mono-num font-bold">$320.50</p>
-                                <p class="mono-num text-xs text-red-400">-0.4%</p>
-                            </div>
+                        <div class="flex justify-between text-[10px] text-gray-600 uppercase font-bold mb-2 px-2">
+                            <span>Time</span>
+                            <span>Price</span>
+                            <span>Size</span>
+                        </div>
+                        <div id="order-book" class="h-[250px] overflow-hidden relative custom-scroll px-2">
+                            <!-- JS Inject -->
                         </div>
                     </div>
-                </div>
 
-                <!-- Carnet d'Ordres (Simulation) -->
-                <div class="glass-panel p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Live Trades</h3>
-                        <span class="text-xs text-gray-500 font-mono animate-pulse">● CONNECTED</span>
-                    </div>
-                    <!-- En-têtes -->
-                    <div class="flex justify-between text-xs text-gray-500 uppercase font-bold mb-2 px-2">
-                        <span>Time</span>
-                        <span>Price</span>
-                        <span>Vol</span>
-                    </div>
-                    <!-- Container Défilant -->
-                    <div id="order-book" class="h-[200px] overflow-hidden relative custom-scroll px-2">
-                        <!-- Les lignes seront injectées par JS -->
-                    </div>
                 </div>
-
-                <!-- News Feed Rapide -->
-                <div class="glass-panel p-6">
-                    <h3 class="text-lg font-bold mb-4">Corporate News</h3>
-                    <div class="space-y-4">
-                        <a href="#" class="block group">
-                            <span class="text-[10px] text-blue-400 font-bold uppercase">10:45 AM</span>
-                            <p class="text-sm text-gray-300 group-hover:text-white transition-colors mt-1">
-                                BlackWood acquiert 15% de participation stratégique dans Helios Quantum Systems.
-                            </p>
-                        </a>
-                        <a href="#" class="block group">
-                            <span class="text-[10px] text-gray-500 font-bold uppercase">YESTERDAY</span>
-                            <p class="text-sm text-gray-300 group-hover:text-white transition-colors mt-1">
-                                Le CEO Yves Land annonce une augmentation du dividende annuel de 12%.
-                            </p>
-                        </a>
-                    </div>
-                </div>
-
             </div>
         </div>
-        
+
+        <!-- TAB 2: FINANCIALS (Tableaux) -->
+        <div id="tab-financials" class="tab-content">
+            <div class="glass-panel p-8 mb-8">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold font-serif italic">Income Statement</h2>
+                    <div class="flex gap-2">
+                        <span class="text-xs text-gray-500 uppercase">Values in USD Millions</span>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="fin-table">
+                        <thead>
+                            <tr>
+                                <th>Fiscal Year</th>
+                                <th class="text-right">2024</th>
+                                <th class="text-right">2023</th>
+                                <th class="text-right">2022</th>
+                                <th class="text-right">Growth (YoY)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Total Revenue</td>
+                                <td class="num font-bold text-white">84,250</td>
+                                <td class="num text-gray-300">72,100</td>
+                                <td class="num text-gray-300">65,400</td>
+                                <td class="num text-green-400">+16.8%</td>
+                            </tr>
+                            <tr>
+                                <td>Cost of Revenue</td>
+                                <td class="num text-gray-400">(42,100)</td>
+                                <td class="num text-gray-400">(38,050)</td>
+                                <td class="num text-gray-400">(34,200)</td>
+                                <td class="num text-red-400">+10.6%</td>
+                            </tr>
+                            <tr class="bg-white/5">
+                                <td class="font-bold">Gross Profit</td>
+                                <td class="num font-bold">42,150</td>
+                                <td class="num">34,050</td>
+                                <td class="num">31,200</td>
+                                <td class="num text-green-400">+23.7%</td>
+                            </tr>
+                            <tr>
+                                <td>Operating Expenses</td>
+                                <td class="num text-gray-400">(18,400)</td>
+                                <td class="num text-gray-400">(16,200)</td>
+                                <td class="num text-gray-400">(15,800)</td>
+                                <td class="num">+13.5%</td>
+                            </tr>
+                            <tr class="bg-white/5">
+                                <td class="font-bold">EBITDA</td>
+                                <td class="num font-bold">23,750</td>
+                                <td class="num">17,850</td>
+                                <td class="num">15,400</td>
+                                <td class="num text-green-400">+33.0%</td>
+                            </tr>
+                            <tr>
+                                <td>Net Income</td>
+                                <td class="num font-bold text-blue-300">18,200</td>
+                                <td class="num">14,100</td>
+                                <td class="num">12,050</td>
+                                <td class="num text-green-400">+29.1%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div class="glass-panel p-6">
+                    <h3 class="text-lg font-bold mb-4">Balance Sheet Highlights</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Total Assets</span>
+                            <span class="mono-num font-bold">$480.5B</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Total Liabilities</span>
+                            <span class="mono-num text-gray-300">$190.2B</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Total Equity</span>
+                            <span class="mono-num text-green-400">$290.3B</span>
+                        </div>
+                        <div class="flex justify-between pt-2">
+                            <span class="text-gray-400 text-sm">Cash & Equivalents</span>
+                            <span class="mono-num text-white">$45.2B</span>
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="glass-panel p-6">
+                    <h3 class="text-lg font-bold mb-4">Cash Flow</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Operating Cash Flow</span>
+                            <span class="mono-num font-bold text-green-400">$22.4B</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Investing Cash Flow</span>
+                            <span class="mono-num text-red-400">($8.5B)</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Financing Cash Flow</span>
+                            <span class="mono-num text-red-400">($4.2B)</span>
+                        </div>
+                        <div class="flex justify-between pt-2">
+                            <span class="text-gray-400 text-sm">Free Cash Flow</span>
+                            <span class="mono-num text-blue-300">$13.9B</span>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 text-center text-gray-500 text-sm border-t border-white/10">
-        <p>Copyright © 2025 BlackWood International Corp. Market Data provided by BW Analytics.</p>
+    <footer class="py-12 text-center text-gray-500 text-xs border-t border-white/10">
+        <p class="mb-2">Copyright © 2025 BlackWood International Corp. Tous droits réservés.</p>
+        <p class="font-medium text-gray-400">Made with Precision by BlackWood Brand & Design</p>
     </footer>
 
     <script>
-        // --- Navigation Mobile (Standard) ---
+        // --- Navigation Mobile ---
         const mainNav = document.getElementById('main-nav');
         const menuBtn = document.getElementById('menu-toggle-button');
         const links = document.querySelectorAll('.mobile-links .nav-link');
         menuBtn.addEventListener('click', () => { mainNav.classList.toggle('is-expanded'); menuBtn.classList.toggle('is-active'); });
         links.forEach(l => l.addEventListener('click', () => { mainNav.classList.remove('is-expanded'); menuBtn.classList.remove('is-active'); }));
 
-        // --- CHART.JS CONFIGURATION (SIMULATION LIVE) ---
+        // --- TABS LOGIC ---
+        function switchTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-content'));
+            // Remove active style from buttons
+            document.querySelectorAll('.action-btn').forEach(btn => btn.classList.remove('active-tab'));
+            
+            // Show selected
+            document.getElementById(`tab-${tabName}`).classList.add('active-content');
+            document.getElementById(`btn-${tabName}`).classList.add('active-tab');
+        }
+
+        // --- CHART LOGIC & TIMEFRAME ---
         const ctx = document.getElementById('mainChart').getContext('2d');
-        
-        // Dégradé pour le fond du graphique
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(52, 211, 153, 0.2)'); // Vert transparent
+        gradient.addColorStop(0, 'rgba(52, 211, 153, 0.2)');
         gradient.addColorStop(1, 'rgba(52, 211, 153, 0)');
 
-        // Données initiales (Simulation d'une journée de trading)
-        const initialData = Array.from({length: 60}, () => 1240 + Math.random() * 10 - 5);
-        const labels = Array.from({length: 60}, (_, i) => i);
+        let mainChart;
+        let currentTimeframe = '1D';
 
-        const mainChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'BW.H Price',
-                    data: initialData,
-                    borderColor: '#34d399', // Vert Tailwind
-                    backgroundColor: gradient,
-                    borderWidth: 2,
-                    pointRadius: 0, // Pas de points pour un look "clean"
-                    pointHoverRadius: 6,
-                    fill: true,
-                    tension: 0.4 // Courbe lisse
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        backgroundColor: 'rgba(13, 10, 27, 0.9)',
-                        titleColor: '#9ca3af',
-                        bodyColor: '#fff',
-                        borderColor: 'rgba(255,255,255,0.1)',
-                        borderWidth: 1,
-                        displayColors: false,
-                        callbacks: {
-                            label: function(context) {
-                                return '$ ' + context.parsed.y.toFixed(2);
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: { display: false }, // Masquer l'axe X
-                    y: {
-                        position: 'right',
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                        ticks: {
-                            color: '#6b7280',
-                            font: { family: "'JetBrains Mono', monospace" },
-                            callback: function(value) { return '$' + value; }
-                        }
-                    }
-                },
-                interaction: {
-                    mode: 'nearest',
-                    axis: 'x',
-                    intersect: false
-                },
-                animation: { duration: 0 } // Désactive l'animation par défaut pour la fluidité du live
+        // Générateur de données simulées
+        function generateData(timeframe) {
+            let dataPoints = [];
+            let labels = [];
+            let basePrice = 1240;
+            let volatility = 2;
+            let points = 60;
+
+            if (timeframe === '1H') { volatility = 5; points = 60; } // Volatile
+            if (timeframe === '1D') { volatility = 2; points = 24; }
+            if (timeframe === '1W') { volatility = 10; points = 7; }
+            if (timeframe === '1M') { volatility = 20; points = 30; }
+            if (timeframe === 'YTD') { volatility = 50; points = 12; basePrice = 1100; } // Trend haussier
+
+            let current = basePrice;
+            for(let i=0; i<points; i++) {
+                let change = (Math.random() - 0.45) * volatility; // Légèrement biaisé positif
+                current += change;
+                dataPoints.push(current);
+                
+                // Labels bidons mais cohérents
+                if(timeframe === '1H') labels.push(i + 'm');
+                if(timeframe === '1D') labels.push(i + 'h');
+                if(timeframe === '1W') labels.push('D' + (i+1));
+                if(timeframe === '1M') labels.push('J' + (i+1));
+                if(timeframe === 'YTD') labels.push('M' + (i+1));
             }
-        });
+            return { data: dataPoints, labels: labels, lastPrice: current };
+        }
 
-        // --- LOGIQUE LIVE (SIMULATION) ---
-        let currentPrice = 1242.50;
-        const priceElement = document.getElementById('current-price');
-        const changeElement = document.getElementById('price-change');
+        function initChart(timeframe) {
+            const simulated = generateData(timeframe);
+            
+            // Correction : Créer d'abord le graphique
+            mainChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: simulated.labels,
+                    datasets: [{
+                        label: 'Price',
+                        data: simulated.data,
+                        borderColor: '#34d399',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            position: 'right',
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#6b7280', font: { family: "'JetBrains Mono'" } }
+                        }
+                    },
+                    animation: { duration: 0 }
+                }
+            });
 
+            // Puis mettre à jour l'affichage des prix maintenant que mainChart existe
+            updatePriceDisplay(simulated.lastPrice, simulated.data[0]);
+        }
+
+        function updateTimeframe(tf, btn) {
+            if (!mainChart) return; // Sécurité
+
+            currentTimeframe = tf;
+            // Update UI Btns
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Regen Data
+            const sim = generateData(tf);
+            mainChart.data.labels = sim.labels;
+            mainChart.data.datasets[0].data = sim.data;
+            mainChart.update();
+            
+            // Reset price display to simulation end
+            updatePriceDisplay(sim.lastPrice, sim.data[0]);
+        }
+
+        function updatePriceDisplay(current, start) {
+            const priceEl = document.getElementById('current-price');
+            const changeEl = document.getElementById('price-change');
+            
+            priceEl.innerText = '$' + current.toFixed(2);
+            
+            const pctChange = ((current - start) / start) * 100;
+            const sign = pctChange >= 0 ? '+' : '';
+            changeEl.innerText = `${sign}${pctChange.toFixed(2)}%`;
+            
+            // Vérification de sécurité avant d'accéder à mainChart
+            if (mainChart && mainChart.data && mainChart.data.datasets) {
+                if(pctChange >= 0) {
+                    changeEl.classList.remove('text-red-400', 'bg-red-500/10');
+                    changeEl.classList.add('text-green-400', 'bg-green-500/10');
+                    mainChart.data.datasets[0].borderColor = '#34d399';
+                } else {
+                    changeEl.classList.remove('text-green-400', 'bg-green-500/10');
+                    changeEl.classList.add('text-red-400', 'bg-red-500/10');
+                    mainChart.data.datasets[0].borderColor = '#ef4444';
+                }
+                mainChart.update('none'); // Update sans animation
+            }
+        }
+
+        // --- LIVE UPDATE (5 secondes) ---
         setInterval(() => {
-            // 1. Calcul du nouveau prix (Marche aléatoire)
-            const change = (Math.random() - 0.5) * 2.5; // Fluctuation entre -1.25 et +1.25
-            currentPrice += change;
-            
-            // 2. Mise à jour du texte
-            priceElement.innerText = '$' + currentPrice.toFixed(2);
-            
-            // 3. Mise à jour de la couleur (Vert/Rouge) selon la variation instantanée
-            if(change >= 0) {
-                priceElement.classList.remove('text-red-500');
-                priceElement.classList.add('text-white'); // On garde le prix blanc, seul l'indicateur change
-                mainChart.data.datasets[0].borderColor = '#34d399';
-                gradient.addColorStop(0, 'rgba(52, 211, 153, 0.2)');
-            } else {
-                // priceElement.classList.add('text-red-500'); // Optionnel
-                mainChart.data.datasets[0].borderColor = '#ef4444'; // Rouge si baisse
-                // On pourrait changer le dégradé aussi mais c'est lourd pour le CPU
-            }
+            if (!mainChart) return; // Sécurité
 
-            // 4. Mise à jour du graphique
+            // Seulement si on est sur 1H ou 1D pour l'effet "Live" immédiat
             const data = mainChart.data.datasets[0].data;
-            data.shift(); // Enlève le premier point
-            data.push(currentPrice); // Ajoute le nouveau
-            mainChart.update(); // Redessine
+            if (!data || data.length === 0) return;
 
-            // 5. Génération aléatoire de trades dans le carnet d'ordres
-            if(Math.random() > 0.3) { // 70% de chance d'ajouter un trade
-                addTradeToBook(currentPrice, change);
-            }
+            const lastVal = data[data.length - 1];
+            
+            // Variation plus lente (5s)
+            const change = (Math.random() - 0.45) * 1.5; 
+            const newVal = lastVal + change;
+            
+            data.shift();
+            data.push(newVal);
+            mainChart.update();
+            
+            // Update text (comparé au début du graphe actuel)
+            updatePriceDisplay(newVal, data[0]);
 
-        }, 1000); // Mise à jour toutes les secondes
+            // Add trade to tape
+            addTradeToBook(newVal);
 
-        // --- FONCTION CARNET D'ORDRES ---
+        }, 5000); // 5 secondes
+
+        // --- TAPE LOGIC ---
         const orderBook = document.getElementById('order-book');
-        
-        function addTradeToBook(price, change) {
-            const time = new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric", second: "numeric"});
-            const volume = Math.floor(Math.random() * 500) + 10;
-            const typeColor = change >= 0 ? 'text-green-400' : 'text-red-400';
+        function addTradeToBook(price) {
+            const time = new Date().toLocaleTimeString('en-US', {hour12: false});
+            const vol = Math.floor(Math.random() * 800) + 10;
+            const color = Math.random() > 0.5 ? 'text-green-400' : 'text-red-400'; // Buy or Sell
             
             const row = document.createElement('div');
             row.className = 'order-book-row';
             row.innerHTML = `
                 <span class="text-gray-400">${time}</span>
-                <span class="${typeColor} font-bold">$${price.toFixed(2)}</span>
-                <span class="text-white">${volume}</span>
+                <span class="${color} font-bold">$${price.toFixed(2)}</span>
+                <span class="text-white">${vol}</span>
             `;
-            
-            // Ajout en haut de la liste
             orderBook.prepend(row);
-            
-            // Nettoyage (garder max 15 lignes)
-            if(orderBook.children.length > 15) {
-                orderBook.lastElementChild.remove();
-            }
+            if(orderBook.children.length > 15) orderBook.lastElementChild.remove();
         }
-        
-        // Remplir le carnet au démarrage
-        for(let i=0; i<10; i++) {
-            addTradeToBook(1240 + Math.random()*5, Math.random() - 0.5);
-        }
+
+        // Init
+        // Attendre que le DOM soit chargé pour être sûr
+        document.addEventListener('DOMContentLoaded', () => {
+             initChart('1D');
+             // Pre-fill tape
+             for(let i=0; i<10; i++) addTradeToBook(1240 + Math.random()*10);
+        });
 
     </script>
 </body>
