@@ -1,1 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackWood - Présence Mondiale</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/iRPFjs4.png">
+    
+    <meta property="og:title" content="BlackWood - Global Reach" />
+    <meta property="og:description" content="Infrastructure financière mondiale. 40 bureaux, 120 pays, 1 vision." />
+    <meta property="og:image" content="https://placehold.co/1200x630/0d0a1b/ffffff?text=BlackWood+Global" />
+    <meta name="theme-color" content="#05040a">
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        /* --- CORE DESIGN SYSTEM --- */
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(10, 8, 20, 0.4); /* Plus transparent pour voir le globe */
+            --neon-blue: #004e92;
+            --neon-pink: #f06292;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #05040a;
+            color: white;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        /* Canvas 3D en arrière-plan */
+        #globe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: all; /* Permet de faire tourner le globe */
+        }
+
+        /* Overlay Gradient pour la lisibilité */
+        .vignette-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #05040a 90%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- NAVIGATION (Identique Basepage/Index) --- */
+        .nav-link { transition: color 0.2s, transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; display: inline-block; }
+        .nav-link.active { font-weight: 600; transform: translateY(-3px); color: #ffffff; }
+        .nav-link:not(.active):hover { color: #ffffff; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: linear-gradient(to right, #004e92, #f06292); transition: width 0.3s ease-out; }
+        .nav-link.active::after, .nav-link:hover::after { width: 100%; }
+
+        /* Menu Mobile */
+        #main-nav { transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); max-height: 56px; overflow: hidden; border-radius: 32px; }
+        #main-nav.is-expanded { max-height: 450px; }
+        .nav-content-top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; }
+        .logo-link, .hamburger-button { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        #main-nav.is-expanded .logo-link { transform: translate(10px, 10px); }
+        #main-nav.is-expanded .hamburger-button { transform: translate(-10px, 10px); }
+        .mobile-links { opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out 0.2s; padding-top: 1.5rem; padding-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
+        #main-nav.is-expanded .mobile-links { opacity: 1; pointer-events: auto; }
+        .hamburger { display: flex; flex-direction: column; justify-content: space-between; width: 24px; height: 18px; cursor: pointer; }
+        .hamburger-line { width: 100%; height: 2px; background-color: white; transition: all 0.3s ease-in-out; transform-origin: center; }
+        .hamburger.is-active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.is-active .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.is-active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        @media (min-width: 1024px) { #main-nav.is-expanded { max-height: 56px; } .hamburger.is-active .hamburger-line { transform: none; opacity: 1; } }
+
+        /* --- UI ELEMENTS --- */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-top: 120px;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        .city-card {
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .city-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-left: 2px solid var(--neon-pink);
+            padding-left: 1.5rem;
+        }
+        .city-card.active {
+            background: rgba(255,255,255,0.1);
+            border-left: 2px solid var(--neon-blue);
+        }
+
+        .stat-number {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            background: -webkit-linear-gradient(45deg, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scrollbar masquée pour le design */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animations Text */
+        .reveal-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+        
+        .coordinates {
+            font-family: var(--font-mono);
+            color: var(--neon-blue);
+            font-size: 0.7rem;
+            opacity: 0.8;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body class="bg-[#05040a] text-white">
+
+    <div id="globe-container"></div>
+    <div class="vignette-overlay"></div>
+
+    <header class="fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 lg:px-8">
+        <nav id="main-nav" class="mx-auto bg-black/20 backdrop-blur-xl shadow-2xl border border-white/10">
+            <div class="nav-content-top px-4 lg:px-8 py-4">
+                <a href="index.html" class="logo-link text-white text-xl lg:text-2xl font-extrabold z-[60]">
+                    BlackWood
+                </a>
+                <ul class="hidden lg:flex space-x-8 lg:space-x-12 text-gray-300 font-light text-lg">
+                    <li><a href="index.html" class="nav-link">Accueil</a></li>
+                    <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
+                    <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
+                    <li><a href="presence-mondiale.html" class="nav-link active">Présence Mondiale</a></li>
+                    <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
+                </ul>
+                <div class="lg:hidden flex items-center justify-end flex-grow">
+                    <button id="menu-toggle-button" class="hamburger-button text-white focus:outline-none z-[60]">
+                        <div class="hamburger">
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <ul class="mobile-links lg:hidden text-white font-medium text-xl text-center space-y-3">
+                <li><a href="index.html" class="nav-link">Accueil</a></li>
+                <li><a href="groupe.html" class="nav-link">Le Groupe</a></li>
+                <li><a href="filiales.html" class="nav-link">Nos Filiales</a></li>
+                <li><a href="presence-mondiale.html" class="nav-link active">Présence Mondiale</a></li>
+                <li><a href="actualite-bourse.html" class="nav-link">Actualité Boursière</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content-wrapper px-4 lg:px-12 max-w-[1800px] mx-auto w-full">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-8 lg:mt-16">
+            <div class="lg:col-span-7">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                    <span class="text-xs font-mono text-blue-300 tracking-widest uppercase">Live Network Status: Active</span>
+                </div>
+                <h1 class="text-5xl lg:text-8xl font-black tracking-tighter leading-none mb-6 reveal-elem">
+                    GLOBAL<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">PRESENCE.</span>
+                </h1>
+                <p class="text-gray-400 text-lg max-w-xl leading-relaxed reveal-elem delay-100">
+                    Une architecture de contrôle décentralisée. De New York à Tokyo, BlackWood opère là où les décisions façonnent le monde.
+                </p>
+            </div>
+            
+            <div class="lg:col-span-5 flex flex-col justify-end pb-4">
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="glass-panel p-6 text-center reveal-elem delay-200">
+                        <div class="stat-number text-4xl">42</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-widest mt-2">Bureaux</div>
+                    </div>
+                    <div class="glass-panel p-6 text-center reveal-elem delay-300">
+                        <div class="stat-number text-4xl">18</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-widest mt-2">Pays</div>
+                    </div>
+                    <div class="glass-panel p-6 text-center reveal-elem delay-400">
+                        <div class="stat-number text-4xl">24/7</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-widest mt-2">Trading</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 mb-12 relative">
+            
+            <div class="lg:col-span-4 h-[50vh] lg:h-auto flex flex-col">
+                <div class="glass-panel flex-grow overflow-hidden flex flex-col reveal-elem delay-500">
+                    <div class="p-6 border-b border-white/10 bg-black/20 flex justify-between items-center">
+                        <h3 class="font-bold text-lg">Hubs Stratégiques</h3>
+                        <i class="fas fa-globe-americas text-gray-500"></i>
+                    </div>
+                    <div class="overflow-y-auto p-4 space-y-2 no-scrollbar" id="locations-list">
+                        </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 relative hidden lg:flex flex-col justify-end items-end pointer-events-none">
+                <div class="glass-panel p-6 max-w-sm mb-12 pointer-events-auto reveal-elem delay-700">
+                    <h4 class="text-sm font-bold text-gray-300 uppercase tracking-widest mb-2 border-b border-white/10 pb-2">HQ: New York</h4>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">
+                        Le centre névralgique de BlackWood. Situé au cœur de Manhattan, notre siège social pilote les opérations mondiales avec une latence zéro.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="coordinates">40.7128° N, 74.0060° W</span>
+                        <button class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                            <i class="fas fa-arrow-right transform -rotate-45"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="py-6 border-t border-white/5 flex justify-between items-center text-xs text-gray-600 font-mono">
+            <div>SYSTEM: ONLINE</div>
+            <div>© 2025 BLACKWOOD INT.</div>
+            <div class="hidden sm:block">LATENCY: 14ms</div>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- 1. DATA: Les Villes ---
+        const locations = [
+            { name: "New York", country: "USA", type: "Headquarters", coords: "40.7128° N, 74.0060° W" },
+            { name: "London", country: "UK", type: "Finance Hub", coords: "51.5074° N, 0.1278° W" },
+            { name: "Paris", country: "France", type: "Regional Office", coords: "48.8566° N, 2.3522° E" },
+            { name: "Tokyo", country: "Japan", type: "Asia Tech Center", coords: "35.6762° N, 139.6503° E" },
+            { name: "Singapore", country: "SG", type: "Trading Floor", coords: "1.3521° N, 103.8198° E" },
+            { name: "Dubai", country: "UAE", type: "Investment", coords: "25.2048° N, 55.2708° E" },
+            { name: "Hong Kong", country: "CN", type: "Markets", coords: "22.3193° N, 114.1694° E" },
+            { name: "Zurich", country: "Switzerland", type: "Private Banking", coords: "47.3769° N, 8.5417° E" }
+        ];
+
+        // Remplissage de la liste
+        const listContainer = document.getElementById('locations-list');
+        locations.forEach((loc, index) => {
+            const item = document.createElement('div');
+            item.className = `city-card p-4 rounded-lg flex justify-between items-center group ${index === 0 ? 'active' : ''}`;
+            item.innerHTML = `
+                <div>
+                    <h4 class="font-bold text-white group-hover:text-blue-300 transition-colors">${loc.name}</h4>
+                    <p class="text-xs text-gray-500 font-mono">${loc.country}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] px-2 py-1 rounded bg-white/5 border border-white/5 text-gray-400 group-hover:border-blue-500/30 group-hover:text-blue-300 transition-all">${loc.type}</span>
+                </div>
+            `;
+            // Interaction simple
+            item.addEventListener('mouseenter', () => {
+                document.querySelectorAll('.city-card').forEach(c => c.classList.remove('active'));
+                item.classList.add('active');
+            });
+            listContainer.appendChild(item);
+        });
+
+        // --- 2. MOTION DESIGN (GSAP) ---
+        gsap.from(".reveal-elem", {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power3.out",
+            delay: 0.2
+        });
+
+        // --- 3. THREE.JS GLOBE (Le "Wow" Factor) ---
+        const initGlobe = () => {
+            const container = document.getElementById('globe-container');
+            const scene = new THREE.Scene();
+            
+            // Camera
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 15;
+            camera.position.y = 5;
+            camera.position.x = 5;
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Group pour le globe
+            const globeGroup = new THREE.Group();
+            scene.add(globeGroup);
+
+            // 1. Sphère de base (noire, opaque pour cacher l'arrière du globe)
+            const geometrySphere = new THREE.SphereGeometry(8, 64, 64);
+            const materialSphere = new THREE.MeshBasicMaterial({ color: 0x05040a });
+            const sphere = new THREE.Mesh(geometrySphere, materialSphere);
+            globeGroup.add(sphere);
+
+            // 2. Particules (Points) représentant la surface
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 2500;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for(let i = 0; i < particlesCount * 3; i++) {
+                // Distribution sur la sphère
+                // Mathématiques sphériques simplifiées pour l'effet visuel
+                const phi = Math.acos(-1 + (2 * i) / particlesCount);
+                const theta = Math.sqrt(particlesCount * Math.PI) * phi;
+                const r = 8.1; // Légèrement plus grand que la sphère noire
+
+                posArray[i * 3] = r * Math.cos(theta) * Math.sin(phi);
+                posArray[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi);
+                posArray[i * 3 + 2] = r * Math.cos(phi);
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.04,
+                color: 0x4a90e2, // Bleu tech
+                transparent: true,
+                opacity: 0.8,
+            });
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            globeGroup.add(particlesMesh);
+
+            // 3. Lignes de connexion (abstraites)
+            const linesMaterial = new THREE.LineBasicMaterial({ color: 0x2c3e50, transparent: true, opacity: 0.2 });
+            const linesGeometry = new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(8.2, 2));
+            const linesMesh = new THREE.LineSegments(linesGeometry, linesMaterial);
+            globeGroup.add(linesMesh);
+
+            // Animation Loop
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetRotationX = 0;
+            let targetRotationY = 0;
+
+            // Effet Parallaxe Souris
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - window.innerWidth / 2) * 0.0005;
+                mouseY = (event.clientY - window.innerHeight / 2) * 0.0005;
+            });
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                // Rotation automatique constante
+                globeGroup.rotation.y += 0.002;
+
+                // Influence de la souris (Douceur)
+                targetRotationY += 0.05 * (mouseX - targetRotationY);
+                targetRotationX += 0.05 * (mouseY - targetRotationX);
+
+                globeGroup.rotation.y += targetRotationY;
+                globeGroup.rotation.x += targetRotationX;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            // Resize Handler
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        initGlobe();
+
+        // --- 4. LOGIQUE MENU MOBILE (Copiée de basepage pour cohérence) ---
+        const mainNav = document.getElementById('main-nav');
+        const menuToggleButton = document.getElementById('menu-toggle-button');
+        const mobileNavLinks = document.querySelectorAll('.mobile-links .nav-link');
+
+        menuToggleButton.addEventListener('click', () => {
+            mainNav.classList.toggle('is-expanded');
+            menuToggleButton.classList.toggle('is-active');
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('is-expanded');
+                menuToggleButton.classList.remove('is-active');
+            });
+        });
+    </script>
+</body>
+</html>
