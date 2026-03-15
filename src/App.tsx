@@ -12,7 +12,8 @@ import BCI from './pages/BCI';
 
 export default function App() {
   return (
-    <Router>
+    // Ajout de la propriété basename ici
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
