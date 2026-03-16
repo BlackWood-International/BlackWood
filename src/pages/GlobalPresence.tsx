@@ -11,7 +11,7 @@ const springTransition = {
   stiffness: 300,
   damping: 30,
   mass: 1
-};
+} as const;
 
 export default function GlobalPresence() {
   const hubs = [
@@ -72,7 +72,13 @@ export default function GlobalPresence() {
   ];
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const selectedHub = hubs.find(h => h.id === selectedId);
+
+  // Ensure component is mounted before using portals or browser APIs
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -83,6 +89,8 @@ export default function GlobalPresence() {
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [selectedId]);
+
+  if (!isMounted) return null;
 
   return (
     <div className="w-full text-black bg-white overflow-hidden">
@@ -138,7 +146,7 @@ export default function GlobalPresence() {
                   layoutId={`card-${hub.id}`}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
+                  viewport={{ once: true, margin: "-20px" }}
                   animate={{
                     scale: isAnotherSelected ? 0.96 : 1,
                     opacity: isAnotherSelected ? 0.4 : 1,
@@ -199,7 +207,7 @@ export default function GlobalPresence() {
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-20px" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="w-full lg:w-1/2"
             >
@@ -242,7 +250,7 @@ export default function GlobalPresence() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-20px" }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="w-full lg:w-1/2"
             >
